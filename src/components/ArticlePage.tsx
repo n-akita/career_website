@@ -6,7 +6,7 @@ import MarkdownRenderer from "./MarkdownRenderer";
 import ServiceCTA from "./ServiceCTA";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "./JsonLd";
 
-const BASE_URL = "https://ibasho-senryaku.com";
+const BASE_URL = "https://nara-career.com";
 
 const categoryImages: Record<string, string> = {
   career: "/images/hero-city.jpg",

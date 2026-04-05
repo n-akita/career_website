@@ -18,7 +18,7 @@ export function WebSiteJsonLd() {
         "@context": "https://schema.org",
         "@type": "WebSite",
         name: "ビジネスマンの居場所戦略",
-        url: "https://ibasho-senryaku.com",
+        url: "https://nara-career.com",
         description:
           "5回の転職で年収3.5倍。出世ではなく「環境を変える」キャリア戦略を発信。",
         author: {

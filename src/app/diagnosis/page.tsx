@@ -539,7 +539,7 @@ export default function DiagnosisPage() {
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <a
-                href={`https://x.com/intent/tweet?text=${encodeURIComponent(`ならなら式転職診断の結果は「${result.title.replace("\n", "")}」でした！\n\n`)}&url=${encodeURIComponent("https://ibasho-senryaku.com/diagnosis")}`}
+                href={`https://x.com/intent/tweet?text=${encodeURIComponent(`ならなら式転職診断の結果は「${result.title.replace("\n", "")}」でした！\n\n`)}&url=${encodeURIComponent("https://nara-career.com/diagnosis")}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 bg-white text-zinc-900 font-semibold px-6 py-3 rounded-lg hover:bg-zinc-100 transition-colors text-sm"

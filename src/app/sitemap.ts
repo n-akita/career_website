@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { getAllArticles } from "@/lib/articles";
 
-const BASE_URL = "https://ibasho-senryaku.com"; // ドメイン取得後に差し替え
+const BASE_URL = "https://nara-career.com";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const articles = getAllArticles();

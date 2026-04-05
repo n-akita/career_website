@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/api/"],
     },
-    sitemap: "https://ibasho-senryaku.com/sitemap.xml", // ドメイン取得後に差し替え
+    sitemap: "https://nara-career.com/sitemap.xml", // ドメイン取得後に差し替え
   };
 }
