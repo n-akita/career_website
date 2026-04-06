@@ -1,10 +1,21 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [menuOpen]);
 
   return (
     <header className="border-b border-border/60 bg-white/80 backdrop-blur-lg sticky top-0 z-50">
@@ -48,7 +59,7 @@ export default function Header() {
 
       {/* モバイルメニュー */}
       {menuOpen && (
-        <nav className="md:hidden border-t border-border/60 bg-white/95 backdrop-blur-lg px-4 py-3 flex flex-col gap-1 text-sm font-medium">
+        <nav className="md:hidden border-t border-border/60 bg-white/95 backdrop-blur-lg px-4 py-3 flex flex-col gap-1 text-sm font-medium animate-[slideDown_0.2s_ease-out]">
           <MobileNavLink href="/career" onClick={() => setMenuOpen(false)}>キャリアの考え方</MobileNavLink>
           <MobileNavLink href="/tenshoku" onClick={() => setMenuOpen(false)}>転職ノウハウ</MobileNavLink>
           <MobileNavLink href="/sidejob" onClick={() => setMenuOpen(false)}>副業の始め方</MobileNavLink>

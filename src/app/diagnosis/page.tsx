@@ -496,7 +496,7 @@ export default function DiagnosisPage() {
                     className="bg-white border border-border/60 rounded-2xl p-6 hover:shadow-md transition-all hover:-translate-y-0.5"
                     style={{ animation: `fadeUp .4s ease-out ${1.3 + i * 0.15}s both` }}
                   >
-                    <div className="flex items-start justify-between gap-4 flex-wrap">
+                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
                       <div className="flex-1 min-w-0">
                         <h3 className="text-lg font-bold mb-2">{svc.name}</h3>
                         <p className="text-sm text-zinc-500 leading-relaxed">{ref.reason}</p>
@@ -505,7 +505,7 @@ export default function DiagnosisPage() {
                         href={svc.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className={`shrink-0 inline-flex items-center gap-1.5 bg-gradient-to-r ${result.gradient} text-white text-sm font-semibold px-6 py-3 rounded-lg hover:opacity-90 transition-opacity`}
+                        className={`shrink-0 inline-flex items-center justify-center gap-1.5 bg-gradient-to-r ${result.gradient} text-white text-sm font-semibold px-6 py-3 rounded-lg hover:opacity-90 transition-opacity w-full sm:w-auto`}
                       >
                         無料で登録する
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

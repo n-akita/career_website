@@ -138,7 +138,7 @@ export default function ArticlePage({ article }: { article: Article }) {
             href={`https://b.hatena.ne.jp/entry/${articleUrl}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 bg-[#00A4DE] text-white text-xs font-semibold px-4 py-2 rounded-lg hover:opacity-90 transition-opacity"
+            className="inline-flex items-center gap-1.5 bg-[#00A4DE] text-white text-xs font-semibold px-5 py-2.5 rounded-lg hover:opacity-90 transition-opacity min-w-[44px] justify-center"
           >
             B!
           </a>
@@ -146,7 +146,7 @@ export default function ArticlePage({ article }: { article: Article }) {
             href={`https://social-plugins.line.me/lineit/share?url=${shareUrl}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 bg-[#06C755] text-white text-xs font-semibold px-4 py-2 rounded-lg hover:opacity-90 transition-opacity"
+            className="inline-flex items-center gap-1.5 bg-[#06C755] text-white text-xs font-semibold px-5 py-2.5 rounded-lg hover:opacity-90 transition-opacity"
           >
             LINE
           </a>

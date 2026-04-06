@@ -15,21 +15,21 @@ export default function Footer() {
             </p>
           </div>
 
-          <div className="flex gap-12">
+          <div className="flex gap-8 md:gap-12">
             <div>
               <p className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">コンテンツ</p>
-              <div className="flex flex-col gap-2 text-sm">
-                <Link href="/career" className="hover:text-white transition-colors">キャリアの考え方</Link>
-                <Link href="/tenshoku" className="hover:text-white transition-colors">転職ノウハウ</Link>
-                <Link href="/sidejob" className="hover:text-white transition-colors">副業の始め方</Link>
+              <div className="flex flex-col gap-1 text-sm">
+                <Link href="/career" className="hover:text-white transition-colors py-1.5">キャリアの考え方</Link>
+                <Link href="/tenshoku" className="hover:text-white transition-colors py-1.5">転職ノウハウ</Link>
+                <Link href="/sidejob" className="hover:text-white transition-colors py-1.5">副業の始め方</Link>
               </div>
             </div>
             <div>
               <p className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">サイト情報</p>
-              <div className="flex flex-col gap-2 text-sm">
-                <Link href="/about" className="hover:text-white transition-colors">運営者情報</Link>
-                <Link href="/privacy" className="hover:text-white transition-colors">プライバシーポリシー</Link>
-                <Link href="/contact" className="hover:text-white transition-colors">お問い合わせ</Link>
+              <div className="flex flex-col gap-1 text-sm">
+                <Link href="/about" className="hover:text-white transition-colors py-1.5">運営者情報</Link>
+                <Link href="/privacy" className="hover:text-white transition-colors py-1.5">プライバシーポリシー</Link>
+                <Link href="/contact" className="hover:text-white transition-colors py-1.5">お問い合わせ</Link>
               </div>
             </div>
           </div>

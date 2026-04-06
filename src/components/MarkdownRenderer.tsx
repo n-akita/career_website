@@ -209,8 +209,8 @@ export default function MarkdownRenderer({ content }: { content: string }) {
             );
           case "table":
             return (
-              <div key={i} className="my-8 overflow-x-auto">
-                <table className="w-full border-collapse text-sm">
+              <div key={i} className="my-8 overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0">
+                <table className="w-full border-collapse text-sm min-w-[480px]">
                   <thead>
                     <tr className="bg-zinc-50">
                       {token.headers.map((h, j) => (
@@ -244,7 +244,7 @@ export default function MarkdownRenderer({ content }: { content: string }) {
             );
           case "p":
             return (
-              <p key={i} className="text-zinc-600 leading-[1.9] mb-6">
+              <p key={i} className="text-zinc-600 leading-[1.9] mb-4 md:mb-6">
                 {renderInline(token.text)}
               </p>
             );

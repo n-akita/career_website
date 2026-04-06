@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <>
       {/* ヒーローセクション */}
-      <section className="relative min-h-[520px] md:min-h-[600px] flex items-center">
+      <section className="relative min-h-[420px] md:min-h-[600px] flex items-center">
         <Image
           src="/images/hero-city.jpg"
           alt=""

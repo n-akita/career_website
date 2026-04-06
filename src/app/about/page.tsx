@@ -37,7 +37,7 @@ export default function AboutPage() {
 
       {/* 数字バー */}
       <section className="bg-white border-b border-border/60">
-        <div className="max-w-3xl mx-auto px-4 py-10 grid grid-cols-3 gap-6 text-center">
+        <div className="max-w-3xl mx-auto px-4 py-10 grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 text-center">
           <div>
             <p className="text-3xl md:text-4xl font-bold text-primary">5<span className="text-lg">社</span></p>
             <p className="text-sm text-zinc-500 mt-1">転職経験</p>
@@ -266,11 +266,11 @@ function TimelineItem({
   turning?: boolean;
 }) {
   return (
-    <div className="flex gap-5">
+    <div className="flex gap-3 md:gap-5">
       {/* 左のライン */}
       <div className="flex flex-col items-center">
         <div
-          className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 text-sm font-bold ${
+          className={`w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center shrink-0 text-xs md:text-sm font-bold ${
             current
               ? "bg-primary text-white"
               : turning

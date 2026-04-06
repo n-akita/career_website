@@ -22,7 +22,7 @@ export default function ServiceCTA({
         {services.map((svc) => (
           <div
             key={svc.id}
-            className="bg-white border border-border/60 rounded-xl p-5 flex items-start justify-between gap-4 flex-wrap"
+            className="bg-white border border-border/60 rounded-xl p-5 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4"
           >
             <div className="flex-1 min-w-0">
               <p className="font-bold mb-1">{svc.name}</p>
@@ -34,7 +34,7 @@ export default function ServiceCTA({
               href={svc.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="shrink-0 inline-flex items-center gap-1 bg-primary text-white text-sm font-semibold px-5 py-2.5 rounded-lg hover:bg-primary-dark transition-colors"
+              className="shrink-0 inline-flex items-center justify-center gap-1 bg-primary text-white text-sm font-semibold px-5 py-2.5 rounded-lg hover:bg-primary-dark transition-colors w-full sm:w-auto"
             >
               {svc.cta}
               <svg
