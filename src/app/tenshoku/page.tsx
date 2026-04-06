@@ -1,11 +1,50 @@
 import type { Metadata } from "next";
 import { getArticlesByCategory } from "@/lib/articles";
 import CategoryPage from "@/components/CategoryPage";
+import type { ArticleSection } from "@/components/CategoryPage";
 
 export const metadata: Metadata = {
   title: "転職ノウハウ",
-  description: "職務経歴書の書き方、面接戦略、年収の上げ方など、転職を成功させるためのノウハウを発信しています。",
+  description:
+    "職務経歴書の書き方、面接戦略、年収の上げ方など、転職を成功させるためのノウハウを発信しています。",
 };
+
+const sections: ArticleSection[] = [
+  {
+    label: "準備する",
+    emoji: "📝",
+    slugs: [
+      "venture-to-enterprise",
+      "resume-writing-guide",
+      "resume-for-agents",
+    ],
+  },
+  {
+    label: "エージェントを使う",
+    emoji: "🤝",
+    slugs: ["agent-guide", "agent-review-8services"],
+  },
+  {
+    label: "面接・選考を突破する",
+    emoji: "🎯",
+    slugs: ["job-change-count", "over-35-career-change", "high-salary-job-change"],
+  },
+  {
+    label: "入社前に確認する",
+    emoji: "✅",
+    slugs: ["jtc-regret-checklist"],
+  },
+  {
+    label: "入社後を乗り切る",
+    emoji: "🏢",
+    slugs: ["embarrassing-first-month"],
+  },
+  {
+    label: "JTCのリアルを知る",
+    emoji: "🔍",
+    slugs: ["jtc-yurui-reality", "jtc-salary-30s"],
+  },
+];
 
 export default function TenshokuPage() {
   const articles = getArticlesByCategory("tenshoku");
@@ -18,6 +57,8 @@ export default function TenshokuPage() {
       image="/images/tenshoku.png"
       articles={articles}
       category="tenshoku"
+      sections={sections}
+      featured="jtc-complete-guide"
     />
   );
 }
