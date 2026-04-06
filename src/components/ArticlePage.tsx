@@ -21,9 +21,15 @@ const categoryLabels: Record<string, { label: string; en: string; href: string }
 };
 
 const categoryServices: Record<string, string[]> = {
-  career: ["doda", "bizreach"],
+  career: ["doda", "jac", "bizreach"],
   tenshoku: ["doda", "jac", "bizreach"],
   sidejob: ["bizreach", "visasq"],
+};
+
+const categoryCtaHeadings: Record<string, string> = {
+  career: "僕が実際に使った転職サービス",
+  tenshoku: "この記事で紹介した転職サービス",
+  sidejob: "副業を始めるならこのサービス",
 };
 
 export default function ArticlePage({ article }: { article: Article }) {
@@ -109,7 +115,10 @@ export default function ArticlePage({ article }: { article: Article }) {
         <MarkdownRenderer content={article.content} />
 
         {/* サービスCTA */}
-        <ServiceCTA serviceIds={serviceIds} />
+        <ServiceCTA
+          serviceIds={serviceIds}
+          heading={categoryCtaHeadings[article.category]}
+        />
 
         {/* シェアボタン */}
         <div className="my-10 flex items-center gap-3 flex-wrap">

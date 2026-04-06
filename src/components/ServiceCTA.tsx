@@ -36,7 +36,7 @@ export default function ServiceCTA({
               rel="noopener noreferrer"
               className="shrink-0 inline-flex items-center gap-1 bg-primary text-white text-sm font-semibold px-5 py-2.5 rounded-lg hover:bg-primary-dark transition-colors"
             >
-              無料で登録する
+              {svc.cta}
               <svg
                 className="w-4 h-4"
                 fill="none"
