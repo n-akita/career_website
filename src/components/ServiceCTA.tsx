@@ -54,6 +54,22 @@ export default function ServiceCTA({
           </div>
         ))}
       </div>
+      {/* 職務経歴書ステップ */}
+      <div className="mt-6 bg-amber-50 border border-amber-200/60 rounded-xl p-5">
+        <p className="text-sm font-bold text-amber-900 mb-1">
+          登録したら、面談の前にやること
+        </p>
+        <p className="text-sm text-amber-800 leading-relaxed">
+          エージェントに会う前に、職務経歴書を書いておこう。完璧じゃなくていい。60%の完成度でいいから持っていく。それだけで「この人は本気だ」とエージェントの対応が変わる。
+        </p>
+        <Link
+          href="/tenshoku/resume-for-agents"
+          className="inline-flex items-center gap-1 text-sm text-amber-700 font-semibold mt-2 hover:underline"
+        >
+          職務経歴書の書き方を見る →
+        </Link>
+      </div>
+
       <div className="mt-4 text-center">
         <Link
           href="/diagnosis"

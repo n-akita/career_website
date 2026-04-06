@@ -519,10 +519,32 @@ export default function DiagnosisPage() {
             </div>
           </section>
 
+          {/* 職務経歴書ステップ */}
+          <div
+            className="bg-amber-50 border border-amber-200/60 rounded-2xl p-6 md:p-8"
+            style={{ animation: "fadeUp .6s ease-out 1.5s both" }}
+          >
+            <div className="flex items-start gap-3">
+              <span className="text-2xl shrink-0">📝</span>
+              <div>
+                <p className="font-bold text-amber-900 mb-2">登録したら、面談の前にやること</p>
+                <p className="text-sm text-amber-800 leading-relaxed mb-3">
+                  エージェントに会う前に、職務経歴書を書いておこう。完璧じゃなくていい。60%の完成度でいいから持っていく——それだけでエージェントの対応が変わる。「この人は本気だ」と思ってもらえるかどうかは、何を持っていくかで決まる。
+                </p>
+                <a
+                  href="/tenshoku/resume-for-agents"
+                  className="inline-flex items-center gap-1 text-sm text-amber-700 font-semibold hover:underline"
+                >
+                  エージェントが動く職務経歴書の書き方 →
+                </a>
+              </div>
+            </div>
+          </div>
+
           {/* next action */}
           <div
             className={`bg-gradient-to-r ${result.gradient} rounded-2xl p-8 text-white text-center`}
-            style={{ animation: "fadeUp .6s ease-out 1.6s both" }}
+            style={{ animation: "fadeUp .6s ease-out 1.7s both" }}
           >
             <p className="text-xs uppercase tracking-wider mb-3 opacity-80">Next Action</p>
             <p className="text-lg md:text-xl font-bold leading-relaxed">{result.nextAction}</p>
