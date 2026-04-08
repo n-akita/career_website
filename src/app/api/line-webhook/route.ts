@@ -258,6 +258,10 @@ export async function POST(req: NextRequest) {
           editingDraft.url,
           editingDraft.id
         ),
+        {
+          type: "text",
+          text: `【コピー用】\n${userText}\n\n${editingDraft.url}`,
+        },
       ]);
     }
   }
