@@ -4,6 +4,13 @@ import { type NextRequest } from "next/server";
 export const runtime = "edge";
 
 const typeConfig: Record<string, { emoji: string; title: string; color: string; bgFrom: string; bgTo: string }> = {
+  "relation-escape": {
+    emoji: "🔄",
+    title: "環境リセットで自分を取り戻す型",
+    color: "#14b8a6",
+    bgFrom: "#14b8a6",
+    bgTo: "#06b6d4",
+  },
   "environment-change": {
     emoji: "🚀",
     title: "環境チェンジで年収ジャンプ型",

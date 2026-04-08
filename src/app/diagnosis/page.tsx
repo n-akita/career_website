@@ -74,7 +74,7 @@ const questions: Question[] = [
 ];
 
 /* ------------------------------------------------------------------ */
-/*  Salary simulation                                                  */
+/*  Salary simulation（ならならの実績ベースで現実的に）                   */
 /* ------------------------------------------------------------------ */
 
 type SalarySimulation = {
@@ -83,13 +83,12 @@ type SalarySimulation = {
   upMax: number;
   afterMin: number;
   afterMax: number;
-  percentUp: string;
+  naraCase: string; // ならなら自身の実績
 };
 
 function estimateSalary(answers: Record<string, string>): SalarySimulation {
-  const { company, salary, pain, goal } = answers;
+  const { company, salary, goal } = answers;
 
-  // 現在の年収中央値
   const currentMap: Record<string, number> = {
     under400: 350,
     "400to600": 500,
@@ -98,56 +97,58 @@ function estimateSalary(answers: Record<string, string>): SalarySimulation {
   };
   const currentMid = currentMap[salary] ?? 500;
 
-  // 環境ギャップによるベースアップ幅
-  let baseUpMin = 50;
-  let baseUpMax = 100;
+  let baseUpMin: number;
+  let baseUpMax: number;
+  let naraCase: string;
 
-  if (company === "venture" || company === "mid") {
-    // ベンチャー→大手の環境チェンジは最もアップ幅が大きい
-    baseUpMin = 80;
-    baseUpMax = 200;
-    if (salary === "under400") {
-      baseUpMin = 100;
-      baseUpMax = 250;
+  // ならならの実績に基づいた現実的なレンジ
+  if (salary === "under400") {
+    if (company === "venture" || company === "mid") {
+      // ならなら：410万→450万（同規模）→670万（大手へ）
+      baseUpMin = 40;
+      baseUpMax = 120;
+      naraCase = "僕は年収410万のベンチャーから、まず同規模の会社で450万、その後大手に移って670万になりました";
+    } else {
+      baseUpMin = 30;
+      baseUpMax = 80;
+      naraCase = "僕が年収410万だった頃、環境を変えるだけで年収は大きく変わることに気づきました";
     }
-  } else if (company === "large") {
-    // JTC→JTC or 外資は中程度
-    baseUpMin = 50;
-    baseUpMax = 150;
-    if (salary === "over800") {
+  } else if (salary === "400to600") {
+    if (company === "venture" || company === "mid") {
+      // ならなら：450万→670万（doda経由でドコモへ）
       baseUpMin = 80;
       baseUpMax = 200;
+      naraCase = "僕は年収450万の時、dodaを使って大手に転職し670万になりました。+220万円です";
+    } else {
+      baseUpMin = 50;
+      baseUpMax = 150;
+      naraCase = "僕は年収450万からdodaを使って670万になりました。会社の規模を変えるだけで年収は跳ねます";
     }
+  } else if (salary === "600to800") {
+    // ならなら：670万→860万（JAC経由でセブン&アイへ）
+    baseUpMin = 50;
+    baseUpMax = 190;
+    naraCase = "僕は年収670万の時、JACリクルートメントを使って860万になりました。+190万円です";
   } else {
-    // フリーランス→正社員
-    baseUpMin = 30;
-    baseUpMax = 120;
+    // ならなら：860万→1200万（doda経由で損保へ）
+    baseUpMin = 80;
+    baseUpMax = 300;
+    naraCase = "僕は年収860万の時、dodaのエージェントと1年間毎週電話して、1,200万のポジションを見つけました";
   }
 
-  // 痛み・目標による補正
-  if (pain === "salary" || goal === "money") {
-    baseUpMin = Math.round(baseUpMin * 1.15);
-    baseUpMax = Math.round(baseUpMax * 1.15);
-  }
+  // WLB重視は年収よりQoL優先。正直にレンジを下げる
   if (goal === "balance") {
-    // WLB重視は年収アップよりQoL。アップ幅控えめ
-    baseUpMin = Math.round(baseUpMin * 0.7);
-    baseUpMax = Math.round(baseUpMax * 0.8);
+    baseUpMin = Math.round(baseUpMin * 0.6);
+    baseUpMax = Math.round(baseUpMax * 0.7);
   }
-
-  const afterMin = currentMid + baseUpMin;
-  const afterMax = currentMid + baseUpMax;
-
-  const avgUp = (baseUpMin + baseUpMax) / 2;
-  const percentUp = Math.round((avgUp / currentMid) * 100);
 
   return {
     currentMid,
     upMin: baseUpMin,
     upMax: baseUpMax,
-    afterMin,
-    afterMax,
-    percentUp: `${percentUp}`,
+    afterMin: currentMid + baseUpMin,
+    afterMax: currentMid + baseUpMax,
+    naraCase,
   };
 }
 
@@ -163,19 +164,15 @@ type TierCTA = {
   reason: string;
 };
 
-type SocialProof = {
-  stat: string;
-  description: string;
-};
-
-type Testimonial = {
-  profile: string;
+type NaraStory = {
+  era: string;
   quote: string;
   result: string;
 };
 
 type ResultType = {
   type: string;
+  ogType: string;
   title: string;
   emoji: string;
   color: string;
@@ -183,15 +180,68 @@ type ResultType = {
   message: string;
   advice: string[];
   tieredCTAs: TierCTA[];
-  socialProof: SocialProof[];
-  testimonial: Testimonial;
+  naraStory: NaraStory;
+  firstCTA: { label: string; serviceId: string };
   nextAction: string;
-  ogType: string;
 };
 
 function getResult(answers: Record<string, string>): ResultType {
   const { company, salary, pain, goal, action } = answers;
 
+  // ── 1. 人間関係で悩んでいる人（専用ルート）──
+  if (pain === "relation") {
+    return {
+      type: "relation-escape",
+      ogType: "relation-escape",
+      title: "環境リセットで\n自分を取り戻す型",
+      emoji: "🔄",
+      color: "text-teal-400",
+      gradient: "from-teal-500 to-cyan-500",
+      message:
+        "上司や人間関係がつらいのは、あなたの能力の問題ではありません。僕もドコモ時代、上司から「何もできない」と言われ続けました。でもセブン&アイに移ったら、同じ自分なのに評価が180度変わった。環境が人を殺すこともあれば、生かすこともある。",
+      advice: [
+        "今の人間関係がつらいのは、あなたではなく環境の問題。まずそれを認める",
+        "転職エージェントに「上司と合わない」と正直に言っていい。守秘義務がある",
+        "口コミサイトで「次の会社」の雰囲気を事前に調べる（同じ失敗を繰り返さないために）",
+        "面接では「よりチームワークを発揮できる環境で働きたい」と前向きに伝える",
+      ],
+      tieredCTAs: [
+        {
+          level: "light",
+          label: "気になる企業の社風を調べる",
+          sublabel: "社員の口コミで人間関係がわかる",
+          serviceId: "openwork",
+          reason: "「上司との関係」「風通しの良さ」が数値でわかる。次こそ同じ失敗をしないために",
+        },
+        {
+          level: "medium",
+          label: "プロに状況を相談する",
+          sublabel: "「上司と合わない」と正直に言える場所",
+          serviceId: "doda",
+          reason: "僕がドコモからセブン&アイに移ったのもdoda。つらい状況を打ち明けるところから始まった",
+        },
+        {
+          level: "strong",
+          label: "年収を維持して環境を変える",
+          sublabel: "企業の内情に詳しいエージェント",
+          serviceId: "jac",
+          reason: "面接官の人柄や部署の雰囲気まで教えてくれる。「次の上司」を事前に知れるのはJACだけだった",
+        },
+      ],
+      naraStory: {
+        era: "NTTドコモ時代（年収670万）",
+        quote: "上司から「お前は何もできない」「次の会社でもうまくいかない」と言われ続けた。自信を完全に失い、退職時は恥ずかしくて「奈良に帰ります」と嘘をついた。でもセブン&アイに移ったら、同じ自分がメタバースで4,000万円のプロジェクトをリードして、Xトレンド入りを達成した。僕が変わったんじゃない。場所が変わっただけ。",
+        result: "年収670万 → 860万。評価も成果も激変",
+      },
+      firstCTA: {
+        label: "まず自分の市場価値を確認してみる",
+        serviceId: "bizreach",
+      },
+      nextAction: "つらい環境にいる時こそ、外の世界を見てみよう。ビズリーチに登録して、届くスカウトを眺めるだけでいい。「自分を必要としている会社がある」と知るだけで、気持ちは変わる。",
+    };
+  }
+
+  // ── 2. ベンチャー/中小 × 年収低め → 環境チェンジ ──
   if (
     (company === "venture" || company === "mid") &&
     (salary === "under400" || salary === "400to600")
@@ -204,12 +254,12 @@ function getResult(answers: Record<string, string>): ResultType {
       color: "text-orange-400",
       gradient: "from-orange-500 to-red-500",
       message:
-        "あなたのスキルは、今の会社では「普通」かもしれません。でも大手企業に持っていけば「希少」になります。同じスキルでも、居場所を変えるだけで年収は大きく跳ねる可能性があります。",
+        "あなたのスキルは、今の会社では「普通」かもしれません。でも大手企業に持っていけば「希少」になります。僕自身、ベンチャーで年収410万だったスキルが、大手に移っただけで670万の評価になりました。同じスキルでも、居場所を変えるだけで年収は跳ねます。",
       advice: [
         "まず転職エージェントに登録して、自分の市場価値を客観的に知る",
-        "職務経歴書は「やったこと」ではなく「動かしたこと」を書く",
-        "大企業のDX部門・新規事業部門を狙い撃ちする",
-        "年収交渉はエージェントに任せる——自分で言いにくい金額もプロなら通せる",
+        "職務経歴書は「やったこと」ではなく「動かしたこと」を書く——これだけで書類通過率が変わる",
+        "大企業のDX部門・新規事業部門を狙い撃ちする（ベンチャー経験が最も活きるポジション）",
+        "年収交渉はエージェントに任せる——僕はdodaに任せて想定以上の額が出た",
       ],
       tieredCTAs: [
         {
@@ -217,38 +267,38 @@ function getResult(answers: Record<string, string>): ResultType {
           label: "まず市場価値だけ確認する",
           sublabel: "登録5分・スカウトを待つだけ",
           serviceId: "bizreach",
-          reason: "スカウト型なので登録するだけでOK。届くスカウトの年収が、あなたの市場価値そのもの",
+          reason: "僕も最初の転職はビズリーチ系のスカウトがきっかけだった。届く年収が、あなたの市場価値そのもの",
         },
         {
           level: "medium",
-          label: "プロに無料で相談してみる",
-          sublabel: "オンライン面談30分・服装自由",
+          label: "プロに無料で相談する",
+          sublabel: "オンライン面談OK・服装自由",
           serviceId: "doda",
-          reason: "求人数が豊富で、ベンチャー経験を大企業向けに「翻訳」してくれるエージェントが見つかりやすい",
+          reason: "僕がベンチャーから大手に移れたのはdodaのおかげ。ベンチャー経験を大企業向けに「翻訳」してくれた",
         },
         {
           level: "strong",
-          label: "年収アップを本気で狙う",
-          sublabel: "ハイクラス特化・非公開求人あり",
+          label: "年収を本気で上げにいく",
+          sublabel: "企業の内情に詳しいハイクラス特化",
           serviceId: "jac",
-          reason: "企業の内情に詳しく、年収交渉に強い。面談前に想定年収レンジを教えてくれる",
+          reason: "面接官の人柄まで教えてくれた唯一のエージェント。合否連絡が10分で届いた時は驚いた",
         },
       ],
-      socialProof: [
-        { stat: "73%", description: "このタイプの方がエージェント登録後6ヶ月以内に転職成功" },
-        { stat: "+120万円", description: "ベンチャー→大手転職者の平均年収アップ額" },
-        { stat: "92%", description: "が「もっと早く動けばよかった」と回答" },
-      ],
-      testimonial: {
-        profile: "29歳・元ベンチャーPM → 大手IT企業",
-        quote: "「今のスキルのまま環境を変えただけで、年収が150万上がった。ベンチャーで毎日20時まで働いていた自分が嘘みたいだ」",
-        result: "年収420万 → 570万円にアップ",
+      naraStory: {
+        era: "IBJ → feelコネクション → NTTドコモ時代",
+        quote: "年収410万のベンチャーにいた頃、大学の同期が結婚式にタクシーで来ていた。自分は電車だった。「ちょっとつらいなあ」と思った。でもdodaを使って大手に転職したら、同じスキルで年収670万になった。変わったのは自分じゃない。場所だ。",
+        result: "年収410万 → 670万（+260万円）",
       },
-      nextAction: "まずはビズリーチに登録して、届くスカウトの年収レンジを見てみよう。5分で終わる。",
+      firstCTA: {
+        label: "自分のスキルが大手でいくらになるか聞いてみる",
+        serviceId: "doda",
+      },
+      nextAction: "dodaに登録して、エージェントに「自分のスキルは大手でいくらになるか？」を聞いてみよう。僕はこの一歩で人生が変わった。",
     };
   }
 
-  if (company === "large" && pain === "growth") {
+  // ── 3. 大手 × スキル不安 → スキルアップシフト ──
+  if (company === "large" && (pain === "growth" || goal === "skill")) {
     return {
       type: "skill-up",
       ogType: "skill-up",
@@ -257,11 +307,12 @@ function getResult(answers: Record<string, string>): ResultType {
       color: "text-emerald-400",
       gradient: "from-emerald-500 to-teal-500",
       message:
-        "給料は悪くないけど、スキルが身につかない。「この会社でしか通用しない人間」になる恐怖。あなたの悩みは正しいです。DXに力を入れている企業や、裁量が大きいポジションへの転職で、年収を維持しながら成長環境を手に入れられます。",
+        "給料は悪くないけど、スキルが身につかない。「この会社でしか通用しない人間」になる恐怖。その感覚は正しいです。僕もドコモ時代、社内調整とパワポばかりで「市場価値がゼロになる」と焦っていました。でもDXに力を入れている企業に移ったことで、年収を維持しながら手触り感のある仕事を手に入れられました。",
       advice: [
         "年収を下げずに環境を変えられる案件を探す（ハイクラスエージェント推奨）",
         "DX推進・新規事業など「手触り感のある仕事」ができるポジションを狙う",
-        "副業も検討する——本業の安定を維持しつつ、副業で成長機会を得る",
+        "副業も検討する——僕は本業の安定を維持しつつ、副業で年100万の成長機会を得ている",
+        "職務経歴書は「社内調整」を「ステークホルダーマネジメント」に翻訳する",
       ],
       tieredCTAs: [
         {
@@ -269,37 +320,37 @@ function getResult(answers: Record<string, string>): ResultType {
           label: "どんなスカウトが来るか見てみる",
           sublabel: "登録5分・今の会社にはバレない",
           serviceId: "bizreach",
-          reason: "スカウトで自分の市場価値を確認。副業案件も掲載されている",
+          reason: "僕は副業案件もビズリーチで見つけた。転職だけでなく副業という選択肢も見えてくる",
         },
         {
           level: "medium",
-          label: "成長できる環境をプロと探す",
-          sublabel: "年収維持×成長環境の求人を厳選",
+          label: "年収維持×成長環境をプロと探す",
+          sublabel: "企業の内情まで教えてくれる",
           serviceId: "jac",
-          reason: "ハイクラス特化。年収を維持しつつ環境を変えたい人に最適。企業の内情に詳しい",
+          reason: "僕がドコモからセブン&アイに移れたのはJAC。求人の質が高く、年収を維持しつつ環境を変えられた",
         },
         {
           level: "strong",
           label: "幅広い選択肢から本気で選ぶ",
-          sublabel: "業界最大の求人数で比較検討",
+          sublabel: "粘り強く一緒に探してくれる",
           serviceId: "doda",
-          reason: "大手からベンチャーまで網羅。「成長環境」を条件に絞り込める",
+          reason: "求人数の幅広さはdodaが圧倒的。1年かけて僕に合うポジションを見つけてくれた粘り強さがある",
         },
       ],
-      socialProof: [
-        { stat: "68%", description: "JTC在籍者が「スキル不安」を転職の動機に挙げている" },
-        { stat: "2.4倍", description: "DX部門への転職者は、3年後の市場価値が平均2.4倍に" },
-        { stat: "85%", description: "が「年収を下げずに環境を変えられた」と回答" },
-      ],
-      testimonial: {
-        profile: "32歳・大手メーカー → IT企業DX部門",
-        quote: "「パワポ職人だった自分が、今はプロダクトマネージャーとしてサービスを動かしている。年収も50万上がった」",
-        result: "年収720万 → 770万円、裁量は10倍に",
+      naraStory: {
+        era: "NTTドコモ → セブン&アイ時代",
+        quote: "ドコモでは2億円のプロジェクトを一人で仕切った実績があった。でも社内では「パワポ職人」扱い。JACに相談して、セブン&アイのDX本部に移ったら、メタバースプロジェクトで4,000万の予算を任され、ゼロから会員1万人を集めた。場所を変えたら、眠っていた力が一気に目覚めた。",
+        result: "年収670万 → 860万。裁量と成長実感が激変",
       },
-      nextAction: "JACリクルートメントに登録して、「年収維持で成長できる環境」を条件に相談してみよう。",
+      firstCTA: {
+        label: "自分のスキルが活きる環境を探してみる",
+        serviceId: "jac",
+      },
+      nextAction: "JACリクルートメントに登録して、「年収維持で成長できる環境」を条件に相談してみよう。僕はこれで人生が変わった。",
     };
   }
 
+  // ── 4. WLB重視 ──
   if (pain === "worklife" || goal === "balance") {
     return {
       type: "work-life-balance",
@@ -309,105 +360,53 @@ function getResult(answers: Record<string, string>): ResultType {
       color: "text-sky-400",
       gradient: "from-sky-500 to-blue-500",
       message:
-        "年収も大事。でも心身が壊れたら元も子もないですよね。大手企業やリモートワーク可能な企業に移ることで、年収を維持しながら生活の質を劇的に改善できます。",
+        "年収も大事。でも心身が壊れたら元も子もないですよね。僕もベンチャー時代は土日もSlackが鳴り止まなかった。大手に移ったことで、年収は上がったのに残業は減った。「年収と生活の質はトレードオフ」は嘘です。",
       advice: [
         "「残業時間」「リモート可否」「副業可否」を重視して求人を探す",
-        "口コミサイト（OpenWork等）で実際の働き方を確認する",
-        "面接では正直に「ワークライフバランスを重視している」と伝えてOK",
+        "口コミサイトで実際の働き方を確認する（面接では見えない実態がわかる）",
         "エージェントに「残業月20時間以内」など具体的な条件を伝える",
+        "面接では「ワークライフバランスを重視している」と正直に言ってOK",
       ],
       tieredCTAs: [
         {
           level: "light",
-          label: "気になる企業の口コミを見る",
-          sublabel: "社員のリアルな声で実態がわかる",
+          label: "気になる企業の実態を調べる",
+          sublabel: "残業時間・有休消化率が口コミでわかる",
           serviceId: "openwork",
-          reason: "残業時間・有給取得率・リモート状況が社員の口コミでわかる。入社後のギャップ防止に必須",
+          reason: "社員の口コミで残業実態やリモート可否がわかる。入社後のギャップ防止に必須",
         },
         {
           level: "medium",
           label: "条件に合う求人をプロと探す",
-          sublabel: "「残業月20h以内」で絞り込み可能",
+          sublabel: "「残業月20h以内」で絞り込める",
           serviceId: "doda",
-          reason: "求人数が多く、条件で絞り込みやすい。エージェントに細かい希望を伝えやすい",
+          reason: "僕が2回使って2回とも決めたサービス。条件の細かい希望を伝えやすく、粘り強くサポートしてくれる",
         },
         {
           level: "strong",
-          label: "幅広い選択肢から比較する",
-          sublabel: "業界最大級の求人で妥協しない",
-          serviceId: "recruit",
-          reason: "業界最大の求人数。幅広い選択肢の中から条件に合う企業を見つけやすい",
+          label: "年収維持で環境を変える",
+          sublabel: "ハイクラス向け・非公開求人あり",
+          serviceId: "jac",
+          reason: "年収を下げずにWLBを改善したいなら、求人の質が高いJACが合う",
         },
       ],
-      socialProof: [
-        { stat: "月40h→15h", description: "転職者の平均残業時間の変化" },
-        { stat: "89%", description: "が「生活の質が改善した」と回答" },
-        { stat: "年収維持率 94%", description: "WLB改善と年収維持は両立できる" },
-      ],
-      testimonial: {
-        profile: "31歳・ベンチャー営業 → 大手IT企業",
-        quote: "「毎日22時退社が当たり前だった。今は18時に帰って子供とお風呂に入っている。年収はむしろ上がった」",
-        result: "残業月60h → 月15h、年収+30万円",
+      naraStory: {
+        era: "ベンチャー時代 → 大手転職後",
+        quote: "ベンチャーにいた頃、朝4時起きで勉強して夜は終電。成長している実感はあったけど、この働き方で結婚や子育てはできないと思った。大手に移ったら、年収は260万上がったのに自分の時間ができた。WLBと年収は両立できる。",
+        result: "年収410万 → 670万。自分の時間も増えた",
       },
-      nextAction: "dodaに登録して、「残業月20時間以内・リモート可」の条件で求人を探してみよう。",
+      firstCTA: {
+        label: "まず企業の口コミで実態を確認する",
+        serviceId: "openwork",
+      },
+      nextAction: "dodaに登録して、「残業月20時間以内・リモート可」の条件で求人を探してみよう。年収を下げる必要はない。",
     };
   }
 
-  if (goal === "value" || action === "nothing") {
-    return {
-      type: "market-value",
-      ogType: "market-value",
-      title: "まず市場価値を\n知ろう型",
-      emoji: "🔍",
-      color: "text-violet-400",
-      gradient: "from-violet-500 to-purple-500",
-      message:
-        "転職するかどうかはまだ決めなくていい。でも、自分が市場でいくらの価値があるか知っておくことは、キャリアの「健康診断」です。知るだけで、今の会社への見方が変わります。",
-      advice: [
-        "ビズリーチに登録してスカウトを待つ（登録5分、無料）",
-        "スポットコンサル（ビザスク等）に登録して、自分の経験に値段がつくか試す",
-        "転職エージェントに「まだ転職は決めていないが、市場価値を知りたい」と正直に伝える",
-      ],
-      tieredCTAs: [
-        {
-          level: "light",
-          label: "スカウトで市場価値を確認する",
-          sublabel: "登録5分・届く年収があなたの価値",
-          serviceId: "bizreach",
-          reason: "登録するだけで企業からスカウトが来る。自分の市場価値が数字でわかる",
-        },
-        {
-          level: "medium",
-          label: "プロに市場価値を聞いてみる",
-          sublabel: "「転職未定でもOK」と伝えれば大丈夫",
-          serviceId: "doda",
-          reason: "エージェントとの面談だけでも市場価値の相場観がつかめる。無料",
-        },
-        {
-          level: "strong",
-          label: "自分の経験を副業で試す",
-          sublabel: "1時間のスポットコンサルから",
-          serviceId: "visasq",
-          reason: "「普通のスキル」が外では専門知識になる。自分の経験に値段がつく体験ができる",
-        },
-      ],
-      socialProof: [
-        { stat: "87%", description: "が「自分の市場価値を知っていなかった」と回答" },
-        { stat: "平均+23%", description: "市場価値を知った後の転職者の年収アップ率" },
-        { stat: "3人に1人", description: "がスカウト経由で、より良い条件の転職に成功" },
-      ],
-      testimonial: {
-        profile: "28歳・中小企業の経理",
-        quote: "「自分は年収400万が相場だと思っていた。ビズリーチに登録したら600万のスカウトが来て、自分の常識が壊れた」",
-        result: "年収400万 → 580万円にアップ",
-      },
-      nextAction: "ビズリーチに登録してみよう。5分で終わる。スカウトが来たら、それがあなたの市場価値だ。",
-    };
-  }
-
+  // ── 5. 年収800万以上 × 年収アップ志向 → ハイクラスジャンプ ──
   if (
     (salary === "600to800" || salary === "over800") &&
-    goal === "money"
+    (goal === "money" || pain === "salary")
   ) {
     return {
       type: "high-class",
@@ -417,50 +416,102 @@ function getResult(answers: Record<string, string>): ResultType {
       color: "text-amber-400",
       gradient: "from-amber-500 to-yellow-500",
       message:
-        "年収600万以上からの年収アップは、求人の数が一気に減ります。だからこそ、ハイクラス特化のエージェントを使うことが重要です。非公開求人にアクセスできるかどうかで結果が変わります。",
+        "年収600万以上からの年収アップは、求人の数が一気に減ります。だからこそ、ハイクラス特化のエージェントを使うこと、そしてエージェントとの接触頻度を上げることが重要です。僕は860万から1,200万に上がりましたが、dodaのエージェントと1年間毎週電話し続けた結果です。",
       advice: [
-        "ハイクラス特化のエージェント（JAC等）を使う",
-        "エージェントとの接触頻度を上げる（毎週10分の電話が理想）",
-        "年収交渉は必ずエージェントに任せる",
-        "同時に副業も検討し、収入源を分散させる",
+        "ハイクラス特化のエージェント（JAC, doda）を併用する",
+        "エージェントとの接触頻度を上げる（僕は毎週10分の電話を1年続けた）",
+        "年収交渉は必ずエージェントに任せる——自分では言えない金額もプロなら通せる",
+        "副業も検討する——僕は本業1,200万+副業200万で収入を分散している",
       ],
       tieredCTAs: [
         {
           level: "light",
-          label: "ハイクラスのスカウトを受け取る",
-          sublabel: "年収800万以上の求人が中心",
+          label: "ハイクラスのスカウトを見てみる",
+          sublabel: "登録5分・年収800万以上の求人が中心",
           serviceId: "bizreach",
-          reason: "ハイクラス向けスカウトが中心。年収800万以上の求人が豊富",
+          reason: "僕も副業案件をビズリーチで見つけた。転職だけでなく副業という選択肢も見えてくる",
         },
         {
           level: "medium",
           label: "非公開求人をプロと探す",
           sublabel: "企業の内情まで教えてくれる",
           serviceId: "jac",
-          reason: "ハイクラス・ミドルクラス特化。企業担当と求職者担当が同一人物なので、内情に詳しい",
+          reason: "僕がセブン&アイに入れたのはJAC。合否連絡が面接後10分で来た時は驚いた。企業との関係が深い",
         },
         {
           level: "strong",
-          label: "年収交渉まで任せて本気で狙う",
-          sublabel: "求人数×交渉力で年収最大化",
+          label: "粘り強く一緒に探してもらう",
+          sublabel: "見つかるまで毎週伴走してくれる",
           serviceId: "doda",
-          reason: "求人数の幅広さとエージェントの交渉力で、想定以上のオファーが出ることも",
+          reason: "僕が860万→1,200万になったのはdoda。1年間毎週電話し続けて、最終的に見つけてくれた",
         },
       ],
-      socialProof: [
-        { stat: "+180万円", description: "ハイクラス転職者の平均年収アップ額" },
-        { stat: "非公開率 60%", description: "年収800万以上の求人は6割が非公開" },
-        { stat: "3.2倍", description: "エージェント経由の方が年収交渉成功率が高い" },
-      ],
-      testimonial: {
-        profile: "35歳・JTC課長 → 外資系マネージャー",
-        quote: "「同じ仕事内容なのに、会社が変わっただけで年収が200万上がった。もっと早く動けばよかった」",
-        result: "年収780万 → 980万円にアップ",
+      naraStory: {
+        era: "セブン&アイ → 現職（大手損保）",
+        quote: "年収860万からの転職は求人が少なく長期化した。でもdodaのエージェントと毎週10分だけ電話し続けた。1年かかったが、年収1,200万のポジションを見つけてくれた。ハイクラスの転職は「どれだけエージェントと密にやれるか」で結果が変わる。",
+        result: "年収860万 → 1,200万（+340万円）",
       },
-      nextAction: "JACリクルートメントに登録して、毎週10分の電話を始めよう。地味だけど、これが一番効く。",
+      firstCTA: {
+        label: "まずスカウトで市場の反応を見る",
+        serviceId: "bizreach",
+      },
+      nextAction: "dodaとJACの両方に登録して、まず自分の年収帯でどんな求人があるか聞いてみよう。毎週10分の電話を始めるだけで、結果は変わる。",
     };
   }
 
+  // ── 6. 市場価値を知りたい / まだ動いていない ──
+  if (goal === "value" || action === "nothing") {
+    return {
+      type: "market-value",
+      ogType: "market-value",
+      title: "まず市場価値を\n知ろう型",
+      emoji: "🔍",
+      color: "text-violet-400",
+      gradient: "from-violet-500 to-purple-500",
+      message:
+        "転職するかどうかはまだ決めなくていい。でも自分が市場でいくらの価値があるか知っておくことは、キャリアの「健康診断」です。僕が初めて自分の年収を計算した時、「あれ、思ったより安いな」と感じた。それが全ての始まりでした。",
+      advice: [
+        "ビズリーチに登録してスカウトを待つ（登録5分、無料。届くスカウトの年収があなたの市場価値）",
+        "転職エージェントに「まだ転職は決めていないが、市場価値を知りたい」と正直に伝える",
+        "職務経歴書を書いてみる（書くだけで自分の経験が整理される。完璧じゃなくていい）",
+      ],
+      tieredCTAs: [
+        {
+          level: "light",
+          label: "スカウトで市場価値を見てみる",
+          sublabel: "登録5分・届く年収があなたの価値",
+          serviceId: "bizreach",
+          reason: "登録するだけで企業からスカウトが来る。僕は副業案件もここで見つけた",
+        },
+        {
+          level: "medium",
+          label: "プロに市場価値を聞いてみる",
+          sublabel: "「転職未定」と伝えれば大丈夫",
+          serviceId: "doda",
+          reason: "僕が一番信頼しているエージェント。市場価値の相談だけでも丁寧に対応してくれる",
+        },
+        {
+          level: "strong",
+          label: "自分の経験を副業で試す",
+          sublabel: "1時間のスポットコンサルから",
+          serviceId: "visasq",
+          reason: "僕はビザスクで年100万の副収入を得ている。「普通のスキル」が外では専門知識になる",
+        },
+      ],
+      naraStory: {
+        era: "feelコネクション時代（年収450万）",
+        quote: "転職面接で「希望年収は？」と聞かれて初めて自分の年収を計算した。410万円。「あれ、思ったより安いな」と感じた。それまでは成長環境だけ見ていて、給料を気にしていなかった。自分の値段を知ることが、全ての始まりだった。",
+        result: "自分の市場価値を知った後、410万→670万→860万→1,200万と上がっていった",
+      },
+      firstCTA: {
+        label: "まずスカウトで自分の値段を見てみる",
+        serviceId: "bizreach",
+      },
+      nextAction: "ビズリーチに登録してみよう。5分で終わる。届くスカウトの年収が、あなたの市場価値だ。",
+    };
+  }
+
+  // ── 7. フォールバック ──
   return {
     type: "general",
     ogType: "general",
@@ -469,7 +520,7 @@ function getResult(answers: Record<string, string>): ResultType {
     color: "text-blue-400",
     gradient: "from-blue-500 to-indigo-500",
     message:
-      "今の環境に違和感を感じているなら、それは正しいサインです。まずは市場を見てみましょう。転職するかどうかは、情報を集めてから決めればいい。",
+      "今の環境に違和感を感じているなら、それは正しいサインです。僕も4回転職しましたが、毎回「なんか違う」という違和感が出発点でした。転職するかどうかは、情報を集めてから決めればいい。まず外の世界を見てみましょう。",
     advice: [
       "転職エージェントに登録して、自分の市場価値を知る",
       "職務経歴書を書いてみる（書くだけで自分の経験が整理される）",
@@ -478,37 +529,36 @@ function getResult(answers: Record<string, string>): ResultType {
     tieredCTAs: [
       {
         level: "light",
-        label: "まずは企業の口コミを見てみる",
-        sublabel: "気になる会社のリアルな評判がわかる",
+        label: "気になる企業の口コミを見る",
+        sublabel: "社員のリアルな声がわかる",
         serviceId: "openwork",
-        reason: "転職するか決める前に、まず「外の世界」を覗いてみるだけでも価値がある",
+        reason: "転職するか決める前に、まず「外の世界」を覗いてみるだけでも視野が広がる",
       },
       {
         level: "medium",
-        label: "スカウトで市場価値を知る",
-        sublabel: "登録5分・届く年収が自分の価値",
-        serviceId: "bizreach",
-        reason: "登録するだけで企業からスカウトが来る。市場価値の確認に最適",
+        label: "プロに気軽に相談する",
+        sublabel: "「転職未定でもOK」で気軽に",
+        serviceId: "doda",
+        reason: "僕が4回の転職で2回使って2回とも決めたサービス。初めての転職相談にも丁寧に対応してくれる",
       },
       {
         level: "strong",
-        label: "エージェントに無料相談する",
-        sublabel: "「転職未定でもOK」で気軽に",
-        serviceId: "doda",
-        reason: "求人数が多く、初めての転職活動でもサポートが手厚い",
+        label: "スカウトで市場の反応を見る",
+        sublabel: "登録5分・届く年収が自分の価値",
+        serviceId: "bizreach",
+        reason: "登録するだけでスカウトが来る。自分の市場価値が数字でわかる",
       },
     ],
-    socialProof: [
-      { stat: "78%", description: "が「まず情報収集から始めた」と回答" },
-      { stat: "平均3.2ヶ月", description: "情報収集開始から転職成功までの平均期間" },
-      { stat: "94%", description: "が「登録してよかった」と回答（転職しなかった人含む）" },
-    ],
-    testimonial: {
-      profile: "30歳・SIer勤務",
-      quote: "「転職するつもりはなかった。でもエージェントに会って自分の市場価値を知ったら、今の会社への見方が完全に変わった」",
-      result: "結果的に年収+100万円で転職",
+    naraStory: {
+      era: "4回の転職を経て",
+      quote: "410万→450万→670万→860万→1,200万。4回の転職でわかったのは、「努力」より「場所選び」で年収は決まるということ。どのエージェントに行くかより、何を持っていくか（職務経歴書）の方がもっと大事。それに気づくまで、僕は1回目の転職で失敗している。",
+      result: "年収410万 → 1,200万（4回の転職で約3倍）",
     },
-    nextAction: "dodaに登録して、まずはエージェントと話してみよう。「転職するかわからないけど相談したい」でOK。",
+    firstCTA: {
+      label: "まず外の世界を覗いてみる",
+      serviceId: "doda",
+    },
+    nextAction: "dodaに登録して、まずはエージェントと話してみよう。「転職するかわからないけど相談したい」でOK。僕もそこから始まった。",
   };
 }
 
@@ -557,7 +607,7 @@ function Particles({ gradient }: { gradient: string }) {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Loading counter                                                    */
+/*  Loading screen                                                     */
 /* ------------------------------------------------------------------ */
 
 function LoadingScreen() {
@@ -719,25 +769,12 @@ export default function DiagnosisPage() {
             <strong className="text-white">推定年収アップ額</strong>がわかります。
           </p>
           <p
-            className="text-zinc-600 text-xs mb-6"
+            className="text-zinc-500 text-sm mb-10 leading-relaxed"
             style={{ animation: "fadeUp .6s ease-out .35s both" }}
           >
-            所要時間：約30秒 / 完全無料
+            4回の転職で年収410万→1,200万になった<br className="md:hidden" />
+            僕の経験をもとに作りました
           </p>
-          {/* social proof on start screen */}
-          <div
-            className="flex flex-wrap justify-center gap-4 mb-10 text-xs text-zinc-500"
-            style={{ animation: "fadeUp .6s ease-out .37s both" }}
-          >
-            <span className="flex items-center gap-1">
-              <svg className="w-3.5 h-3.5 text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" /></svg>
-              累計診断数 1,200人突破
-            </span>
-            <span className="flex items-center gap-1">
-              <svg className="w-3.5 h-3.5 text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" /></svg>
-              満足度 94%
-            </span>
-          </div>
           <button
             onClick={() => setPhase("questions")}
             className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold px-10 py-4 rounded-xl text-lg hover:from-blue-600 hover:to-blue-700 transition-all hover:scale-105 active:scale-100 shadow-lg shadow-blue-500/25"
@@ -748,6 +785,12 @@ export default function DiagnosisPage() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
             </svg>
           </button>
+          <p
+            className="text-zinc-600 text-xs mt-4"
+            style={{ animation: "fadeUp .6s ease-out .45s both" }}
+          >
+            所要時間：約30秒 / 完全無料
+          </p>
         </div>
         <style>{`
           @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
@@ -767,6 +810,8 @@ export default function DiagnosisPage() {
   if (phase === "result" && result && salaryResult) {
     const shareText = `ならなら式転職診断の結果は「${result.title.replace("\n", "")}」でした！\n推定年収アップ：+${salaryResult.upMin}〜${salaryResult.upMax}万円\n\n`;
     const shareUrl = `https://nara-career.com/diagnosis?type=${result.ogType}&up=${encodeURIComponent(`+${salaryResult.upMin}〜${salaryResult.upMax}万円`)}`;
+
+    const firstSvc = affiliateServices[result.firstCTA.serviceId];
 
     return (
       <>
@@ -813,7 +858,7 @@ export default function DiagnosisPage() {
               <h2 className="text-xl font-bold">年収シミュレーション</h2>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
               <div className="bg-zinc-800/80 rounded-xl p-5 text-center">
                 <p className="text-xs text-zinc-400 mb-1">現在の推定年収</p>
                 <p className="text-2xl font-bold text-zinc-300">
@@ -837,30 +882,50 @@ export default function DiagnosisPage() {
               </div>
             </div>
 
+            {/* ならならの実績ベースの注釈 */}
+            <div className="bg-zinc-700/30 rounded-lg p-4 mb-4">
+              <p className="text-sm text-zinc-300 leading-relaxed">
+                <span className="text-base mr-1">📝</span>
+                <strong>僕の場合：</strong>{salaryResult.naraCase}
+              </p>
+            </div>
+
             <p className="text-xs text-zinc-500 leading-relaxed">
-              ※ 同業種・同職種で会社規模を変えた場合のシミュレーションです。実際の年収は、スキル・経験・交渉力によって変動します。エージェントとの面談で、より正確な数字がわかります。
+              ※ 実際の年収はスキル・経験・交渉力によって変動します。より正確な数字は、エージェントとの面談でわかります。
             </p>
           </section>
+
+          {/* ===== First CTA（年収シミュレーション直下）===== */}
+          {firstSvc && (
+            <div
+              className={`bg-gradient-to-r ${result.gradient} rounded-2xl p-6 text-center`}
+              style={{ animation: "fadeUp .6s ease-out .6s both" }}
+            >
+              <p className="text-white/80 text-sm mb-2">この数字、気になったら</p>
+              <a
+                href={firstSvc.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-white text-zinc-900 font-bold px-8 py-3.5 rounded-xl text-base hover:bg-zinc-100 transition-colors shadow-lg"
+              >
+                {result.firstCTA.label}
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </a>
+              <p className="text-white/60 text-xs mt-2">
+                {firstSvc.name} / 無料・登録5分
+              </p>
+            </div>
+          )}
 
           {/* ===== Message ===== */}
           <div
             className="border-l-4 border-l-blue-500 bg-blue-50 rounded-r-2xl p-6 md:p-8"
-            style={{ animation: "fadeUp .6s ease-out .6s both" }}
+            style={{ animation: "fadeUp .6s ease-out .65s both" }}
           >
             <p className="text-zinc-700 leading-[1.9] text-base">{result.message}</p>
           </div>
-
-          {/* ===== Social Proof Stats ===== */}
-          <section style={{ animation: "fadeUp .6s ease-out .65s both" }}>
-            <div className="grid grid-cols-3 gap-3">
-              {result.socialProof.map((sp, i) => (
-                <div key={i} className="bg-white border border-border/60 rounded-xl p-4 text-center">
-                  <p className={`text-xl md:text-2xl font-bold ${result.color}`}>{sp.stat}</p>
-                  <p className="text-xs text-zinc-500 mt-1 leading-relaxed">{sp.description}</p>
-                </div>
-              ))}
-            </div>
-          </section>
 
           {/* ===== Advice ===== */}
           <section style={{ animation: "fadeUp .6s ease-out .7s both" }}>
@@ -884,22 +949,21 @@ export default function DiagnosisPage() {
             </div>
           </section>
 
-          {/* ===== Testimonial ===== */}
+          {/* ===== ならならの体験談（実話）===== */}
           <section
             className="bg-zinc-50 border border-border/60 rounded-2xl p-6 md:p-8"
             style={{ animation: "fadeUp .6s ease-out 1.1s both" }}
           >
             <div className="flex items-center gap-2 mb-4">
               <span className="text-lg">💬</span>
-              <h3 className="text-sm font-semibold text-zinc-500">同じタイプの先輩の声</h3>
+              <h3 className="text-sm font-semibold text-zinc-500">僕（ならなら）の場合 — {result.naraStory.era}</h3>
             </div>
-            <blockquote className="text-base text-zinc-700 font-medium leading-relaxed mb-3">
-              {result.testimonial.quote}
+            <blockquote className="text-base text-zinc-700 font-medium leading-[1.9] mb-3">
+              {result.naraStory.quote}
             </blockquote>
-            <div className="flex items-center justify-between">
-              <p className="text-xs text-zinc-400">{result.testimonial.profile}</p>
+            <div className="flex items-end justify-end">
               <span className={`text-xs font-bold ${result.color} bg-white px-3 py-1 rounded-full border border-border/60`}>
-                {result.testimonial.result}
+                {result.naraStory.result}
               </span>
             </div>
           </section>
@@ -931,7 +995,7 @@ export default function DiagnosisPage() {
                         <TierBadge level={cta.level} />
                         {isRecommended && (
                           <span className="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded">
-                            一番人気
+                            僕が実際に使ったサービス
                           </span>
                         )}
                       </div>
@@ -976,7 +1040,7 @@ export default function DiagnosisPage() {
               <div>
                 <p className="font-bold text-amber-900 mb-2">登録したら、面談の前にやること</p>
                 <p className="text-sm text-amber-800 leading-relaxed mb-3">
-                  エージェントに会う前に、職務経歴書を書いておこう。完璧じゃなくていい。60%の完成度でいいから持っていく——それだけでエージェントの対応が変わる。「この人は本気だ」と思ってもらえるかどうかは、何を持っていくかで決まる。
+                  エージェントに会う前に、職務経歴書を書いておこう。完璧じゃなくていい。60%の完成度でいいから持っていく——それだけでエージェントの対応が変わる。僕は1回目の転職で職務経歴書なしで行って失敗した。「どのエージェントに行くか」より「何を持っていくか」が大事。
                 </p>
                 <a
                   href="/tenshoku/resume-for-agents"
