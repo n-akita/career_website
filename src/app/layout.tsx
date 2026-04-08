@@ -30,10 +30,19 @@ export const metadata: Metadata = {
     title: "ビジネスマンの居場所戦略",
     description:
       "5回の転職で年収3.5倍。出世ではなく「環境を変える」キャリア戦略を発信。",
+    images: [
+      {
+        url: "https://nara-career.com/api/og",
+        width: 1200,
+        height: 630,
+        alt: "ビジネスマンの居場所戦略",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     creator: "@nara_nara_san",
+    images: ["https://nara-career.com/api/og"],
   },
   robots: {
     index: true,
