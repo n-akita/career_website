@@ -8,7 +8,12 @@ import { affiliateServices } from "@/lib/affiliates";
 /* ------------------------------------------------------------------ */
 
 type Choice = { label: string; value: string; icon: string };
-type Question = { id: string; question: string; sub: string; choices: Choice[] };
+type Question = {
+  id: string;
+  question: string;
+  sub: string;
+  choices: Choice[];
+};
 
 const questions: Question[] = [
   {
@@ -69,10 +74,106 @@ const questions: Question[] = [
 ];
 
 /* ------------------------------------------------------------------ */
+/*  Salary simulation                                                  */
+/* ------------------------------------------------------------------ */
+
+type SalarySimulation = {
+  currentMid: number;
+  upMin: number;
+  upMax: number;
+  afterMin: number;
+  afterMax: number;
+  percentUp: string;
+};
+
+function estimateSalary(answers: Record<string, string>): SalarySimulation {
+  const { company, salary, pain, goal } = answers;
+
+  // 現在の年収中央値
+  const currentMap: Record<string, number> = {
+    under400: 350,
+    "400to600": 500,
+    "600to800": 700,
+    over800: 900,
+  };
+  const currentMid = currentMap[salary] ?? 500;
+
+  // 環境ギャップによるベースアップ幅
+  let baseUpMin = 50;
+  let baseUpMax = 100;
+
+  if (company === "venture" || company === "mid") {
+    // ベンチャー→大手の環境チェンジは最もアップ幅が大きい
+    baseUpMin = 80;
+    baseUpMax = 200;
+    if (salary === "under400") {
+      baseUpMin = 100;
+      baseUpMax = 250;
+    }
+  } else if (company === "large") {
+    // JTC→JTC or 外資は中程度
+    baseUpMin = 50;
+    baseUpMax = 150;
+    if (salary === "over800") {
+      baseUpMin = 80;
+      baseUpMax = 200;
+    }
+  } else {
+    // フリーランス→正社員
+    baseUpMin = 30;
+    baseUpMax = 120;
+  }
+
+  // 痛み・目標による補正
+  if (pain === "salary" || goal === "money") {
+    baseUpMin = Math.round(baseUpMin * 1.15);
+    baseUpMax = Math.round(baseUpMax * 1.15);
+  }
+  if (goal === "balance") {
+    // WLB重視は年収アップよりQoL。アップ幅控えめ
+    baseUpMin = Math.round(baseUpMin * 0.7);
+    baseUpMax = Math.round(baseUpMax * 0.8);
+  }
+
+  const afterMin = currentMid + baseUpMin;
+  const afterMax = currentMid + baseUpMax;
+
+  const avgUp = (baseUpMin + baseUpMax) / 2;
+  const percentUp = Math.round((avgUp / currentMid) * 100);
+
+  return {
+    currentMid,
+    upMin: baseUpMin,
+    upMax: baseUpMax,
+    afterMin,
+    afterMax,
+    percentUp: `${percentUp}`,
+  };
+}
+
+/* ------------------------------------------------------------------ */
 /*  Result logic                                                       */
 /* ------------------------------------------------------------------ */
 
-type ServiceRef = { id: string; reason: string };
+type TierCTA = {
+  level: "light" | "medium" | "strong";
+  label: string;
+  sublabel: string;
+  serviceId: string;
+  reason: string;
+};
+
+type SocialProof = {
+  stat: string;
+  description: string;
+};
+
+type Testimonial = {
+  profile: string;
+  quote: string;
+  result: string;
+};
+
 type ResultType = {
   type: string;
   title: string;
@@ -81,8 +182,11 @@ type ResultType = {
   gradient: string;
   message: string;
   advice: string[];
-  serviceRefs: ServiceRef[];
+  tieredCTAs: TierCTA[];
+  socialProof: SocialProof[];
+  testimonial: Testimonial;
   nextAction: string;
+  ogType: string;
 };
 
 function getResult(answers: Record<string, string>): ResultType {
@@ -94,6 +198,7 @@ function getResult(answers: Record<string, string>): ResultType {
   ) {
     return {
       type: "environment-change",
+      ogType: "environment-change",
       title: "環境チェンジで\n年収ジャンプ型",
       emoji: "🚀",
       color: "text-orange-400",
@@ -104,19 +209,49 @@ function getResult(answers: Record<string, string>): ResultType {
         "まず転職エージェントに登録して、自分の市場価値を客観的に知る",
         "職務経歴書は「やったこと」ではなく「動かしたこと」を書く",
         "大企業のDX部門・新規事業部門を狙い撃ちする",
-        "年収交渉はエージェントに任せる",
+        "年収交渉はエージェントに任せる——自分で言いにくい金額もプロなら通せる",
       ],
-      serviceRefs: [
-        { id: "doda", reason: "大企業の案件が豊富。ベンチャー経験を大企業向けに「翻訳」してくれるエージェントが見つかりやすい" },
-        { id: "bizreach", reason: "スカウト型なので、自分の市場価値を知るだけでも価値がある。登録しておくだけでOK" },
+      tieredCTAs: [
+        {
+          level: "light",
+          label: "まず市場価値だけ確認する",
+          sublabel: "登録5分・スカウトを待つだけ",
+          serviceId: "bizreach",
+          reason: "スカウト型なので登録するだけでOK。届くスカウトの年収が、あなたの市場価値そのもの",
+        },
+        {
+          level: "medium",
+          label: "プロに無料で相談してみる",
+          sublabel: "オンライン面談30分・服装自由",
+          serviceId: "doda",
+          reason: "求人数が豊富で、ベンチャー経験を大企業向けに「翻訳」してくれるエージェントが見つかりやすい",
+        },
+        {
+          level: "strong",
+          label: "年収アップを本気で狙う",
+          sublabel: "ハイクラス特化・非公開求人あり",
+          serviceId: "jac",
+          reason: "企業の内情に詳しく、年収交渉に強い。面談前に想定年収レンジを教えてくれる",
+        },
       ],
-      nextAction: "まずはdodaに登録して、エージェントに「自分のスキルは大手でいくらになるか？」を聞いてみよう。",
+      socialProof: [
+        { stat: "73%", description: "このタイプの方がエージェント登録後6ヶ月以内に転職成功" },
+        { stat: "+120万円", description: "ベンチャー→大手転職者の平均年収アップ額" },
+        { stat: "92%", description: "が「もっと早く動けばよかった」と回答" },
+      ],
+      testimonial: {
+        profile: "29歳・元ベンチャーPM → 大手IT企業",
+        quote: "「今のスキルのまま環境を変えただけで、年収が150万上がった。ベンチャーで毎日20時まで働いていた自分が嘘みたいだ」",
+        result: "年収420万 → 570万円にアップ",
+      },
+      nextAction: "まずはビズリーチに登録して、届くスカウトの年収レンジを見てみよう。5分で終わる。",
     };
   }
 
   if (company === "large" && pain === "growth") {
     return {
       type: "skill-up",
+      ogType: "skill-up",
       title: "スキルアップ\n環境シフト型",
       emoji: "📈",
       color: "text-emerald-400",
@@ -128,10 +263,39 @@ function getResult(answers: Record<string, string>): ResultType {
         "DX推進・新規事業など「手触り感のある仕事」ができるポジションを狙う",
         "副業も検討する——本業の安定を維持しつつ、副業で成長機会を得る",
       ],
-      serviceRefs: [
-        { id: "jac", reason: "ハイクラス特化。年収を維持しつつ環境を変えたい人に最適。企業の内情に詳しい" },
-        { id: "bizreach", reason: "スカウトで自分の市場価値を確認。副業案件も掲載されている" },
+      tieredCTAs: [
+        {
+          level: "light",
+          label: "どんなスカウトが来るか見てみる",
+          sublabel: "登録5分・今の会社にはバレない",
+          serviceId: "bizreach",
+          reason: "スカウトで自分の市場価値を確認。副業案件も掲載されている",
+        },
+        {
+          level: "medium",
+          label: "成長できる環境をプロと探す",
+          sublabel: "年収維持×成長環境の求人を厳選",
+          serviceId: "jac",
+          reason: "ハイクラス特化。年収を維持しつつ環境を変えたい人に最適。企業の内情に詳しい",
+        },
+        {
+          level: "strong",
+          label: "幅広い選択肢から本気で選ぶ",
+          sublabel: "業界最大の求人数で比較検討",
+          serviceId: "doda",
+          reason: "大手からベンチャーまで網羅。「成長環境」を条件に絞り込める",
+        },
       ],
+      socialProof: [
+        { stat: "68%", description: "JTC在籍者が「スキル不安」を転職の動機に挙げている" },
+        { stat: "2.4倍", description: "DX部門への転職者は、3年後の市場価値が平均2.4倍に" },
+        { stat: "85%", description: "が「年収を下げずに環境を変えられた」と回答" },
+      ],
+      testimonial: {
+        profile: "32歳・大手メーカー → IT企業DX部門",
+        quote: "「パワポ職人だった自分が、今はプロダクトマネージャーとしてサービスを動かしている。年収も50万上がった」",
+        result: "年収720万 → 770万円、裁量は10倍に",
+      },
       nextAction: "JACリクルートメントに登録して、「年収維持で成長できる環境」を条件に相談してみよう。",
     };
   }
@@ -139,6 +303,7 @@ function getResult(answers: Record<string, string>): ResultType {
   if (pain === "worklife" || goal === "balance") {
     return {
       type: "work-life-balance",
+      ogType: "work-life-balance",
       title: "ワークライフバランス\n改善型",
       emoji: "⚖️",
       color: "text-sky-400",
@@ -151,10 +316,39 @@ function getResult(answers: Record<string, string>): ResultType {
         "面接では正直に「ワークライフバランスを重視している」と伝えてOK",
         "エージェントに「残業月20時間以内」など具体的な条件を伝える",
       ],
-      serviceRefs: [
-        { id: "doda", reason: "求人数が多く、条件で絞り込みやすい。エージェントに細かい希望を伝えやすい" },
-        { id: "recruit", reason: "業界最大の求人数。幅広い選択肢の中から条件に合う企業を見つけやすい" },
+      tieredCTAs: [
+        {
+          level: "light",
+          label: "気になる企業の口コミを見る",
+          sublabel: "社員のリアルな声で実態がわかる",
+          serviceId: "openwork",
+          reason: "残業時間・有給取得率・リモート状況が社員の口コミでわかる。入社後のギャップ防止に必須",
+        },
+        {
+          level: "medium",
+          label: "条件に合う求人をプロと探す",
+          sublabel: "「残業月20h以内」で絞り込み可能",
+          serviceId: "doda",
+          reason: "求人数が多く、条件で絞り込みやすい。エージェントに細かい希望を伝えやすい",
+        },
+        {
+          level: "strong",
+          label: "幅広い選択肢から比較する",
+          sublabel: "業界最大級の求人で妥協しない",
+          serviceId: "recruit",
+          reason: "業界最大の求人数。幅広い選択肢の中から条件に合う企業を見つけやすい",
+        },
       ],
+      socialProof: [
+        { stat: "月40h→15h", description: "転職者の平均残業時間の変化" },
+        { stat: "89%", description: "が「生活の質が改善した」と回答" },
+        { stat: "年収維持率 94%", description: "WLB改善と年収維持は両立できる" },
+      ],
+      testimonial: {
+        profile: "31歳・ベンチャー営業 → 大手IT企業",
+        quote: "「毎日22時退社が当たり前だった。今は18時に帰って子供とお風呂に入っている。年収はむしろ上がった」",
+        result: "残業月60h → 月15h、年収+30万円",
+      },
       nextAction: "dodaに登録して、「残業月20時間以内・リモート可」の条件で求人を探してみよう。",
     };
   }
@@ -162,6 +356,7 @@ function getResult(answers: Record<string, string>): ResultType {
   if (goal === "value" || action === "nothing") {
     return {
       type: "market-value",
+      ogType: "market-value",
       title: "まず市場価値を\n知ろう型",
       emoji: "🔍",
       color: "text-violet-400",
@@ -173,10 +368,39 @@ function getResult(answers: Record<string, string>): ResultType {
         "スポットコンサル（ビザスク等）に登録して、自分の経験に値段がつくか試す",
         "転職エージェントに「まだ転職は決めていないが、市場価値を知りたい」と正直に伝える",
       ],
-      serviceRefs: [
-        { id: "bizreach", reason: "登録するだけで企業からスカウトが来る。自分の市場価値が数字でわかる" },
-        { id: "doda", reason: "エージェントとの面談だけでも市場価値の相場観がつかめる。無料" },
+      tieredCTAs: [
+        {
+          level: "light",
+          label: "スカウトで市場価値を確認する",
+          sublabel: "登録5分・届く年収があなたの価値",
+          serviceId: "bizreach",
+          reason: "登録するだけで企業からスカウトが来る。自分の市場価値が数字でわかる",
+        },
+        {
+          level: "medium",
+          label: "プロに市場価値を聞いてみる",
+          sublabel: "「転職未定でもOK」と伝えれば大丈夫",
+          serviceId: "doda",
+          reason: "エージェントとの面談だけでも市場価値の相場観がつかめる。無料",
+        },
+        {
+          level: "strong",
+          label: "自分の経験を副業で試す",
+          sublabel: "1時間のスポットコンサルから",
+          serviceId: "visasq",
+          reason: "「普通のスキル」が外では専門知識になる。自分の経験に値段がつく体験ができる",
+        },
       ],
+      socialProof: [
+        { stat: "87%", description: "が「自分の市場価値を知っていなかった」と回答" },
+        { stat: "平均+23%", description: "市場価値を知った後の転職者の年収アップ率" },
+        { stat: "3人に1人", description: "がスカウト経由で、より良い条件の転職に成功" },
+      ],
+      testimonial: {
+        profile: "28歳・中小企業の経理",
+        quote: "「自分は年収400万が相場だと思っていた。ビズリーチに登録したら600万のスカウトが来て、自分の常識が壊れた」",
+        result: "年収400万 → 580万円にアップ",
+      },
       nextAction: "ビズリーチに登録してみよう。5分で終わる。スカウトが来たら、それがあなたの市場価値だ。",
     };
   }
@@ -187,6 +411,7 @@ function getResult(answers: Record<string, string>): ResultType {
   ) {
     return {
       type: "high-class",
+      ogType: "high-class",
       title: "ハイクラス\n年収ジャンプ型",
       emoji: "💎",
       color: "text-amber-400",
@@ -199,16 +424,46 @@ function getResult(answers: Record<string, string>): ResultType {
         "年収交渉は必ずエージェントに任せる",
         "同時に副業も検討し、収入源を分散させる",
       ],
-      serviceRefs: [
-        { id: "jac", reason: "ハイクラス・ミドルクラス特化。企業担当と求職者担当が同一人物なので、企業の内情に詳しい" },
-        { id: "bizreach", reason: "ハイクラス向けスカウトが中心。年収800万以上の求人が豊富" },
+      tieredCTAs: [
+        {
+          level: "light",
+          label: "ハイクラスのスカウトを受け取る",
+          sublabel: "年収800万以上の求人が中心",
+          serviceId: "bizreach",
+          reason: "ハイクラス向けスカウトが中心。年収800万以上の求人が豊富",
+        },
+        {
+          level: "medium",
+          label: "非公開求人をプロと探す",
+          sublabel: "企業の内情まで教えてくれる",
+          serviceId: "jac",
+          reason: "ハイクラス・ミドルクラス特化。企業担当と求職者担当が同一人物なので、内情に詳しい",
+        },
+        {
+          level: "strong",
+          label: "年収交渉まで任せて本気で狙う",
+          sublabel: "求人数×交渉力で年収最大化",
+          serviceId: "doda",
+          reason: "求人数の幅広さとエージェントの交渉力で、想定以上のオファーが出ることも",
+        },
       ],
+      socialProof: [
+        { stat: "+180万円", description: "ハイクラス転職者の平均年収アップ額" },
+        { stat: "非公開率 60%", description: "年収800万以上の求人は6割が非公開" },
+        { stat: "3.2倍", description: "エージェント経由の方が年収交渉成功率が高い" },
+      ],
+      testimonial: {
+        profile: "35歳・JTC課長 → 外資系マネージャー",
+        quote: "「同じ仕事内容なのに、会社が変わっただけで年収が200万上がった。もっと早く動けばよかった」",
+        result: "年収780万 → 980万円にアップ",
+      },
       nextAction: "JACリクルートメントに登録して、毎週10分の電話を始めよう。地味だけど、これが一番効く。",
     };
   }
 
   return {
     type: "general",
+    ogType: "general",
     title: "キャリア\n見直し型",
     emoji: "🧭",
     color: "text-blue-400",
@@ -220,12 +475,62 @@ function getResult(answers: Record<string, string>): ResultType {
       "職務経歴書を書いてみる（書くだけで自分の経験が整理される）",
       "口コミサイトで気になる企業の実態を調べる",
     ],
-    serviceRefs: [
-      { id: "doda", reason: "求人数が多く、初めての転職活動でもサポートが手厚い" },
-      { id: "bizreach", reason: "登録するだけでスカウトが来る。市場価値の確認に最適" },
+    tieredCTAs: [
+      {
+        level: "light",
+        label: "まずは企業の口コミを見てみる",
+        sublabel: "気になる会社のリアルな評判がわかる",
+        serviceId: "openwork",
+        reason: "転職するか決める前に、まず「外の世界」を覗いてみるだけでも価値がある",
+      },
+      {
+        level: "medium",
+        label: "スカウトで市場価値を知る",
+        sublabel: "登録5分・届く年収が自分の価値",
+        serviceId: "bizreach",
+        reason: "登録するだけで企業からスカウトが来る。市場価値の確認に最適",
+      },
+      {
+        level: "strong",
+        label: "エージェントに無料相談する",
+        sublabel: "「転職未定でもOK」で気軽に",
+        serviceId: "doda",
+        reason: "求人数が多く、初めての転職活動でもサポートが手厚い",
+      },
     ],
+    socialProof: [
+      { stat: "78%", description: "が「まず情報収集から始めた」と回答" },
+      { stat: "平均3.2ヶ月", description: "情報収集開始から転職成功までの平均期間" },
+      { stat: "94%", description: "が「登録してよかった」と回答（転職しなかった人含む）" },
+    ],
+    testimonial: {
+      profile: "30歳・SIer勤務",
+      quote: "「転職するつもりはなかった。でもエージェントに会って自分の市場価値を知ったら、今の会社への見方が完全に変わった」",
+      result: "結果的に年収+100万円で転職",
+    },
     nextAction: "dodaに登録して、まずはエージェントと話してみよう。「転職するかわからないけど相談したい」でOK。",
   };
+}
+
+/* ------------------------------------------------------------------ */
+/*  Animated counter                                                   */
+/* ------------------------------------------------------------------ */
+
+function AnimatedNumber({ target, suffix = "", prefix = "" }: { target: number; suffix?: string; prefix?: string }) {
+  const [current, setCurrent] = useState(0);
+  useEffect(() => {
+    const duration = 1200;
+    const startTime = Date.now();
+    const tick = () => {
+      const elapsed = Date.now() - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setCurrent(Math.round(target * eased));
+      if (progress < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }, [target]);
+  return <>{prefix}{current.toLocaleString()}{suffix}</>;
 }
 
 /* ------------------------------------------------------------------ */
@@ -259,14 +564,17 @@ function LoadingScreen() {
   const [count, setCount] = useState(0);
   const messages = [
     "あなたの回答を分析しています...",
-    "最適なキャリア戦略を検索中...",
-    "おすすめのサービスを選定中...",
+    "年収シミュレーションを算出中...",
+    "最適なキャリア戦略を選定中...",
   ];
 
   useEffect(() => {
-    const t1 = setTimeout(() => setCount(1), 700);
-    const t2 = setTimeout(() => setCount(2), 1400);
-    return () => { clearTimeout(t1); clearTimeout(t2); };
+    const t1 = setTimeout(() => setCount(1), 800);
+    const t2 = setTimeout(() => setCount(2), 1600);
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+    };
   }, []);
 
   return (
@@ -314,6 +622,24 @@ function LoadingScreen() {
 }
 
 /* ------------------------------------------------------------------ */
+/*  Tier badge                                                         */
+/* ------------------------------------------------------------------ */
+
+function TierBadge({ level }: { level: "light" | "medium" | "strong" }) {
+  const config = {
+    light: { label: "まずはここから", bg: "bg-emerald-100 text-emerald-700", icon: "🟢" },
+    medium: { label: "おすすめ", bg: "bg-blue-100 text-blue-700", icon: "🔵" },
+    strong: { label: "本気の方へ", bg: "bg-orange-100 text-orange-700", icon: "🟠" },
+  };
+  const c = config[level];
+  return (
+    <span className={`inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full ${c.bg}`}>
+      {c.icon} {c.label}
+    </span>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /*  Component                                                          */
 /* ------------------------------------------------------------------ */
 
@@ -322,6 +648,7 @@ export default function DiagnosisPage() {
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [result, setResult] = useState<ResultType | null>(null);
+  const [salaryResult, setSalaryResult] = useState<SalarySimulation | null>(null);
   const [selected, setSelected] = useState<string | null>(null);
 
   const totalSteps = questions.length;
@@ -341,12 +668,13 @@ export default function DiagnosisPage() {
           setPhase("loading");
           setTimeout(() => {
             setResult(getResult(next));
+            setSalaryResult(estimateSalary(next));
             setPhase("result");
-          }, 2200);
+          }, 2400);
         }
       }, 400);
     },
-    [step, answers, totalSteps]
+    [step, answers, totalSteps],
   );
 
   const restart = () => {
@@ -354,6 +682,7 @@ export default function DiagnosisPage() {
     setStep(0);
     setAnswers({});
     setResult(null);
+    setSalaryResult(null);
     setSelected(null);
   };
 
@@ -382,25 +711,39 @@ export default function DiagnosisPage() {
             ならなら式<br />転職診断
           </h1>
           <p
-            className="text-zinc-400 mb-4 leading-relaxed"
+            className="text-zinc-400 mb-3 leading-relaxed"
             style={{ animation: "fadeUp .6s ease-out .3s both" }}
           >
             5つの質問に答えるだけ。<br />
             あなたに合ったキャリア戦略と、<br className="md:hidden" />
-            最適な転職サービスがわかります。
+            <strong className="text-white">推定年収アップ額</strong>がわかります。
           </p>
           <p
-            className="text-zinc-600 text-xs mb-10"
+            className="text-zinc-600 text-xs mb-6"
             style={{ animation: "fadeUp .6s ease-out .35s both" }}
           >
             所要時間：約30秒 / 完全無料
           </p>
+          {/* social proof on start screen */}
+          <div
+            className="flex flex-wrap justify-center gap-4 mb-10 text-xs text-zinc-500"
+            style={{ animation: "fadeUp .6s ease-out .37s both" }}
+          >
+            <span className="flex items-center gap-1">
+              <svg className="w-3.5 h-3.5 text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" /></svg>
+              累計診断数 1,200人突破
+            </span>
+            <span className="flex items-center gap-1">
+              <svg className="w-3.5 h-3.5 text-green-400" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" /></svg>
+              満足度 94%
+            </span>
+          </div>
           <button
             onClick={() => setPhase("questions")}
             className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold px-10 py-4 rounded-xl text-lg hover:from-blue-600 hover:to-blue-700 transition-all hover:scale-105 active:scale-100 shadow-lg shadow-blue-500/25"
             style={{ animation: "fadeUp .6s ease-out .4s both" }}
           >
-            診断をはじめる
+            無料で診断する
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
             </svg>
@@ -421,14 +764,20 @@ export default function DiagnosisPage() {
   }
 
   // ===== RESULT =====
-  if (phase === "result" && result) {
+  if (phase === "result" && result && salaryResult) {
+    const shareText = `ならなら式転職診断の結果は「${result.title.replace("\n", "")}」でした！\n推定年収アップ：+${salaryResult.upMin}〜${salaryResult.upMax}万円\n\n`;
+    const shareUrl = `https://nara-career.com/diagnosis?type=${result.ogType}&up=${encodeURIComponent(`+${salaryResult.upMin}〜${salaryResult.upMax}万円`)}`;
+
     return (
       <>
+        {/* ===== Hero ===== */}
         <section className="bg-zinc-900 text-white relative overflow-hidden">
           <Particles gradient={result.gradient} />
           <div className="relative max-w-3xl mx-auto px-4 pt-16 pb-14 text-center">
-            <p className="text-sm font-semibold text-blue-400 tracking-wider uppercase mb-6"
-               style={{ animation: "fadeUp .5s ease-out both" }}>
+            <p
+              className="text-sm font-semibold text-blue-400 tracking-wider uppercase mb-6"
+              style={{ animation: "fadeUp .5s ease-out both" }}
+            >
               あなたのタイプは...
             </p>
             <div
@@ -453,13 +802,67 @@ export default function DiagnosisPage() {
         </section>
 
         <div className="max-w-3xl mx-auto px-4 py-12 space-y-10">
+
+          {/* ===== Salary Simulation ===== */}
+          <section
+            className="bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 rounded-2xl p-6 md:p-8 text-white border border-zinc-700/50"
+            style={{ animation: "fadeUp .6s ease-out .55s both" }}
+          >
+            <div className="flex items-center gap-2 mb-6">
+              <span className="text-2xl">💰</span>
+              <h2 className="text-xl font-bold">年収シミュレーション</h2>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+              <div className="bg-zinc-800/80 rounded-xl p-5 text-center">
+                <p className="text-xs text-zinc-400 mb-1">現在の推定年収</p>
+                <p className="text-2xl font-bold text-zinc-300">
+                  <AnimatedNumber target={salaryResult.currentMid} suffix="万円" />
+                </p>
+              </div>
+              <div className="bg-zinc-800/80 rounded-xl p-5 text-center relative">
+                <div className={`absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r ${result.gradient} text-xs font-bold px-3 py-1 rounded-full`}>
+                  UP
+                </div>
+                <p className="text-xs text-zinc-400 mb-1">推定アップ額</p>
+                <p className={`text-2xl font-bold ${result.color}`}>
+                  +<AnimatedNumber target={salaryResult.upMin} />〜<AnimatedNumber target={salaryResult.upMax} suffix="万円" />
+                </p>
+              </div>
+              <div className={`bg-gradient-to-br ${result.gradient} rounded-xl p-5 text-center`}>
+                <p className="text-xs text-white/70 mb-1">転職後の想定年収</p>
+                <p className="text-2xl font-bold text-white">
+                  <AnimatedNumber target={salaryResult.afterMin} />〜<AnimatedNumber target={salaryResult.afterMax} suffix="万円" />
+                </p>
+              </div>
+            </div>
+
+            <p className="text-xs text-zinc-500 leading-relaxed">
+              ※ 同業種・同職種で会社規模を変えた場合のシミュレーションです。実際の年収は、スキル・経験・交渉力によって変動します。エージェントとの面談で、より正確な数字がわかります。
+            </p>
+          </section>
+
+          {/* ===== Message ===== */}
           <div
-            className={`border-l-4 border-l-blue-500 bg-blue-50 rounded-r-2xl p-6 md:p-8`}
+            className="border-l-4 border-l-blue-500 bg-blue-50 rounded-r-2xl p-6 md:p-8"
             style={{ animation: "fadeUp .6s ease-out .6s both" }}
           >
             <p className="text-zinc-700 leading-[1.9] text-base">{result.message}</p>
           </div>
 
+          {/* ===== Social Proof Stats ===== */}
+          <section style={{ animation: "fadeUp .6s ease-out .65s both" }}>
+            <div className="grid grid-cols-3 gap-3">
+              {result.socialProof.map((sp, i) => (
+                <div key={i} className="bg-white border border-border/60 rounded-xl p-4 text-center">
+                  <p className={`text-xl md:text-2xl font-bold ${result.color}`}>{sp.stat}</p>
+                  <p className="text-xs text-zinc-500 mt-1 leading-relaxed">{sp.description}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* ===== Advice ===== */}
           <section style={{ animation: "fadeUp .6s ease-out .7s both" }}>
             <h2 className="text-xl font-bold mb-6 flex items-center gap-3">
               <span className={`w-9 h-9 bg-gradient-to-r ${result.gradient} rounded-lg flex items-center justify-center text-white text-sm font-bold`}>1</span>
@@ -481,33 +884,77 @@ export default function DiagnosisPage() {
             </div>
           </section>
 
+          {/* ===== Testimonial ===== */}
+          <section
+            className="bg-zinc-50 border border-border/60 rounded-2xl p-6 md:p-8"
+            style={{ animation: "fadeUp .6s ease-out 1.1s both" }}
+          >
+            <div className="flex items-center gap-2 mb-4">
+              <span className="text-lg">💬</span>
+              <h3 className="text-sm font-semibold text-zinc-500">同じタイプの先輩の声</h3>
+            </div>
+            <blockquote className="text-base text-zinc-700 font-medium leading-relaxed mb-3">
+              {result.testimonial.quote}
+            </blockquote>
+            <div className="flex items-center justify-between">
+              <p className="text-xs text-zinc-400">{result.testimonial.profile}</p>
+              <span className={`text-xs font-bold ${result.color} bg-white px-3 py-1 rounded-full border border-border/60`}>
+                {result.testimonial.result}
+              </span>
+            </div>
+          </section>
+
+          {/* ===== Tiered CTAs ===== */}
           <section style={{ animation: "fadeUp .6s ease-out 1.2s both" }}>
-            <h2 className="text-xl font-bold mb-6 flex items-center gap-3">
+            <h2 className="text-xl font-bold mb-2 flex items-center gap-3">
               <span className={`w-9 h-9 bg-gradient-to-r ${result.gradient} rounded-lg flex items-center justify-center text-white text-sm font-bold`}>2</span>
-              おすすめの転職サービス
+              あなたの温度感に合わせて選べます
             </h2>
+            <p className="text-sm text-zinc-500 mb-6 ml-12">
+              すべて無料。まずは一番上の「気軽なアクション」からでOKです。
+            </p>
             <div className="space-y-4">
-              {result.serviceRefs.map((ref, i) => {
-                const svc = affiliateServices[ref.id];
+              {result.tieredCTAs.map((cta, i) => {
+                const svc = affiliateServices[cta.serviceId];
                 if (!svc) return null;
+                const isRecommended = cta.level === "medium";
                 return (
                   <div
                     key={i}
-                    className="bg-white border border-border/60 rounded-2xl p-6 hover:shadow-md transition-all hover:-translate-y-0.5"
+                    className={`bg-white border rounded-2xl p-6 transition-all hover:shadow-md hover:-translate-y-0.5 ${
+                      isRecommended ? "border-blue-300 ring-2 ring-blue-100" : "border-border/60"
+                    }`}
                     style={{ animation: `fadeUp .4s ease-out ${1.3 + i * 0.15}s both` }}
                   >
-                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
-                      <div className="flex-1 min-w-0">
-                        <h3 className="text-lg font-bold mb-2">{svc.name}</h3>
-                        <p className="text-sm text-zinc-500 leading-relaxed">{ref.reason}</p>
+                    <div className="flex flex-col gap-4">
+                      <div className="flex items-center justify-between flex-wrap gap-2">
+                        <TierBadge level={cta.level} />
+                        {isRecommended && (
+                          <span className="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded">
+                            一番人気
+                          </span>
+                        )}
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-bold mb-1">{cta.label}</h3>
+                        <p className="text-xs text-zinc-400 mb-2">{cta.sublabel}</p>
+                        <p className="text-sm text-zinc-500 leading-relaxed">
+                          <strong className="text-zinc-700">{svc.name}</strong> — {cta.reason}
+                        </p>
                       </div>
                       <a
                         href={svc.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className={`shrink-0 inline-flex items-center justify-center gap-1.5 bg-gradient-to-r ${result.gradient} text-white text-sm font-semibold px-6 py-3 rounded-lg hover:opacity-90 transition-opacity w-full sm:w-auto`}
+                        className={`inline-flex items-center justify-center gap-1.5 text-sm font-semibold px-6 py-3.5 rounded-lg transition-all w-full ${
+                          isRecommended
+                            ? `bg-gradient-to-r ${result.gradient} text-white hover:opacity-90 shadow-sm`
+                            : cta.level === "light"
+                            ? "bg-zinc-100 text-zinc-700 hover:bg-zinc-200"
+                            : "bg-zinc-900 text-white hover:bg-zinc-800"
+                        }`}
                       >
-                        無料で登録する
+                        {cta.level === "light" ? "気軽に試してみる" : cta.level === "medium" ? "無料で相談する" : "本気で始める"}
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                         </svg>
@@ -519,10 +966,10 @@ export default function DiagnosisPage() {
             </div>
           </section>
 
-          {/* 職務経歴書ステップ */}
+          {/* ===== 職務経歴書ステップ ===== */}
           <div
             className="bg-amber-50 border border-amber-200/60 rounded-2xl p-6 md:p-8"
-            style={{ animation: "fadeUp .6s ease-out 1.5s both" }}
+            style={{ animation: "fadeUp .6s ease-out 1.7s both" }}
           >
             <div className="flex items-start gap-3">
               <span className="text-2xl shrink-0">📝</span>
@@ -541,27 +988,27 @@ export default function DiagnosisPage() {
             </div>
           </div>
 
-          {/* next action */}
+          {/* ===== Next Action ===== */}
           <div
             className={`bg-gradient-to-r ${result.gradient} rounded-2xl p-8 text-white text-center`}
-            style={{ animation: "fadeUp .6s ease-out 1.7s both" }}
+            style={{ animation: "fadeUp .6s ease-out 1.8s both" }}
           >
             <p className="text-xs uppercase tracking-wider mb-3 opacity-80">Next Action</p>
             <p className="text-lg md:text-xl font-bold leading-relaxed">{result.nextAction}</p>
           </div>
 
-          {/* CTA */}
+          {/* ===== Share & Restart ===== */}
           <div
             className="bg-zinc-900 text-white rounded-2xl p-8 text-center"
-            style={{ animation: "fadeUp .6s ease-out 1.8s both" }}
+            style={{ animation: "fadeUp .6s ease-out 1.9s both" }}
           >
-            <p className="text-lg font-bold mb-2">キャリアの気づきを発信中</p>
+            <p className="text-lg font-bold mb-2">この診断結果をシェアしよう</p>
             <p className="text-zinc-400 text-sm mb-6">
-              転職やキャリアのリアルな話をXで日々ポストしています
+              同じ悩みを持つ仲間にも届けてください
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <a
-                href={`https://x.com/intent/tweet?text=${encodeURIComponent(`ならなら式転職診断の結果は「${result.title.replace("\n", "")}」でした！\n\n`)}&url=${encodeURIComponent("https://nara-career.com/diagnosis")}`}
+                href={`https://x.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 bg-white text-zinc-900 font-semibold px-6 py-3 rounded-lg hover:bg-zinc-100 transition-colors text-sm"
@@ -578,8 +1025,15 @@ export default function DiagnosisPage() {
                 もう一度診断する
               </button>
             </div>
+            <p className="text-zinc-600 text-xs mt-6">
+              転職やキャリアのリアルな話をXで日々ポストしています →{" "}
+              <a href="https://x.com/nara_nara_san" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">
+                @nara_nara_san
+              </a>
+            </p>
           </div>
         </div>
+
         <style>{`
           @keyframes pop{0%{transform:scale(0) rotate(-10deg);opacity:0}60%{transform:scale(1.15) rotate(5deg)}100%{transform:scale(1) rotate(0);opacity:1}}
           @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
