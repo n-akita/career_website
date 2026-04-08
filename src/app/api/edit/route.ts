@@ -3,11 +3,16 @@ import { NextRequest, NextResponse } from "next/server";
 export const dynamic = "force-dynamic";
 
 function decodeParam(str: string): string {
-  return Buffer.from(str, "base64").toString("utf-8");
+  const b64 = str.replace(/-/g, "+").replace(/_/g, "/");
+  return Buffer.from(b64, "base64").toString("utf-8");
 }
 
 function encodeParam(str: string): string {
-  return Buffer.from(str, "utf-8").toString("base64");
+  return Buffer.from(str, "utf-8")
+    .toString("base64")
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=+$/g, "");
 }
 
 // GET: 編集フォームを表示
