@@ -9,9 +9,11 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.86.1",
     "@mdx-js/loader": "^3.1.1",
     "@mdx-js/react": "^3.1.1",
     "@next/mdx": "^16.2.2",
+    "fast-xml-parser": "^5.5.11",
     "gray-matter": "^4.0.3",
     "next": "16.2.2",
     "react": "19.2.4",
