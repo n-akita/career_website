@@ -193,8 +193,18 @@ async function fetchCareerNews() {
     } catch {}
   }
 
+  // 30日以内の記事のみに絞る
+  const thirtyDaysAgo = Date.now() - 30 * 24 * 60 * 60 * 1000;
+  const recent = allItems.filter((item: Record<string, unknown>) => {
+    const pubDate = item.pubDate as string;
+    if (!pubDate) return true; // 日付がない場合は含める
+    const date = new Date(pubDate).getTime();
+    return date >= thirtyDaysAgo;
+  });
+
+  // 重複除去
   const seen = new Set<string>();
-  const unique = allItems.filter((item: Record<string, unknown>) => {
+  const unique = recent.filter((item: Record<string, unknown>) => {
     const title = (item.title as string) || "";
     const key = title.replace(/ - [^-]+$/, "").trim();
     if (seen.has(key)) return false;
@@ -202,6 +212,7 @@ async function fetchCareerNews() {
     return true;
   });
 
+  // 信頼ソースフィルタ
   const filtered = unique.filter((item: Record<string, unknown>) => {
     const source = (item.source as Record<string, string>)?.["#text"] || "";
     const titleSource = ((item.title as string) || "").split(" - ").pop() || "";
@@ -211,10 +222,11 @@ async function fetchCareerNews() {
   return (filtered.length > 0 ? filtered : unique.slice(0, 10)).map((item: Record<string, unknown>) => ({
     title: (item.title as string) || "",
     link: (item.link as string) || "",
+    pubDate: (item.pubDate as string) || "",
   }));
 }
 
-async function selectAndGenerate(articles: { title: string; link: string }[]) {
+async function selectAndGenerate(articles: { title: string; link: string; pubDate?: string }[]) {
   const writingRules = `# X投稿ルール
 - 一人称：「私」
 - 性格：冷静、ドライ、論理的
@@ -229,7 +241,10 @@ async function selectAndGenerate(articles: { title: string; link: string }[]) {
 
   const articleList = articles
     .slice(0, 10)
-    .map((a, i) => `[${i + 1}] ${a.title}`)
+    .map((a, i) => {
+      const date = a.pubDate ? new Date(a.pubDate).toLocaleDateString("ja-JP") : "";
+      return `[${i + 1}] ${a.title}${date ? ` (${date})` : ""}`;
+    })
     .join("\n");
 
   const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
