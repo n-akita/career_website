@@ -169,7 +169,13 @@ export async function GET(req: NextRequest) {
 }
 
 async function fetchCareerNews() {
-  const queries = ["転職 年収", "雇用 賃上げ リストラ", "副業 働き方改革"];
+  const queries = [
+    "転職 年収 2026",
+    "リストラ 賃上げ 早期退職",
+    "大企業 採用 人手不足",
+    "AI 雇用 失業",
+    "副業 解禁 働き方",
+  ];
   const allItems: Record<string, unknown>[] = [];
   const parser = new XMLParser({ ignoreAttributes: false });
 
@@ -237,10 +243,13 @@ async function selectAndGenerate(articles: { title: string; link: string }[]) {
         role: "user",
         content: `以下のニュース候補から、ターゲット（28〜35歳の転職・キャリアに悩むビジネスマン）が最も反応しそうな記事を1つ選び、投稿文を作成してください。
 
-【選定基準】
-- 転職・年収・キャリア・働き方に直結する話題を優先
-- 多くの人に関係する社会的なニュースを優先
-- プレスリリースや特定企業の宣伝は避ける
+【選定基準（重要度順）】
+1. 今日・昨日のニュース速報や最新の出来事を最優先（「○○社がリストラ発表」「賃上げ率○%」「○○業界で人手不足深刻化」等）
+2. 具体的な数字やデータが含まれる記事を優先（「年収○万」「○%増」「○万人」等）
+3. 多くの会社員に関係する社会的なニュースを優先
+4. 個人のコラムやハウツー記事よりも、ニュース速報・調査結果を優先
+5. プレスリリースや特定企業の宣伝は避ける
+6. 一般論や抽象的な記事は避ける
 
 【ニュース候補】
 ${articleList}
