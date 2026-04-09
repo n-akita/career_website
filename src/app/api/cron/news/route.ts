@@ -116,7 +116,7 @@ export async function GET(req: NextRequest) {
 
     // 7. LINEに通知
     const approveUrl = `https://www.nara-career.com/api/approve?s=${process.env.DRAFT_API_SECRET}&t=${b64(draft)}&u=${b64(resolvedUrl)}`;
-    const editUrl = `https://www.nara-career.com/api/edit?s=${process.env.DRAFT_API_SECRET}&u=${b64(resolvedUrl)}&n=${b64(article.title.substring(0, 30))}`;
+    const editUrl = `https://www.nara-career.com/api/edit?s=${process.env.DRAFT_API_SECRET}&t=${b64(draft)}&u=${b64(resolvedUrl)}&n=${b64(article.title.substring(0, 30))}`;
 
     const message = {
       type: "flex",
@@ -232,7 +232,7 @@ async function selectAndGenerate(articles: { title: string; link: string; pubDat
 - 性格：冷静、ドライ、論理的
 - 語尾は「〜です」「〜ます」「〜ですよ」
 - 1文20〜40文字以内
-- 記号：タイトル的な一言には「▪︎」を、変化や結果には「↓」を使用
+- 記号（▪︎や↓）は使わない。普通の文章で書く
 - 2〜3文ごとに空行
 - 具体的な会社名は出さない
 - 年収の実数は出さない。「3.5倍」はOK
