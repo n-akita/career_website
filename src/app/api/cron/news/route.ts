@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
 import { XMLParser } from "fast-xml-parser";
-import { readFileSync } from "fs";
-import { join } from "path";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -15,9 +13,8 @@ const TRUSTED_SOURCES = [
   "共同通信", "時事通信", "テレ朝", "TBS", "日テレ", "FNN", "AERA", "文春",
 ];
 
-// 投稿済みURL管理（Vercel KVがないので環境変数に直近のURLを保持はできない）
-// 代わりにタイトルの一部で重複判定する
-let recentTitles: string[] = [];
+const GITHUB_REPO = "n-akita/career_website";
+const GITHUB_FILE = "posted_news.json";
 
 function b64(str: string): string {
   return Buffer.from(str, "utf-8")
@@ -27,27 +24,97 @@ function b64(str: string): string {
     .replace(/=+$/g, "");
 }
 
+// GitHub上のposted_news.jsonを読み取る
+async function getPostedTitles(): Promise<string[]> {
+  try {
+    const res = await fetch(
+      `https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`,
+      { headers: { Authorization: `Bearer ${process.env.GITHUB_TOKEN}` } }
+    );
+    if (!res.ok) return [];
+    const data = await res.json();
+    const content = Buffer.from(data.content, "base64").toString("utf-8");
+    return JSON.parse(content);
+  } catch {
+    return [];
+  }
+}
+
+// GitHub上のposted_news.jsonに追記する
+async function savePostedTitle(title: string): Promise<void> {
+  try {
+    // 現在のファイルを取得（sha が必要）
+    const res = await fetch(
+      `https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`,
+      { headers: { Authorization: `Bearer ${process.env.GITHUB_TOKEN}` } }
+    );
+    const data = await res.json();
+    const sha = data.sha;
+    const current: string[] = res.ok
+      ? JSON.parse(Buffer.from(data.content, "base64").toString("utf-8"))
+      : [];
+
+    // タイトルを追加（直近200件のみ保持）
+    current.push(title);
+    const updated = current.slice(-200);
+
+    // ファイルを更新
+    await fetch(
+      `https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`,
+      {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message: `Add posted news: ${title.substring(0, 50)}`,
+          content: Buffer.from(JSON.stringify(updated, null, 2)).toString("base64"),
+          sha,
+        }),
+      }
+    );
+  } catch (err) {
+    console.error("Failed to save posted title:", err);
+  }
+}
+
 export async function GET(req: NextRequest) {
-  // Cron認証
   const authHeader = req.headers.get("authorization");
   if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   try {
-    // 1. ニュース取得
-    const articles = await fetchCareerNews();
-    if (articles.length === 0) {
+    // 1. 投稿済みタイトルを取得
+    const postedTitles = await getPostedTitles();
+
+    // 2. ニュース取得
+    const allArticles = await fetchCareerNews();
+    if (allArticles.length === 0) {
       return NextResponse.json({ message: "No news found" });
     }
 
-    // 2. Claude APIで記事選定＋下書き生成
+    // 3. 投稿済みを除外（タイトルの先頭30文字で比較）
+    const articles = allArticles.filter((a) => {
+      const shortTitle = a.title.replace(/ - [^-]+$/, "").trim().substring(0, 30);
+      return !postedTitles.some((t) => t.includes(shortTitle) || shortTitle.includes(t.substring(0, 30)));
+    });
+
+    if (articles.length === 0) {
+      return NextResponse.json({ message: "No new articles (all posted)" });
+    }
+
+    // 4. Claude APIで記事選定＋下書き生成
     const { article, draft } = await selectAndGenerate(articles);
 
-    // 3. URL解決
+    // 5. URL解決
     const resolvedUrl = await resolveArticleUrl(article.title, article.link);
 
-    // 4. LINEに通知
+    // 6. 投稿済みとして記録
+    await savePostedTitle(article.title.replace(/ - [^-]+$/, "").trim());
+
+    // 7. LINEに通知
     const approveUrl = `https://www.nara-career.com/api/approve?s=${process.env.DRAFT_API_SECRET}&t=${b64(draft)}&u=${b64(resolvedUrl)}`;
     const editUrl = `https://www.nara-career.com/api/edit?s=${process.env.DRAFT_API_SECRET}&u=${b64(resolvedUrl)}&n=${b64(article.title.substring(0, 30))}`;
 
@@ -89,10 +156,7 @@ export async function GET(req: NextRequest) {
         Authorization: `Bearer ${process.env.LINE_CHANNEL_ACCESS_TOKEN}`,
       },
       body: JSON.stringify({
-        messages: [
-          message,
-          { type: "text", text: draft },
-        ],
+        messages: [message, { type: "text", text: draft }],
       }),
     });
 
@@ -123,7 +187,6 @@ async function fetchCareerNews() {
     } catch {}
   }
 
-  // 重複除去
   const seen = new Set<string>();
   const unique = allItems.filter((item: Record<string, unknown>) => {
     const title = (item.title as string) || "";
@@ -133,7 +196,6 @@ async function fetchCareerNews() {
     return true;
   });
 
-  // 信頼ソースフィルタ
   const filtered = unique.filter((item: Record<string, unknown>) => {
     const source = (item.source as Record<string, string>)?.["#text"] || "";
     const titleSource = ((item.title as string) || "").split(" - ").pop() || "";
