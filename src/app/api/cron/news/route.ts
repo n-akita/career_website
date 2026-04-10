@@ -24,6 +24,19 @@ function b64(str: string): string {
     .replace(/=+$/g, "");
 }
 
+async function sendLineBroadcast(text: string): Promise<void> {
+  await fetch("https://api.line.me/v2/bot/message/broadcast", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.LINE_CHANNEL_ACCESS_TOKEN}`,
+    },
+    body: JSON.stringify({
+      messages: [{ type: "text", text }],
+    }),
+  });
+}
+
 // GitHub上のposted_news.jsonを読み取る
 async function getPostedTitles(): Promise<string[]> {
   try {
@@ -92,6 +105,7 @@ export async function GET(req: NextRequest) {
     // 2. ニュース取得
     const allArticles = await fetchCareerNews();
     if (allArticles.length === 0) {
+      await sendLineBroadcast("⚠ ニュースが見つかりませんでした（RSS取得失敗の可能性あり）");
       return NextResponse.json({ message: "No news found" });
     }
 
@@ -102,6 +116,7 @@ export async function GET(req: NextRequest) {
     });
 
     if (articles.length === 0) {
+      await sendLineBroadcast(`⚠ 新しいニュースがありませんでした（全${allArticles.length}件が投稿済み）`);
       return NextResponse.json({ message: "No new articles (all posted)" });
     }
 
@@ -149,7 +164,7 @@ export async function GET(req: NextRequest) {
       },
     };
 
-    await fetch("https://api.line.me/v2/bot/message/broadcast", {
+    const lineRes = await fetch("https://api.line.me/v2/bot/message/broadcast", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -160,10 +175,17 @@ export async function GET(req: NextRequest) {
       }),
     });
 
+    if (!lineRes.ok) {
+      const lineError = await lineRes.text();
+      console.error("LINE broadcast failed:", lineRes.status, lineError);
+      return NextResponse.json({ error: "LINE broadcast failed", detail: lineError }, { status: 500 });
+    }
+
     return NextResponse.json({ message: "OK", article: article.title, draft });
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : "Unknown error";
     console.error("Cron news error:", msg);
+    try { await sendLineBroadcast(`❌ ニュース投稿エラー: ${msg.substring(0, 100)}`); } catch {}
     return NextResponse.json({ error: msg }, { status: 500 });
   }
 }
