@@ -30,6 +30,11 @@ body {
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }
 
+/* スムーススクロール */
+html {
+  scroll-behavior: smooth;
+}
+
 /* アニメーション */
 @keyframes fade-in-up {
   from {
@@ -89,4 +94,10 @@ body {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* 選択テキストの色 */
+::selection {
+  background: var(--primary-light);
+  color: var(--primary-dark);
 }

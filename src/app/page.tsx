@@ -8,44 +8,51 @@ export default function Home() {
   return (
     <>
       {/* ヒーローセクション */}
-      <section className="relative min-h-[420px] md:min-h-[600px] flex items-center">
+      <section className="relative min-h-[480px] md:min-h-[620px] flex items-center overflow-hidden">
         <Image
           src="/images/hero-city.jpg"
-          alt=""
+          alt="都市のビジネス街の風景"
           fill
           className="object-cover"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-zinc-900/90 via-zinc-900/75 to-zinc-900/40" />
+        <div className="absolute inset-0 bg-gradient-to-r from-zinc-900/95 via-zinc-900/80 to-zinc-900/30" />
+
+        {/* 装飾パーティクル */}
+        <div className="absolute top-20 right-20 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl animate-float hidden md:block" />
+        <div className="absolute bottom-10 right-40 w-48 h-48 bg-indigo-500/10 rounded-full blur-3xl animate-float-delay hidden md:block" />
 
         <div className="relative max-w-5xl mx-auto px-4 py-20 md:py-28 w-full">
-          <p className="text-sm font-semibold text-blue-400 mb-4 tracking-wider">
-            CAREER STRATEGY
-          </p>
-          <h1 className="text-3xl md:text-5xl font-bold leading-[1.2] tracking-tight text-white mb-6 max-w-2xl">
-            出世も大事。
-            <br />
-            でも<span className="text-blue-400">&ldquo;環境を変える&rdquo;</span>だけで
-            <br />
-            年収は上がる。
-          </h1>
-          <p className="text-base md:text-lg text-zinc-300 max-w-lg mb-10 leading-relaxed">
+          <div className="animate-fade-in-up">
+            <p className="text-sm font-semibold text-blue-400 mb-4 tracking-wider flex items-center gap-2">
+              <span className="w-8 h-px bg-blue-400" />
+              CAREER STRATEGY
+            </p>
+            <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold leading-[1.15] tracking-tight text-white mb-6 max-w-2xl">
+              出世も大事。
+              <br />
+              でも<span className="text-blue-400">&ldquo;環境を変える&rdquo;</span>だけで
+              <br />
+              年収は上がる。
+            </h1>
+          </div>
+          <p className="text-base md:text-lg text-zinc-300 max-w-lg mb-10 leading-relaxed animate-fade-in-up-delay">
             5社の転職で年収3.5倍を実現した「ならなら」が、
             環境を味方につけるキャリア戦略を発信。
           </p>
-          <div className="flex flex-wrap gap-4">
+          <div className="flex flex-wrap gap-4 animate-fade-in-up-delay-2">
             <Link
               href="/diagnosis"
-              className="inline-flex items-center gap-2 bg-primary text-white font-semibold px-7 py-3.5 rounded-lg hover:bg-primary-dark transition-colors"
+              className="group inline-flex items-center gap-2 bg-blue-600 text-white font-semibold px-7 py-3.5 rounded-xl hover:bg-blue-500 transition-all hover:shadow-lg hover:shadow-blue-600/25"
             >
               ならなら式転職診断
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
             </Link>
             <Link
               href="/about"
-              className="inline-flex items-center gap-2 border border-white/30 text-white font-semibold px-7 py-3.5 rounded-lg hover:bg-white/10 transition-colors"
+              className="inline-flex items-center gap-2 border border-white/30 text-white font-semibold px-7 py-3.5 rounded-xl hover:bg-white/10 transition-all backdrop-blur-sm"
             >
               ならならについて
             </Link>
@@ -53,29 +60,27 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 数字セクション */}
-      <section className="border-b border-border/60 bg-white">
-        <div className="max-w-5xl mx-auto px-4 py-10 grid grid-cols-3 gap-4 text-center">
-          <div>
-            <p className="text-2xl md:text-3xl font-bold text-primary">3.5倍</p>
-            <p className="text-xs md:text-sm text-zinc-400 mt-1">年収アップ</p>
-          </div>
-          <div>
-            <p className="text-2xl md:text-3xl font-bold text-primary">5社</p>
-            <p className="text-xs md:text-sm text-zinc-400 mt-1">転職経験</p>
-          </div>
-          <div>
-            <p className="text-2xl md:text-3xl font-bold text-primary">10年</p>
-            <p className="text-xs md:text-sm text-zinc-400 mt-1">デジマ歴</p>
+      {/* 数字セクション - デザイン強化 */}
+      <section className="relative bg-white border-b border-border/60">
+        <div className="max-w-5xl mx-auto px-4 py-12 md:py-14">
+          <div className="grid grid-cols-3 gap-4 md:gap-8">
+            <StatCard number="3.5" unit="倍" label="年収アップ" icon="📈" />
+            <StatCard number="5" unit="社" label="転職経験" icon="🏢" />
+            <StatCard number="10" unit="年" label="デジマ歴" icon="💼" />
           </div>
         </div>
       </section>
 
-      {/* カテゴリセクション */}
-      <section className="max-w-5xl mx-auto px-4 py-20">
-        <div className="text-center mb-12">
-          <p className="text-sm font-semibold text-primary mb-2 tracking-wider uppercase">Contents</p>
+      {/* カテゴリセクション - デザイン強化 */}
+      <section className="max-w-5xl mx-auto px-4 py-20 md:py-24">
+        <div className="text-center mb-14">
+          <p className="text-sm font-semibold text-primary mb-2 tracking-wider uppercase flex items-center justify-center gap-3">
+            <span className="w-8 h-px bg-primary/40" />
+            Contents
+            <span className="w-8 h-px bg-primary/40" />
+          </p>
           <h2 className="text-3xl font-bold">コンテンツ</h2>
+          <p className="text-zinc-500 mt-3 text-sm">あなたのキャリアを次のステージへ導くための3つのテーマ</p>
         </div>
         <div className="grid md:grid-cols-3 gap-6">
           <CategoryCard
@@ -83,53 +88,90 @@ export default function Home() {
             description="生涯賃金の話、環境を変える選択肢、社内で評価される方法"
             href="/career"
             image="/images/career.png"
+            accent="blue"
+            articleCount="7"
           />
           <CategoryCard
             title="転職ノウハウ"
             description="職務経歴書の書き方、面接戦略、年収の上げ方"
             href="/tenshoku"
             image="/images/tenshoku.png"
+            accent="indigo"
+            articleCount="12"
           />
           <CategoryCard
             title="副業の始め方"
             description="副業の方法、地方DX、本業との両立"
             href="/sidejob"
             image="/images/sidejob.png"
+            accent="emerald"
+            articleCount="1"
           />
         </div>
       </section>
 
-      {/* 最新記事セクション */}
+      {/* 最新記事セクション - デザイン強化 */}
       {articles.length > 0 && (
         <section className="bg-muted">
-          <div className="max-w-5xl mx-auto px-4 py-20">
-            <div className="text-center mb-12">
-              <p className="text-sm font-semibold text-primary mb-2 tracking-wider uppercase">
-                Latest Articles
-              </p>
-              <h2 className="text-3xl font-bold">最新の記事</h2>
+          <div className="max-w-5xl mx-auto px-4 py-20 md:py-24">
+            <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-12 gap-4">
+              <div>
+                <p className="text-sm font-semibold text-primary mb-2 tracking-wider uppercase">
+                  Latest Articles
+                </p>
+                <h2 className="text-3xl font-bold">最新の記事</h2>
+              </div>
+              <Link
+                href="/career"
+                className="text-sm text-primary font-semibold hover:underline flex items-center gap-1"
+              >
+                すべての記事を見る
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </Link>
             </div>
             <div className="grid md:grid-cols-2 gap-6">
-              {articles.map((article) => (
+              {articles.map((article, index) => (
                 <Link
                   key={`${article.category}/${article.slug}`}
                   href={`/${article.category}/${article.slug}`}
-                  className="group block bg-white border border-border/60 rounded-xl p-6 hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+                  className={`group block bg-white border border-border/60 rounded-2xl overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300 ${
+                    index === 0 ? "md:col-span-2" : ""
+                  }`}
                 >
-                  <p className="text-xs text-primary font-semibold uppercase tracking-wider mb-2">
-                    {article.category === "career"
-                      ? "Career"
-                      : article.category === "tenshoku"
-                      ? "Job Change"
-                      : "Side Job"}
-                  </p>
-                  <h3 className="text-base font-bold mb-2 group-hover:text-primary transition-colors leading-snug">
-                    {article.title}
-                  </h3>
-                  <p className="text-sm text-zinc-500 line-clamp-2">
-                    {article.description}
-                  </p>
-                  <p className="mt-3 text-xs text-zinc-400">{article.date}</p>
+                  <div className={`p-6 ${index === 0 ? "md:p-8" : ""}`}>
+                    <div className="flex items-center gap-3 mb-3">
+                      <span className={`text-xs font-semibold uppercase tracking-wider px-2.5 py-1 rounded-full ${
+                        article.category === "career"
+                          ? "bg-blue-50 text-blue-600"
+                          : article.category === "tenshoku"
+                          ? "bg-indigo-50 text-indigo-600"
+                          : "bg-emerald-50 text-emerald-600"
+                      }`}>
+                        {article.category === "career"
+                          ? "Career"
+                          : article.category === "tenshoku"
+                          ? "Job Change"
+                          : "Side Job"}
+                      </span>
+                      <span className="text-xs text-zinc-400">{article.date}</span>
+                    </div>
+                    <h3 className={`font-bold mb-2 group-hover:text-primary transition-colors leading-snug ${
+                      index === 0 ? "text-lg md:text-xl" : "text-base"
+                    }`}>
+                      {article.title}
+                    </h3>
+                    <p className="text-sm text-zinc-500 line-clamp-2">
+                      {article.description}
+                    </p>
+                    <p className="mt-4 text-sm font-semibold text-primary flex items-center gap-1 group-hover:gap-2 transition-all">
+                      続きを読む
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </p>
+                  </div>
                 </Link>
               ))}
             </div>
@@ -137,21 +179,29 @@ export default function Home() {
         </section>
       )}
 
-      {/* 診断CTAセクション */}
-      <section className="bg-gradient-to-r from-blue-600 to-indigo-700">
-        <div className="max-w-5xl mx-auto px-4 py-16 text-center text-white">
-          <p className="text-4xl mb-4">🧭</p>
-          <h2 className="text-2xl md:text-3xl font-bold mb-4">ならなら式転職診断</h2>
-          <p className="text-blue-200 mb-8 max-w-lg mx-auto">
+      {/* 診断CTAセクション - デザイン強化 */}
+      <section className="relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800" />
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-0 left-0 w-96 h-96 bg-white rounded-full -translate-x-1/2 -translate-y-1/2 blur-3xl" />
+          <div className="absolute bottom-0 right-0 w-64 h-64 bg-blue-300 rounded-full translate-x-1/2 translate-y-1/2 blur-3xl" />
+        </div>
+        <div className="relative max-w-5xl mx-auto px-4 py-20 text-center text-white">
+          <p className="text-5xl mb-5">🧭</p>
+          <h2 className="text-2xl md:text-4xl font-bold mb-4">ならなら式転職診断</h2>
+          <p className="text-blue-200 mb-3 max-w-lg mx-auto leading-relaxed">
             5つの質問に答えるだけで、あなたに合ったキャリア戦略と
             おすすめの転職サービスがわかります。
           </p>
+          <p className="text-blue-300 text-sm mb-8">
+            所要時間：約30秒 ・ 完全無料
+          </p>
           <Link
             href="/diagnosis"
-            className="inline-flex items-center gap-2 bg-white text-blue-700 font-bold px-8 py-4 rounded-xl text-lg hover:bg-blue-50 transition-colors"
+            className="group inline-flex items-center gap-2 bg-white text-blue-700 font-bold px-10 py-4.5 rounded-xl text-lg hover:bg-blue-50 transition-all hover:shadow-xl hover:shadow-black/10"
           >
             無料で診断する
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
             </svg>
           </Link>
@@ -159,35 +209,48 @@ export default function Home() {
       </section>
 
       {/* メッセージセクション */}
-      <section className="relative min-h-[320px] flex items-center">
+      <section className="relative min-h-[360px] flex items-center">
         <Image
           src="/images/hero-work.jpg"
-          alt=""
+          alt="仕事をしているビジネスマンの風景"
           fill
           className="object-cover"
         />
-        <div className="absolute inset-0 bg-zinc-900/80" />
+        <div className="absolute inset-0 bg-zinc-900/85" />
         <div className="relative max-w-3xl mx-auto px-4 py-20 text-center">
-          <p className="text-sm font-semibold text-blue-400 mb-4 tracking-wider uppercase">Message</p>
-          <h2 className="text-2xl md:text-3xl font-bold leading-relaxed text-white mb-6">
+          <p className="text-sm font-semibold text-blue-400 mb-6 tracking-wider uppercase flex items-center justify-center gap-3">
+            <span className="w-8 h-px bg-blue-400/50" />
+            Message
+            <span className="w-8 h-px bg-blue-400/50" />
+          </p>
+          <h2 className="text-2xl md:text-4xl font-bold leading-relaxed text-white mb-6">
             「もっと頑張れ」じゃなくて、
             <br />
             <span className="text-blue-400">「場所を変えろ」</span>という戦略。
           </h2>
-          <p className="text-zinc-400 leading-relaxed max-w-xl mx-auto">
+          <p className="text-zinc-400 leading-relaxed max-w-xl mx-auto text-base">
             同じ能力でも、会社が違えば評価も年収も変わる。
+            <br className="hidden md:block" />
             努力の方向を変えることは逃げじゃない。
+            <br className="hidden md:block" />
             それが「環境ハック」という考え方です。
           </p>
         </div>
       </section>
 
-      {/* CTAセクション */}
+      {/* Xフォロー＋コンタクトセクション */}
       <section className="bg-muted">
         <div className="max-w-5xl mx-auto px-4 py-16">
           <div className="bg-white border border-border/60 rounded-2xl p-8 md:p-12 flex flex-col md:flex-row items-center gap-8">
             <div className="flex-1">
-              <h2 className="text-xl md:text-2xl font-bold mb-3">Xでキャリアの気づきを発信中</h2>
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-10 h-10 bg-zinc-900 rounded-xl flex items-center justify-center shrink-0">
+                  <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                  </svg>
+                </div>
+                <h2 className="text-xl md:text-2xl font-bold">Xでキャリアの気づきを発信中</h2>
+              </div>
               <p className="text-zinc-500 text-sm leading-relaxed">
                 転職やキャリアに関するリアルな気づきを日々ポスト。
                 フォローして最新の発信をチェックしてください。
@@ -197,7 +260,7 @@ export default function Home() {
               href="https://x.com/nara_nara_san"
               target="_blank"
               rel="noopener noreferrer"
-              className="shrink-0 inline-flex items-center gap-2 bg-zinc-900 text-white font-semibold px-8 py-3.5 rounded-lg hover:bg-zinc-800 transition-colors"
+              className="shrink-0 inline-flex items-center gap-2 bg-zinc-900 text-white font-semibold px-8 py-3.5 rounded-xl hover:bg-zinc-800 transition-all hover:shadow-lg"
             >
               <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
@@ -211,40 +274,78 @@ export default function Home() {
   );
 }
 
+/* --- サブコンポーネント --- */
+
+function StatCard({
+  number,
+  unit,
+  label,
+  icon,
+}: {
+  number: string;
+  unit: string;
+  label: string;
+  icon: string;
+}) {
+  return (
+    <div className="text-center group">
+      <p className="text-2xl md:text-3xl mb-1">{icon}</p>
+      <p className="text-3xl md:text-4xl font-bold text-primary leading-none">
+        {number}
+        <span className="text-lg md:text-xl font-semibold text-zinc-600">{unit}</span>
+      </p>
+      <p className="text-xs md:text-sm text-zinc-400 mt-2">{label}</p>
+    </div>
+  );
+}
+
 function CategoryCard({
   title,
   description,
   href,
   image,
+  accent,
+  articleCount,
 }: {
   title: string;
   description: string;
   href: string;
   image: string;
+  accent: "blue" | "indigo" | "emerald";
+  articleCount: string;
 }) {
+  const accentStyles = {
+    blue: "group-hover:border-blue-200 group-hover:shadow-blue-100/50",
+    indigo: "group-hover:border-indigo-200 group-hover:shadow-indigo-100/50",
+    emerald: "group-hover:border-emerald-200 group-hover:shadow-emerald-100/50",
+  };
+
   return (
     <Link
       href={href}
-      className="group block border border-border/60 rounded-2xl overflow-hidden bg-white hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+      className={`group block border border-border/60 rounded-2xl overflow-hidden bg-white hover:shadow-xl hover:-translate-y-1 transition-all duration-300 ${accentStyles[accent]}`}
     >
-      <div className="p-6 flex items-start gap-4">
-        <Image
-          src={image}
-          alt={title}
-          width={56}
-          height={56}
-          className="rounded-lg shrink-0"
-        />
-        <div>
-          <h3 className="text-lg font-bold mb-1">{title}</h3>
-          <p className="text-sm text-zinc-500 leading-relaxed">{description}</p>
-          <p className="mt-3 text-sm font-semibold text-primary flex items-center gap-1 group-hover:gap-2 transition-all">
-            読む
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </p>
+      <div className="p-6 md:p-7">
+        <div className="flex items-start gap-4 mb-4">
+          <Image
+            src={image}
+            alt={title}
+            width={56}
+            height={56}
+            className="rounded-xl shrink-0"
+          />
+          <div className="flex-1">
+            <h3 className="text-lg font-bold mb-1">{title}</h3>
+            <p className="text-xs text-zinc-400">{articleCount}記事</p>
+          </div>
         </div>
+        <p className="text-sm text-zinc-500 leading-relaxed mb-4">{description}</p>
+        <p className="text-sm font-semibold text-primary flex items-center gap-1 group-hover:gap-2 transition-all">
+          記事を読む
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
+        </p>
       </div>
     </Link>
   );

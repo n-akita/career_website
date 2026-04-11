@@ -14,7 +14,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const article = getArticle("tenshoku", slug);
   if (!article) return {};
-  const imageUrl = `https://nara-career.com${article.image}`;
+  const ogParams = new URLSearchParams({ title: article.title, category: "tenshoku" });
+  const imageUrl = `https://nara-career.com/api/og/article?${ogParams}`;
   return {
     title: article.title,
     description: article.description,

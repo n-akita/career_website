@@ -4,6 +4,8 @@ import type { Article } from "@/lib/articles";
 import { getArticlesByCategory } from "@/lib/articles";
 import MarkdownRenderer from "./MarkdownRenderer";
 import ServiceCTA from "./ServiceCTA";
+import ReadingProgress from "./ReadingProgress";
+import TableOfContents from "./TableOfContents";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "./JsonLd";
 
 const BASE_URL = "https://nara-career.com";
@@ -71,7 +73,7 @@ export default function ArticlePage({ article }: { article: Article }) {
         {/* 背景画像 */}
         <Image
           src={article.image || categoryImages[article.category] || "/images/hero-city.jpg"}
-          alt=""
+          alt={article.title}
           fill
           className="object-cover opacity-20"
         />
@@ -110,8 +112,12 @@ export default function ArticlePage({ article }: { article: Article }) {
         </div>
       </section>
 
+      {/* 読了プログレスバー */}
+      <ReadingProgress />
+
       {/* 本文 */}
       <article className="max-w-3xl mx-auto px-4 py-12 md:py-16">
+        <TableOfContents content={article.content} />
         <MarkdownRenderer content={article.content} />
 
         {/* サービスCTA */}

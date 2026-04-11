@@ -114,7 +114,8 @@ function parseMarkdown(content: string): Token[] {
 
 function renderInline(text: string): React.ReactNode[] {
   const nodes: React.ReactNode[] = [];
-  const regex = /(\*\*(.+?)\*\*)/g;
+  // マッチ: **bold**, [text](url) の両方を処理
+  const regex = /(\*\*(.+?)\*\*|\[([^\]]+)\]\(([^)]+)\))/g;
   let lastIndex = 0;
   let match;
   let key = 0;
@@ -123,11 +124,32 @@ function renderInline(text: string): React.ReactNode[] {
     if (match.index > lastIndex) {
       nodes.push(text.slice(lastIndex, match.index));
     }
-    nodes.push(
-      <strong key={key++} className="font-bold text-foreground">
-        {match[2]}
-      </strong>
-    );
+
+    if (match[2]) {
+      // **bold**
+      nodes.push(
+        <strong key={key++} className="font-bold text-foreground">
+          {match[2]}
+        </strong>
+      );
+    } else if (match[3] && match[4]) {
+      // [text](url)
+      const href = match[4];
+      const isExternal = href.startsWith("http");
+      nodes.push(
+        <a
+          key={key++}
+          href={href}
+          className="text-primary font-medium underline underline-offset-2 decoration-primary/30 hover:decoration-primary transition-colors"
+          {...(isExternal
+            ? { target: "_blank", rel: "noopener noreferrer" }
+            : {})}
+        >
+          {match[3]}
+        </a>
+      );
+    }
+
     lastIndex = regex.lastIndex;
   }
 
@@ -136,6 +158,13 @@ function renderInline(text: string): React.ReactNode[] {
   }
 
   return nodes;
+}
+
+function toHeadingId(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^\w\u3000-\u9fff\uff00-\uffef]+/g, "-")
+    .replace(/^-+|-+$/g, "");
 }
 
 export default function MarkdownRenderer({ content }: { content: string }) {
@@ -149,7 +178,8 @@ export default function MarkdownRenderer({ content }: { content: string }) {
             return (
               <h2
                 key={i}
-                className="text-2xl font-bold mt-14 mb-6 pb-3 border-b border-border/60 text-foreground"
+                id={toHeadingId(token.text)}
+                className="text-2xl font-bold mt-14 mb-6 pb-3 border-b border-border/60 text-foreground scroll-mt-20"
               >
                 {token.text}
               </h2>
@@ -158,7 +188,8 @@ export default function MarkdownRenderer({ content }: { content: string }) {
             return (
               <h3
                 key={i}
-                className="text-xl font-bold mt-10 mb-4 text-foreground"
+                id={toHeadingId(token.text)}
+                className="text-xl font-bold mt-10 mb-4 text-foreground scroll-mt-20"
               >
                 {token.text}
               </h3>

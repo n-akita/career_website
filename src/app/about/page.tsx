@@ -14,7 +14,7 @@ export default function AboutPage() {
       {/* ヒーロー */}
       <section className="relative overflow-hidden bg-zinc-900 text-white">
         <div className="absolute inset-0">
-          <Image src="/images/hero-city.jpg" alt="" fill className="object-cover opacity-30" />
+          <Image src="/images/hero-city.jpg" alt="ビジネス街の風景" fill className="object-cover opacity-30" />
         </div>
         <div className="relative max-w-3xl mx-auto px-4 pt-20 pb-16 text-center">
           <Image
