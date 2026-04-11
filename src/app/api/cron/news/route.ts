@@ -124,8 +124,8 @@ export async function GET(req: NextRequest) {
     // 4. Claude APIで記事選定＋下書き生成
     const { article, draft } = await selectAndGenerate(articles);
 
-    // 5. URL解決
-    const resolvedUrl = await resolveArticleUrl(article.title, article.link);
+    // 5. URL解決（元記事URLを取得）
+    const resolvedUrl = await resolveArticleUrl(article);
 
     // 6. 投稿済みとして記録
     await savePostedTitle(article.title.replace(/ - [^-]+$/, "").trim());
@@ -273,11 +273,15 @@ async function fetchCareerNews() {
     title: (item.title as string) || "",
     link: (item.link as string) || "",
     pubDate: (item.pubDate as string) || "",
+    sourceUrl: (item.source as Record<string, string>)?.["@_url"] || "",
+    sourceName: (item.source as Record<string, string>)?.["#text"] || "",
   }));
   return { articles: results, errors };
 }
 
-async function selectAndGenerate(articles: { title: string; link: string; pubDate?: string }[]) {
+type Article = { title: string; link: string; pubDate?: string; sourceUrl?: string; sourceName?: string };
+
+async function selectAndGenerate(articles: Article[]) {
   const writingRules = `# X投稿ルール
 - 一人称：「私」
 - 性格：冷静、ドライ、論理的
@@ -345,33 +349,99 @@ ${articleList}
   return { article, draft: parsed.tweet };
 }
 
-async function resolveArticleUrl(title: string, googleUrl: string): Promise<string> {
-  const isYahoo = title.includes("Yahoo!ニュース");
-  if (!isYahoo) return googleUrl;
-
-  const feeds = [
+// 主要ニュースサイトのRSSフィード一覧
+const PUBLISHER_RSS: Record<string, string[]> = {
+  "news.yahoo.co.jp": [
     "https://news.yahoo.co.jp/rss/topics/business.xml",
     "https://news.yahoo.co.jp/rss/topics/it.xml",
     "https://news.yahoo.co.jp/rss/topics/domestic.xml",
-  ];
+    "https://news.yahoo.co.jp/rss/topics/economy.xml",
+  ],
+  "toyokeizai.net": ["https://toyokeizai.net/list/feed/rss"],
+  "diamond.jp": ["https://diamond.jp/feed/index.xml"],
+  "itmedia.co.jp": [
+    "https://rss.itmedia.co.jp/rss/2.0/itmedia_all.xml",
+    "https://rss.itmedia.co.jp/rss/2.0/itmedia_business.xml",
+  ],
+  "j-cast.com": ["https://www.j-cast.com/rss/all.xml"],
+  "nhk.or.jp": [
+    "https://www.nhk.or.jp/rss/news/cat0.xml",
+    "https://www.nhk.or.jp/rss/news/cat5.xml",
+  ],
+  "kyodo.co.jp": ["https://www.47news.jp/rss/national_summary.xml"],
+  "jiji.com": ["https://www.jiji.com/rss/ranking.rdf"],
+};
 
-  const searchTitle = title.replace(/ - [^-]+$/, "").replace(/（[^）]+）$/, "").replace(/\([^)]+\)$/, "").trim();
-  const keywords = searchTitle.split(/[\s、。「」（）,]+/).filter((w) => w.length >= 2);
+async function resolveArticleUrl(article: Article): Promise<string> {
+  const { title, googleUrl, sourceUrl } = {
+    title: article.title,
+    googleUrl: article.link,
+    sourceUrl: article.sourceUrl || "",
+  };
 
-  for (const feedUrl of feeds) {
-    try {
-      const res = await fetch(feedUrl);
-      const xml = await res.text();
-      const parser = new XMLParser();
-      const feed = parser.parse(xml);
-      const items = feed?.rss?.channel?.item || [];
-      const arr = Array.isArray(items) ? items : [items];
-      for (const item of arr) {
-        const matchCount = keywords.filter((k: string) => item.title?.includes(k)).length;
-        if (matchCount >= 2) return (item.link as string)?.split("?")[0];
-      }
-    } catch {}
+  // 記事タイトルからソース名を除去してキーワード抽出
+  const cleanTitle = title.replace(/ - [^-]+$/, "").replace(/（[^）]+）$/, "").trim();
+  const keywords = cleanTitle.split(/[\s、。「」（）【】,\-]+/).filter((w) => w.length >= 2);
+
+  if (keywords.length < 2) return googleUrl;
+
+  // 1. ソースドメインに対応するRSSがあれば検索
+  const domain = sourceUrl.replace(/^https?:\/\//, "").replace(/\/$/, "");
+  const rssFeeds: string[] = [];
+
+  for (const [key, feeds] of Object.entries(PUBLISHER_RSS)) {
+    if (domain.includes(key) || key.includes(domain)) {
+      rssFeeds.push(...feeds);
+      break;
+    }
   }
 
+  // 対応するRSSがなくても、一般的なRSSパスを試す
+  if (rssFeeds.length === 0 && sourceUrl) {
+    rssFeeds.push(`${sourceUrl}/feed`, `${sourceUrl}/rss`, `${sourceUrl}/feed/rss`);
+  }
+
+  // Yahoo!ニュースのRSSは常に検索対象に含める（多くの記事がYahoo転載される）
+  if (!domain.includes("news.yahoo.co.jp")) {
+    rssFeeds.push(...PUBLISHER_RSS["news.yahoo.co.jp"]);
+  }
+
+  const parser = new XMLParser({ ignoreAttributes: false });
+
+  for (const feedUrl of rssFeeds) {
+    try {
+      const res = await fetch(feedUrl, {
+        headers: { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36" },
+        signal: AbortSignal.timeout(5000),
+      });
+      if (!res.ok) continue;
+      const xml = await res.text();
+      const feed = parser.parse(xml);
+
+      // RSS 2.0 or Atom format
+      const items = feed?.rss?.channel?.item || feed?.feed?.entry || [];
+      const arr = Array.isArray(items) ? items : [items];
+
+      for (const item of arr) {
+        const itemTitle = (item.title as string) || "";
+        const matchCount = keywords.filter((k) => itemTitle.includes(k)).length;
+        // タイトルのキーワードが3つ以上一致すれば同じ記事とみなす
+        if (matchCount >= 3 || (matchCount >= 2 && keywords.length <= 4)) {
+          const url = (item.link as string) || item["@_href"] || "";
+          if (url && !url.includes("news.google.com")) {
+            // Yahoo!ニュースの場合、クエリパラメータを除去
+            if (url.includes("news.yahoo.co.jp")) {
+              return url.split("?")[0];
+            }
+            return url;
+          }
+        }
+      }
+    } catch {
+      // 個別のRSSフェッチ失敗は無視して次を試す
+    }
+  }
+
+  console.log("URL resolve: falling back to Google News URL for:", cleanTitle.substring(0, 50));
   return googleUrl;
 }
