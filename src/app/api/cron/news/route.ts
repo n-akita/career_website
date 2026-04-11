@@ -103,10 +103,11 @@ export async function GET(req: NextRequest) {
     const postedTitles = await getPostedTitles();
 
     // 2. ニュース取得
-    const allArticles = await fetchCareerNews();
+    const { articles: allArticles, errors: rssErrors } = await fetchCareerNews();
     if (allArticles.length === 0) {
-      await sendLineBroadcast("⚠ ニュースが見つかりませんでした（RSS取得失敗の可能性あり）");
-      return NextResponse.json({ message: "No news found" });
+      const detail = rssErrors.length > 0 ? `\n${rssErrors.join("\n")}` : "";
+      await sendLineBroadcast(`⚠ ニュースが見つかりませんでした${detail}`);
+      return NextResponse.json({ message: "No news found", errors: rssErrors });
     }
 
     // 3. 投稿済みを除外（タイトルの先頭30文字で比較）
@@ -201,18 +202,45 @@ async function fetchCareerNews() {
   const allItems: Record<string, unknown>[] = [];
   const parser = new XMLParser({ ignoreAttributes: false });
 
-  for (const q of queries) {
-    try {
-      const url = `https://news.google.com/rss/search?q=${encodeURIComponent(q)}&hl=ja&gl=JP&ceid=JP:ja`;
-      const res = await fetch(url);
-      const xml = await res.text();
-      const feed = parser.parse(xml);
-      const items = feed?.rss?.channel?.item;
-      if (items) {
-        const arr = Array.isArray(items) ? items : [items];
-        allItems.push(...arr);
+  const errors: string[] = [];
+
+  async function fetchRss(q: string): Promise<void> {
+    const url = `https://news.google.com/rss/search?q=${encodeURIComponent(q)}&hl=ja&gl=JP&ceid=JP:ja`;
+    for (let attempt = 0; attempt < 2; attempt++) {
+      try {
+        if (attempt > 0) await new Promise((r) => setTimeout(r, 3000));
+        const res = await fetch(url, {
+          headers: { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36" },
+        });
+        if (!res.ok) {
+          if (attempt === 0) continue; // retry once
+          errors.push(`${q}: HTTP ${res.status}`);
+          return;
+        }
+        const xml = await res.text();
+        const feed = parser.parse(xml);
+        const items = feed?.rss?.channel?.item;
+        if (items) {
+          const arr = Array.isArray(items) ? items : [items];
+          allItems.push(...arr);
+        }
+        return;
+      } catch (err) {
+        if (attempt === 1) {
+          errors.push(`${q}: ${err instanceof Error ? err.message : "unknown"}`);
+        }
       }
-    } catch {}
+    }
+  }
+
+  // キーワードごとに少し間隔を空けて取得（レート制限対策）
+  for (const q of queries) {
+    await fetchRss(q);
+    await new Promise((r) => setTimeout(r, 500));
+  }
+
+  if (allItems.length === 0 && errors.length > 0) {
+    console.error("RSS fetch errors:", errors);
   }
 
   // 30日以内の記事のみに絞る
@@ -241,11 +269,12 @@ async function fetchCareerNews() {
     return TRUSTED_SOURCES.some((s) => source.includes(s) || titleSource.includes(s));
   });
 
-  return (filtered.length > 0 ? filtered : unique.slice(0, 10)).map((item: Record<string, unknown>) => ({
+  const results = (filtered.length > 0 ? filtered : unique.slice(0, 10)).map((item: Record<string, unknown>) => ({
     title: (item.title as string) || "",
     link: (item.link as string) || "",
     pubDate: (item.pubDate as string) || "",
   }));
+  return { articles: results, errors };
 }
 
 async function selectAndGenerate(articles: { title: string; link: string; pubDate?: string }[]) {
