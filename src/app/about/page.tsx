@@ -25,7 +25,7 @@ export default function AboutPage() {
             className="mx-auto rounded-full border-4 border-white/20 mb-6"
           />
           <h1 className="text-3xl md:text-4xl font-bold mb-3">ならなら</h1>
-          <p className="text-zinc-400 mb-6">ビジネスマンの居場所戦略 運営者</p>
+          <p className="text-zinc-400 mb-6">会社員の居場所戦略 運営者</p>
           <p className="text-zinc-300 leading-relaxed max-w-lg mx-auto">
             デジタルマーケティング歴10年。中小企業から大手企業まで5社を渡り歩き、
             年収を<strong className="text-white">3.5倍</strong>に。
@@ -165,6 +165,19 @@ export default function AboutPage() {
           </div>
         </section>
 
+        {/* 実績・数字で見るならなら */}
+        <section>
+          <SectionHeading label="Achievement" title="実績・数字で見るならなら" />
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <AchievementCard icon="📊" number="10年" label="デジタルマーケティング歴" />
+            <AchievementCard icon="💰" number="数億円" label="広告運用予算（累計）" />
+            <AchievementCard icon="📈" number="2倍" label="入会者数を月1,000→2,000人に" />
+            <AchievementCard icon="🚀" number="全国展開" label="ゼロから立ち上げたサービス" />
+            <AchievementCard icon="🏛️" number="地方DX" label="自治体のデジタル化推進（副業）" />
+            <AchievementCard icon="✍️" number="毎日" label="X（Twitter）でキャリア情報を発信" />
+          </div>
+        </section>
+
         {/* 発信メディア & CTA */}
         <section>
           <SectionHeading label="Follow" title="発信メディア" />
@@ -293,6 +306,18 @@ function TimelineItem({
             ※ この転職が大きな転機になった
           </p>
         )}
+      </div>
+    </div>
+  );
+}
+
+function AchievementCard({ icon, number, label }: { icon: string; number: string; label: string }) {
+  return (
+    <div className="flex items-center gap-4 p-5 bg-zinc-50 border border-border/60 rounded-xl">
+      <span className="text-2xl shrink-0">{icon}</span>
+      <div>
+        <p className="text-lg font-bold text-primary">{number}</p>
+        <p className="text-xs text-zinc-500">{label}</p>
       </div>
     </div>
   );

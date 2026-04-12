@@ -23,7 +23,7 @@ export default function Header() {
         <Link href="/" className="flex items-center gap-2 group">
           <span className="text-2xl">🏢</span>
           <span className="text-lg font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent group-hover:from-blue-500 group-hover:to-blue-700 transition-all">
-            ビジネスマンの居場所戦略
+            会社員の居場所戦略
           </span>
         </Link>
 
@@ -33,6 +33,15 @@ export default function Header() {
           <NavLink href="/tenshoku">転職ノウハウ</NavLink>
           <NavLink href="/sidejob">副業の始め方</NavLink>
           <NavLink href="/about">ならならについて</NavLink>
+          <Link
+            href="/search"
+            className="p-2 rounded-lg text-zinc-500 hover:text-primary hover:bg-blue-50 transition-all"
+            aria-label="記事を検索"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+            </svg>
+          </Link>
           <Link
             href="/diagnosis"
             className="ml-2 px-4 py-2 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-primary-dark transition-colors"
@@ -64,6 +73,7 @@ export default function Header() {
           <MobileNavLink href="/tenshoku" onClick={() => setMenuOpen(false)}>転職ノウハウ</MobileNavLink>
           <MobileNavLink href="/sidejob" onClick={() => setMenuOpen(false)}>副業の始め方</MobileNavLink>
           <MobileNavLink href="/about" onClick={() => setMenuOpen(false)}>ならならについて</MobileNavLink>
+          <MobileNavLink href="/search" onClick={() => setMenuOpen(false)}>記事を検索</MobileNavLink>
           <Link
             href="/diagnosis"
             onClick={() => setMenuOpen(false)}

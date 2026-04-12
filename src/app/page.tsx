@@ -58,6 +58,23 @@ export default function Home() {
         </div>
       </section>
 
+      {/* こんな人に読んでほしい */}
+      <section className="bg-zinc-900 border-b border-zinc-800">
+        <div className="max-w-5xl mx-auto px-4 py-12 md:py-16">
+          <p className="text-sm font-semibold text-blue-400 mb-6 tracking-wider flex items-center gap-2">
+            <span className="w-8 h-px bg-blue-400" />
+            FOR YOU
+          </p>
+          <h2 className="text-xl md:text-2xl font-bold text-white mb-8">こんな人に読んでほしい</h2>
+          <div className="grid sm:grid-cols-2 gap-4">
+            <TargetItem text="30代前後で、年収に不満があるけど転職に踏み出せない人" />
+            <TargetItem text="ベンチャーで消耗していて、大手への転職を考えている人" />
+            <TargetItem text="DX・デジタルマーケ領域でキャリアアップしたい人" />
+            <TargetItem text="出世コースに乗れなくても、環境を変えて年収を上げたい人" />
+          </div>
+        </div>
+      </section>
+
       {/* 数字セクション - デザイン強化 */}
       <section className="relative bg-white border-b border-border/60">
         <div className="max-w-5xl mx-auto px-4 py-12 md:py-14">
@@ -212,7 +229,7 @@ export default function Home() {
       <section className="relative min-h-[360px] flex items-center">
         <Image
           src="/images/hero-work.jpg"
-          alt="仕事をしているビジネスマンの風景"
+          alt="仕事をしている会社員の風景"
           fill
           className="object-cover"
         />
@@ -275,6 +292,17 @@ export default function Home() {
 }
 
 /* --- サブコンポーネント --- */
+
+function TargetItem({ text }: { text: string }) {
+  return (
+    <div className="flex items-start gap-3 p-4 rounded-xl bg-zinc-800/50 border border-zinc-700/50">
+      <svg className="w-5 h-5 text-blue-400 mt-0.5 shrink-0" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+      </svg>
+      <p className="text-sm text-zinc-300 leading-relaxed">{text}</p>
+    </div>
+  );
+}
 
 function StatCard({
   number,

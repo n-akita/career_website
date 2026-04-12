@@ -45,7 +45,7 @@ export async function GET() {
             marginBottom: "20px",
           }}
         >
-          ビジネスマンの居場所戦略
+          会社員の居場所戦略
         </div>
 
         {/* Tagline */}

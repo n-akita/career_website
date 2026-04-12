@@ -18,16 +18,16 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "年収を上げる転職戦略｜ビジネスマンの居場所戦略",
-    template: "%s | ビジネスマンの居場所戦略",
+    default: "年収を上げる転職戦略｜会社員の居場所戦略",
+    template: "%s | 会社員の居場所戦略",
   },
   description:
     "5回の転職で年収3.5倍（400万→1,200万）を実現。ベンチャーから大手JTCへの転職経験をもとに、環境を変えるキャリア戦略・転職ノウハウ・副業の始め方を発信。",
   openGraph: {
     type: "website",
     locale: "ja_JP",
-    siteName: "ビジネスマンの居場所戦略",
-    title: "ビジネスマンの居場所戦略",
+    siteName: "会社員の居場所戦略",
+    title: "会社員の居場所戦略",
     description:
       "5回の転職で年収3.5倍。出世ではなく「環境を変える」キャリア戦略を発信。",
     images: [
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
         url: "https://nara-career.com/api/og",
         width: 1200,
         height: 630,
-        alt: "ビジネスマンの居場所戦略",
+        alt: "会社員の居場所戦略",
       },
     ],
   },

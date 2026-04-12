@@ -32,7 +32,7 @@ const categoryConfig: Record<
 
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
-  const title = searchParams.get("title") || "ビジネスマンの居場所戦略";
+  const title = searchParams.get("title") || "会社員の居場所戦略";
   const category = searchParams.get("category") || "career";
 
   const config = categoryConfig[category] || categoryConfig.career;
@@ -162,7 +162,7 @@ export async function GET(request: NextRequest) {
                 color: "#a1a1aa",
               }}
             >
-              🏢 ビジネスマンの居場所戦略
+              🏢 会社員の居場所戦略
             </div>
           </div>
           <div style={{ fontSize: "16px", color: "#52525b" }}>

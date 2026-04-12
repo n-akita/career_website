@@ -775,10 +775,42 @@ export default function DiagnosisPage() {
             4回の転職で年収410万→1,200万になった<br className="md:hidden" />
             僕の経験をもとに作りました
           </p>
+          {/* 結果サンプル */}
+          <div
+            className="mb-10 text-left"
+            style={{ animation: "fadeUp .6s ease-out .4s both" }}
+          >
+            <p className="text-sm font-semibold text-zinc-400 text-center mb-5">こんな結果がわかります</p>
+            <div className="grid gap-3">
+              <div className="flex items-center gap-3 p-4 rounded-xl bg-zinc-800/60 border border-zinc-700/50 backdrop-blur-sm">
+                <span className="text-2xl shrink-0">🚀</span>
+                <div className="flex-1 min-w-0">
+                  <p className="font-bold text-sm text-orange-400">環境チェンジで年収ジャンプ型</p>
+                  <p className="text-xs text-zinc-500 mt-0.5">ベンチャー・中小から大手への転職で年収アップを狙う戦略</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 p-4 rounded-xl bg-zinc-800/60 border border-zinc-700/50 backdrop-blur-sm">
+                <span className="text-2xl shrink-0">💎</span>
+                <div className="flex-1 min-w-0">
+                  <p className="font-bold text-sm text-amber-400">ハイクラス年収ジャンプ型</p>
+                  <p className="text-xs text-zinc-500 mt-0.5">年収600万以上からさらに上を目指すハイクラス転職戦略</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 p-4 rounded-xl bg-zinc-800/60 border border-zinc-700/50 backdrop-blur-sm">
+                <span className="text-2xl shrink-0">⚖️</span>
+                <div className="flex-1 min-w-0">
+                  <p className="font-bold text-sm text-sky-400">ワークライフバランス改善型</p>
+                  <p className="text-xs text-zinc-500 mt-0.5">年収を維持しながら働き方を改善する環境シフト戦略</p>
+                </div>
+              </div>
+            </div>
+            <p className="text-xs text-zinc-600 text-center mt-3">...ほか全7タイプ + 推定年収アップ額を診断</p>
+          </div>
+
           <button
             onClick={() => setPhase("questions")}
             className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold px-10 py-4 rounded-xl text-lg hover:from-blue-600 hover:to-blue-700 transition-all hover:scale-105 active:scale-100 shadow-lg shadow-blue-500/25"
-            style={{ animation: "fadeUp .6s ease-out .4s both" }}
+            style={{ animation: "fadeUp .6s ease-out .5s both" }}
           >
             無料で診断する
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

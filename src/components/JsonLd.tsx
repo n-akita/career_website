@@ -17,7 +17,7 @@ export function WebSiteJsonLd() {
       data={{
         "@context": "https://schema.org",
         "@type": "WebSite",
-        name: "ビジネスマンの居場所戦略",
+        name: "会社員の居場所戦略",
         url: "https://nara-career.com",
         description:
           "5回の転職で年収3.5倍。出世ではなく「環境を変える」キャリア戦略を発信。",
@@ -59,7 +59,7 @@ export function ArticleJsonLd({
         },
         publisher: {
           "@type": "Organization",
-          name: "ビジネスマンの居場所戦略",
+          name: "会社員の居場所戦略",
         },
       }}
     />

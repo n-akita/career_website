@@ -8,7 +8,7 @@ export default function Footer() {
           {/* ブランド */}
           <div className="max-w-sm">
             <p className="flex items-center gap-2 font-bold text-white text-lg mb-3">
-              <span>🏢</span> ビジネスマンの居場所戦略
+              <span>🏢</span> 会社員の居場所戦略
             </p>
             <p className="text-sm text-zinc-400 leading-relaxed mb-4">
               出世も大事。でも&ldquo;職場を変える&rdquo;だけで年収が上がることもある。
@@ -70,7 +70,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-zinc-800 mt-10 pt-6 text-center text-xs text-zinc-500">
-          &copy; {new Date().getFullYear()} ビジネスマンの居場所戦略 All Rights Reserved.
+          &copy; {new Date().getFullYear()} 会社員の居場所戦略 All Rights Reserved.
         </div>
       </div>
     </footer>
