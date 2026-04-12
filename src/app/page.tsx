@@ -28,12 +28,10 @@ export default function Home() {
               <span className="w-8 h-px bg-blue-400" />
               CAREER STRATEGY
             </p>
-            <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold leading-[1.15] tracking-tight text-white mb-6 max-w-2xl">
-              出世も大事。
-              <br />
-              でも<span className="text-blue-400">&ldquo;環境を変える&rdquo;</span>だけで
-              <br />
-              年収は上がる。
+            <h1 className="text-3xl md:text-5xl font-bold leading-[1.25] tracking-tight text-white mb-6 max-w-2xl">
+              <span className="inline-block">出世も大事。</span>
+              <span className="inline-block">でも<span className="text-blue-400">&ldquo;環境を変える&rdquo;</span>だけで</span>
+              <span className="inline-block">年収は上がる。</span>
             </h1>
           </div>
           <p className="text-base md:text-lg text-zinc-300 max-w-lg mb-10 leading-relaxed animate-fade-in-up-delay">
