@@ -77,7 +77,7 @@ export default function ArticlePage({ article }: { article: Article }) {
           fill
           className="object-cover opacity-20"
         />
-        <div className="relative max-w-3xl mx-auto px-4 pt-16 pb-12">
+        <div className="relative max-w-3xl mx-auto px-4 pt-10 pb-8 md:pt-12 md:pb-10">
           {/* パンくずリスト */}
           <nav className="flex items-center gap-1.5 text-xs text-zinc-500 mb-6 flex-wrap">
             <Link href="/" className="hover:text-zinc-300 transition-colors">トップ</Link>
@@ -87,18 +87,18 @@ export default function ArticlePage({ article }: { article: Article }) {
             <span className="text-zinc-400 truncate max-w-[200px]">{article.title}</span>
           </nav>
 
-          <h1 className="text-2xl md:text-4xl font-bold leading-[1.3] mb-6">
+          <h1 className="text-2xl md:text-3xl font-bold leading-[1.3] mb-4">
             {article.title}
           </h1>
           <div className="flex items-center gap-4 flex-wrap">
             <p className="text-zinc-400 text-sm">{article.date}</p>
             {/* 広告表記 */}
-            <span className="text-sm text-amber-200 bg-amber-900/40 border border-amber-700/50 px-3 py-1 rounded-md font-medium">
+            <span className="text-xs text-zinc-400 border border-zinc-600 px-2 py-0.5 rounded">
               PR・広告を含みます
             </span>
           </div>
           {article.tags.length > 0 && (
-            <div className="flex flex-wrap gap-2 mt-4">
+            <div className="flex flex-wrap gap-2 mt-3">
               {article.tags.map((tag) => (
                 <span
                   key={tag}
