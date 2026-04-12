@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2563eb"/>
+      <stop offset="100%" stop-color="#4f46e5"/>
+    </linearGradient>
+  </defs>
+  <rect width="32" height="32" rx="8" fill="url(#bg)"/>
+  <!-- ビル（居場所）のモチーフ -->
+  <rect x="7" y="10" width="8" height="16" rx="1" fill="white" opacity="0.95"/>
+  <rect x="17" y="6" width="8" height="20" rx="1" fill="white" opacity="0.85"/>
+  <!-- 窓 -->
+  <rect x="9" y="12" width="2" height="2" rx="0.5" fill="#2563eb" opacity="0.6"/>
+  <rect x="12" y="12" width="2" height="2" rx="0.5" fill="#2563eb" opacity="0.6"/>
+  <rect x="9" y="16" width="2" height="2" rx="0.5" fill="#2563eb" opacity="0.6"/>
+  <rect x="12" y="16" width="2" height="2" rx="0.5" fill="#2563eb" opacity="0.6"/>
+  <rect x="9" y="20" width="2" height="2" rx="0.5" fill="#2563eb" opacity="0.6"/>
+  <rect x="12" y="20" width="2" height="2" rx="0.5" fill="#2563eb" opacity="0.6"/>
+  <rect x="19" y="8" width="2" height="2" rx="0.5" fill="#4f46e5" opacity="0.5"/>
+  <rect x="22" y="8" width="2" height="2" rx="0.5" fill="#4f46e5" opacity="0.5"/>
+  <rect x="19" y="12" width="2" height="2" rx="0.5" fill="#4f46e5" opacity="0.5"/>
+  <rect x="22" y="12" width="2" height="2" rx="0.5" fill="#4f46e5" opacity="0.5"/>
+  <rect x="19" y="16" width="2" height="2" rx="0.5" fill="#4f46e5" opacity="0.5"/>
+  <rect x="22" y="16" width="2" height="2" rx="0.5" fill="#4f46e5" opacity="0.5"/>
+  <rect x="19" y="20" width="2" height="2" rx="0.5" fill="#4f46e5" opacity="0.5"/>
+  <rect x="22" y="20" width="2" height="2" rx="0.5" fill="#4f46e5" opacity="0.5"/>
+  <!-- 上向き矢印（キャリアアップ） -->
+  <path d="M27 7 L29 4 L31 7" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.7"/>
+</svg>
