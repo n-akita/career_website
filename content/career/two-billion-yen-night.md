@@ -14,7 +14,6 @@ tags:
 image: /images/ogp/two-billion-yen-night.png
 ---
 
-![プロジェクションマッピング](/images/projection_mapping_night.png)
 
 ## 2020年3月25日、新宿
 

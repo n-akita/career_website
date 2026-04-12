@@ -13,7 +13,6 @@ tags:
 image: /images/ogp/keio-to-venture.png
 ---
 
-![慶應からベンチャーへ](/images/keio_to_venture.png)
 
 ## 同期はタクシーで来た。僕は電車だった。
 

@@ -12,7 +12,6 @@ tags:
 image: /images/ogp/over-35-career-change.png
 ---
 
-![30代後半の転職](/images/over_35_career.png)
 
 ## 「35歳限界説」って、本当にあるの？
 

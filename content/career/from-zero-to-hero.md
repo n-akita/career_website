@@ -11,7 +11,6 @@ tags:
 image: /images/ogp/from-zero-to-hero.png
 ---
 
-![自信の回復](/images/from_zero_to_hero.png)
 
 ## 「お前は何もできないな」
 

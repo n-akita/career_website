@@ -11,7 +11,6 @@ tags:
 image: /images/ogp/job-change-count.png
 ---
 
-![転職回数](/images/job_change_count.png)
 
 ## はじめに
 

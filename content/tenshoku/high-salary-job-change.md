@@ -12,7 +12,6 @@ tags:
 image: /images/ogp/high-salary-job-change.png
 ---
 
-![ハイクラス転職](/images/high_salary_job_change.png)
 
 ## 年収が上がるたびに、使うサービスを変えてきた
 

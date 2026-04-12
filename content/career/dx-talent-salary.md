@@ -11,7 +11,6 @@ tags:
 image: /images/ogp/dx-talent-salary.png
 ---
 
-![DX人材の年収](/images/dx_talent_salary.png)
 
 ## 同じスキルなのに、年収が3.5倍違う
 
