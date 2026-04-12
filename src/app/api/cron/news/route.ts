@@ -6,11 +6,12 @@ export const dynamic = "force-dynamic";
 export const maxDuration = 60;
 
 const TRUSTED_SOURCES = [
-  "NHK", "日本経済新聞", "朝日新聞", "読売新聞", "毎日新聞", "産経新聞",
+  "NHK", "日本経済新聞", "日経", "朝日新聞", "読売新聞", "毎日新聞", "産経新聞",
   "東洋経済", "ダイヤモンド", "プレジデント", "日経ビジネス", "ITmedia",
   "BUSINESS INSIDER", "Forbes", "現代ビジネス", "新R25", "マネーポスト",
-  "弁護士ドットコム", "J-CAST", "Yahoo!ニュース", "Bloomberg", "ロイター",
-  "共同通信", "時事通信", "テレ朝", "TBS", "日テレ", "FNN", "AERA", "文春",
+  "弁護士ドットコム", "J-CAST", "Yahoo!ニュース", "Bloomberg", "ブルームバーグ",
+  "ロイター", "Reuters", "WSJ", "ウォール・ストリート", "共同通信", "時事通信",
+  "テレ朝", "TBS", "日テレ", "FNN", "AERA", "文春",
 ];
 
 const GITHUB_REPO = "n-akita/career_website";
@@ -198,6 +199,11 @@ async function fetchCareerNews() {
     "大企業 採用 人手不足",
     "AI 雇用 失業",
     "副業 解禁 働き方",
+    "転職 大企業",
+    "初任給 引き上げ",
+    "ジョブ型 人事",
+    "大企業 年収",
+    "スタートアップ 年収",
   ];
   const allItems: Record<string, unknown>[] = [];
   const parser = new XMLParser({ ignoreAttributes: false });
@@ -236,7 +242,7 @@ async function fetchCareerNews() {
   // キーワードごとに少し間隔を空けて取得（レート制限対策）
   for (const q of queries) {
     await fetchRss(q);
-    await new Promise((r) => setTimeout(r, 500));
+    await new Promise((r) => setTimeout(r, 300));
   }
 
   if (allItems.length === 0 && errors.length > 0) {
