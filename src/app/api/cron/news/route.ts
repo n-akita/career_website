@@ -357,6 +357,8 @@ const PUBLISHER_RSS: Record<string, string[]> = {
     "https://news.yahoo.co.jp/rss/topics/domestic.xml",
     "https://news.yahoo.co.jp/rss/topics/economy.xml",
   ],
+  "asahi.com": ["https://www.asahi.com/rss/asahi/newsheadlines.rdf"],
+  "mainichi.jp": ["https://mainichi.jp/rss/etc/mainichi-flash.rss"],
   "toyokeizai.net": ["https://toyokeizai.net/list/feed/rss"],
   "diamond.jp": ["https://diamond.jp/feed/index.xml"],
   "itmedia.co.jp": [
@@ -418,8 +420,11 @@ async function resolveArticleUrl(article: Article): Promise<string> {
       const xml = await res.text();
       const feed = parser.parse(xml);
 
-      // RSS 2.0 or Atom format
-      const items = feed?.rss?.channel?.item || feed?.feed?.entry || [];
+      // RSS 2.0, Atom, or RDF format
+      const items = feed?.rss?.channel?.item
+        || feed?.feed?.entry
+        || feed?.["rdf:RDF"]?.item
+        || [];
       const arr = Array.isArray(items) ? items : [items];
 
       for (const item of arr) {
