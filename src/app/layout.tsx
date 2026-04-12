@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "ビジネスマンの居場所戦略",
+    default: "年収を上げる転職戦略｜ビジネスマンの居場所戦略",
     template: "%s | ビジネスマンの居場所戦略",
   },
   description:

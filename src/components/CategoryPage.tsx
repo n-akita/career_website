@@ -44,7 +44,11 @@ function ArticleCard({
               まず読む
             </span>
           )}
-          <p className="text-xs text-zinc-400 mb-2">{article.date}</p>
+          <p className="text-xs text-zinc-400 mb-2">
+            {article.date}
+            <span className="mx-1.5">·</span>
+            約{article.readingTime}分で読める
+          </p>
           <h2
             className={`font-bold mb-2 group-hover:text-primary transition-colors ${
               featured ? "text-xl" : "text-lg"

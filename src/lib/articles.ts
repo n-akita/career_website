@@ -10,6 +10,7 @@ export type Article = {
   date: string;
   tags: string[];
   image: string;
+  readingTime: number;
   content: string;
 };
 
@@ -26,7 +27,7 @@ export function getArticlesByCategory(category: string): ArticleMeta[] {
   const articles = files.map((file) => {
     const slug = file.replace(/\.md$/, "");
     const raw = fs.readFileSync(path.join(dir, file), "utf-8");
-    const { data } = matter(raw);
+    const { data, content } = matter(raw);
 
     return {
       slug,
@@ -36,6 +37,7 @@ export function getArticlesByCategory(category: string): ArticleMeta[] {
       date: (data.date as string) ?? "",
       tags: (data.tags as string[]) ?? [],
       image: (data.image as string) ?? "",
+      readingTime: Math.max(1, Math.round(content.length / 600)),
     };
   });
 
@@ -57,6 +59,7 @@ export function getArticle(category: string, slug: string): Article | null {
     date: (data.date as string) ?? "",
     tags: (data.tags as string[]) ?? [],
     image: (data.image as string) ?? "",
+    readingTime: Math.max(1, Math.round(content.length / 600)),
     content,
   };
 }

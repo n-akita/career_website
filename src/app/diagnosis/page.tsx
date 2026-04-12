@@ -905,7 +905,7 @@ export default function DiagnosisPage() {
               <a
                 href={firstSvc.url}
                 target="_blank"
-                rel="noopener noreferrer"
+                rel="noopener noreferrer sponsored nofollow"
                 className="inline-flex items-center gap-2 bg-white text-zinc-900 font-bold px-8 py-3.5 rounded-xl text-base hover:bg-zinc-100 transition-colors shadow-lg"
               >
                 {result.firstCTA.label}
@@ -1009,7 +1009,7 @@ export default function DiagnosisPage() {
                       <a
                         href={svc.url}
                         target="_blank"
-                        rel="noopener noreferrer"
+                        rel="noopener noreferrer sponsored nofollow"
                         className={`inline-flex items-center justify-center gap-1.5 text-sm font-semibold px-6 py-3.5 rounded-lg transition-all w-full ${
                           isRecommended
                             ? `bg-gradient-to-r ${result.gradient} text-white hover:opacity-90 shadow-sm`

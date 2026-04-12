@@ -93,7 +93,7 @@ export default function ArticlePage({ article }: { article: Article }) {
           <div className="flex items-center gap-4 flex-wrap">
             <p className="text-zinc-400 text-sm">{article.date}</p>
             {/* 広告表記 */}
-            <span className="text-xs text-zinc-600 border border-zinc-700 px-2 py-0.5 rounded">
+            <span className="text-sm text-amber-200 bg-amber-900/40 border border-amber-700/50 px-3 py-1 rounded-md font-medium">
               PR・広告を含みます
             </span>
           </div>
@@ -209,30 +209,54 @@ export default function ArticlePage({ article }: { article: Article }) {
             </span>
           </Link>
 
-          {/* X + カテゴリ */}
-          <div className="bg-muted border border-border/60 rounded-2xl p-8 text-center">
-            <p className="font-bold text-lg mb-2">キャリアの気づきを発信中</p>
-            <p className="text-zinc-500 text-sm mb-6">
-              Xではリアルタイムで転職やキャリアの話をしています。
-            </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <a
-                href="https://x.com/nara_nara_san"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 bg-zinc-900 text-white font-semibold px-6 py-3 rounded-lg hover:bg-zinc-800 transition-colors text-sm"
-              >
-                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                </svg>
-                Xをフォローする
-              </a>
-              <Link
-                href={cat.href}
-                className="inline-flex items-center gap-2 border border-zinc-300 text-zinc-700 font-semibold px-6 py-3 rounded-lg hover:bg-white transition-colors text-sm"
-              >
-                {cat.label}の記事一覧へ
-              </Link>
+          {/* 著者プロフィール */}
+          <div className="bg-muted border border-border/60 rounded-2xl p-6 md:p-8">
+            <div className="flex items-start gap-4">
+              <Image
+                src="/images/avatar.png"
+                alt="ならなら"
+                width={56}
+                height={56}
+                className="rounded-full shrink-0"
+              />
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 mb-1">
+                  <p className="font-bold">ならなら</p>
+                  <a
+                    href="https://x.com/nara_nara_san"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-zinc-400 hover:text-zinc-600 transition-colors"
+                  >
+                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                    </svg>
+                  </a>
+                </div>
+                <p className="text-sm text-zinc-500 leading-relaxed mb-3">
+                  デジタルマーケティング歴10年。5社の転職で年収3.5倍を実現。
+                  「出世しなくても環境を変えるだけで年収は上がる」をテーマに発信中。
+                </p>
+                <div className="flex flex-wrap gap-3">
+                  <a
+                    href="https://x.com/nara_nara_san"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 bg-zinc-900 text-white font-semibold px-4 py-2 rounded-lg hover:bg-zinc-800 transition-colors text-xs"
+                  >
+                    <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                    </svg>
+                    フォローする
+                  </a>
+                  <Link
+                    href={cat.href}
+                    className="inline-flex items-center gap-1.5 border border-zinc-300 text-zinc-600 font-semibold px-4 py-2 rounded-lg hover:bg-white transition-colors text-xs"
+                  >
+                    {cat.label}の記事一覧へ
+                  </Link>
+                </div>
+              </div>
             </div>
           </div>
         </div>

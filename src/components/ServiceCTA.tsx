@@ -14,9 +14,14 @@ export default function ServiceCTA({
 
   return (
     <div className="my-12 bg-muted border border-border/60 rounded-2xl p-6 md:p-8">
-      <p className="text-xs font-semibold text-primary tracking-wider uppercase mb-2">
-        Recommended
-      </p>
+      <div className="flex items-center gap-2 mb-2">
+        <span className="text-xs font-semibold text-amber-700 bg-amber-100 px-2 py-0.5 rounded">
+          広告
+        </span>
+        <p className="text-xs font-semibold text-primary tracking-wider uppercase">
+          Recommended
+        </p>
+      </div>
       <h3 className="text-lg font-bold mb-6">{heading}</h3>
       <div className="space-y-4">
         {services.map((svc) => (
@@ -33,7 +38,7 @@ export default function ServiceCTA({
             <a
               href={svc.url}
               target="_blank"
-              rel="noopener noreferrer"
+              rel="noopener noreferrer sponsored nofollow"
               className="shrink-0 inline-flex items-center justify-center gap-1 bg-primary text-white text-sm font-semibold px-5 py-2.5 rounded-lg hover:bg-primary-dark transition-colors w-full sm:w-auto"
             >
               {svc.cta}

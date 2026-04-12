@@ -155,7 +155,9 @@ export default function Home() {
                           ? "Job Change"
                           : "Side Job"}
                       </span>
-                      <span className="text-xs text-zinc-400">{article.date}</span>
+                      <span className="text-xs text-zinc-400">
+                        {article.date} · 約{article.readingTime}分
+                      </span>
                     </div>
                     <h3 className={`font-bold mb-2 group-hover:text-primary transition-colors leading-snug ${
                       index === 0 ? "text-lg md:text-xl" : "text-base"
