@@ -19,12 +19,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: article.title,
     description: article.description,
+    alternates: {
+      canonical: `https://nara-career.com/tenshoku/${slug}`,
+    },
     openGraph: {
       type: "article",
       title: article.title,
       description: article.description,
       images: [{ url: imageUrl, width: 1200, height: 630 }],
       publishedTime: article.date,
+      modifiedTime: article.updated || article.date,
     },
     twitter: {
       card: "summary_large_image",

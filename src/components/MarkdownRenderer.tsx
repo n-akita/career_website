@@ -10,6 +10,7 @@ type Token =
   | { type: "image"; src: string; alt: string }
   | { type: "list"; items: string[] }
   | { type: "table"; headers: string[]; alignments: string[]; rows: string[][] }
+  | { type: "code"; lang: string; code: string }
   | { type: "p"; text: string };
 
 function parseMarkdown(content: string): Token[] {
@@ -44,6 +45,21 @@ function parseMarkdown(content: string): Token[] {
     if (line.startsWith("### ")) {
       tokens.push({ type: "h3", text: line.slice(4).trim() });
       i++;
+      continue;
+    }
+
+    // fenced code block
+    const codeMatch = line.match(/^```(\w*)$/);
+    if (codeMatch) {
+      const lang = codeMatch[1] || "";
+      i++;
+      const codeLines: string[] = [];
+      while (i < lines.length && !lines[i].startsWith("```")) {
+        codeLines.push(lines[i]);
+        i++;
+      }
+      if (i < lines.length) i++; // skip closing ```
+      tokens.push({ type: "code", lang, code: codeLines.join("\n") });
       continue;
     }
 
@@ -100,7 +116,7 @@ function parseMarkdown(content: string): Token[] {
 
     // paragraph (collect consecutive non-empty lines)
     const pLines: string[] = [];
-    while (i < lines.length && lines[i].trim() !== "" && !lines[i].startsWith("## ") && !lines[i].startsWith("### ") && !lines[i].startsWith("> ") && !/^---+$/.test(lines[i].trim())) {
+    while (i < lines.length && lines[i].trim() !== "" && !lines[i].startsWith("## ") && !lines[i].startsWith("### ") && !lines[i].startsWith("> ") && !/^---+$/.test(lines[i].trim()) && !lines[i].startsWith("```")) {
       pLines.push(lines[i]);
       i++;
     }
@@ -114,8 +130,8 @@ function parseMarkdown(content: string): Token[] {
 
 function renderInline(text: string): React.ReactNode[] {
   const nodes: React.ReactNode[] = [];
-  // マッチ: **bold**, [text](url) の両方を処理
-  const regex = /(\*\*(.+?)\*\*|\[([^\]]+)\]\(([^)]+)\))/g;
+  // マッチ: **bold**, ~~strikethrough~~, [text](url) の処理
+  const regex = /(\*\*(.+?)\*\*|~~(.+?)~~|\[([^\]]+)\]\(([^)]+)\))/g;
   let lastIndex = 0;
   let match;
   let key = 0;
@@ -132,9 +148,16 @@ function renderInline(text: string): React.ReactNode[] {
           {match[2]}
         </strong>
       );
-    } else if (match[3] && match[4]) {
+    } else if (match[3]) {
+      // ~~strikethrough~~
+      nodes.push(
+        <del key={key++} className="text-zinc-400 line-through">
+          {match[3]}
+        </del>
+      );
+    } else if (match[4] && match[5]) {
       // [text](url)
-      const href = match[4];
+      const href = match[5];
       const isExternal = href.startsWith("http");
       nodes.push(
         <a
@@ -145,7 +168,7 @@ function renderInline(text: string): React.ReactNode[] {
             ? { target: "_blank", rel: "noopener noreferrer" }
             : {})}
         >
-          {match[3]}
+          {match[4]}
         </a>
       );
     }
@@ -204,8 +227,11 @@ export default function MarkdownRenderer({ content }: { content: string }) {
                 <img
                   src={token.src}
                   alt={token.alt}
+                  width={800}
+                  height={450}
                   className="w-full rounded-xl"
                   loading="lazy"
+                  decoding="async"
                 />
                 {token.alt && (
                   <figcaption className="text-xs text-zinc-400 text-center mt-2">
@@ -237,6 +263,19 @@ export default function MarkdownRenderer({ content }: { content: string }) {
                   </p>
                 ))}
               </blockquote>
+            );
+          case "code":
+            return (
+              <div key={i} className="my-8 rounded-xl overflow-hidden">
+                {token.lang && (
+                  <div className="bg-zinc-800 text-zinc-400 text-xs px-4 py-2 font-mono">
+                    {token.lang}
+                  </div>
+                )}
+                <pre className="bg-zinc-900 text-zinc-100 p-4 overflow-x-auto text-sm leading-relaxed">
+                  <code>{token.code}</code>
+                </pre>
+              </div>
             );
           case "table":
             return (

@@ -1,12 +1,29 @@
 import Image from "next/image";
 import Link from "next/link";
 import { getAllArticles } from "@/lib/articles";
+import { FAQPageJsonLd } from "@/components/JsonLd";
 
 export default function Home() {
   const articles = getAllArticles().slice(0, 6);
 
   return (
     <>
+      <FAQPageJsonLd
+        items={[
+          {
+            question: "転職で年収を上げるにはどうすればいい？",
+            answer: "出世だけが年収アップの手段ではありません。同じスキルでも業界・企業規模を変えるだけで年収が大きく変わります。当サイトでは5回の転職で年収3.5倍を実現した実体験をもとに、環境を変えるキャリア戦略を解説しています。",
+          },
+          {
+            question: "ベンチャーから大手企業（JTC）への転職は可能？",
+            answer: "可能です。実際に運営者はベンチャー企業から大手通信会社、大手損害保険会社へ転職しています。職務経歴書の書き方や面接戦略など、具体的なノウハウを転職ノウハウカテゴリで解説しています。",
+          },
+          {
+            question: "転職回数が多いと不利になる？",
+            answer: "転職回数が多いこと自体が不利になるとは限りません。大切なのは各社での経験をどうストーリー化するかです。5回の転職経験を持つ運営者が、転職回数の伝え方を詳しく解説しています。",
+          },
+        ]}
+      />
       {/* ヒーローセクション */}
       <section className="relative min-h-[480px] md:min-h-[620px] flex items-center overflow-hidden">
         <Image
@@ -369,7 +386,7 @@ function CategoryCard({
         </div>
         <p className="text-sm text-zinc-500 leading-relaxed mb-4">{description}</p>
         <p className="text-sm font-semibold text-primary flex items-center gap-1 group-hover:gap-2 transition-all">
-          記事を読む
+          {title}の記事を読む
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
           </svg>

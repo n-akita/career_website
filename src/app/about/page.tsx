@@ -6,6 +6,9 @@ export const metadata: Metadata = {
   title: "ならならについて",
   description:
     "運営者「ならなら」のプロフィール。5社の転職で年収3.5倍を実現。環境を味方につけるキャリア戦略を発信しています。",
+  alternates: {
+    canonical: "https://nara-career.com/about",
+  },
 };
 
 export default function AboutPage() {

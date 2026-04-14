@@ -1,28 +1,29 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Noto_Sans_JP } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { WebSiteJsonLd } from "@/components/JsonLd";
+import { WebSiteJsonLd, OrganizationJsonLd } from "@/components/JsonLd";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const notoSansJP = Noto_Sans_JP({
+  variable: "--font-noto-sans-jp",
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://nara-career.com"),
   title: {
     default: "年収を上げる転職戦略｜会社員の居場所戦略",
     template: "%s | 会社員の居場所戦略",
   },
   description:
     "5回の転職で年収3.5倍（400万→1,200万）を実現。ベンチャーから大手JTCへの転職経験をもとに、環境を変えるキャリア戦略・転職ノウハウ・副業の始め方を発信。",
+  alternates: {
+    canonical: "https://nara-career.com",
+  },
   openGraph: {
     type: "website",
     locale: "ja_JP",
@@ -32,7 +33,7 @@ export const metadata: Metadata = {
       "5回の転職で年収3.5倍。出世ではなく「環境を変える」キャリア戦略を発信。",
     images: [
       {
-        url: "https://nara-career.com/api/og",
+        url: "https://nara-career.com/images/ogp/default.png",
         width: 1200,
         height: 630,
         alt: "会社員の居場所戦略",
@@ -42,7 +43,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     creator: "@nara_nara_san",
-    images: ["https://nara-career.com/api/og"],
+    images: ["https://nara-career.com/images/ogp/default.png"],
   },
   robots: {
     index: true,
@@ -61,7 +62,7 @@ export default function RootLayout({
   return (
     <html
       lang="ja"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${notoSansJP.variable} h-full antialiased`}
     >
       <Script id="gtm" strategy="afterInteractive">{`
         (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -71,6 +72,7 @@ export default function RootLayout({
         })(window,document,'script','dataLayer','GTM-TZLBHG5Q');
       `}</Script>
       <body className="min-h-full flex flex-col">
+        <a href="#main-content" className="skip-to-content">メインコンテンツへスキップ</a>
         <noscript>
           <iframe
             src="https://www.googletagmanager.com/ns.html?id=GTM-TZLBHG5Q"
@@ -80,8 +82,9 @@ export default function RootLayout({
           />
         </noscript>
         <WebSiteJsonLd />
+        <OrganizationJsonLd />
         <Header />
-        <main className="flex-1">{children}</main>
+        <main id="main-content" className="flex-1">{children}</main>
         <Footer />
       </body>
     </html>

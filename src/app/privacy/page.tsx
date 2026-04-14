@@ -2,6 +2,11 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "プライバシーポリシー",
+  description:
+    "「会社員の居場所戦略」のプライバシーポリシーです。個人情報の取り扱い・広告・アクセス解析について記載しています。",
+  alternates: {
+    canonical: "https://nara-career.com/privacy",
+  },
 };
 
 export default function PrivacyPage() {

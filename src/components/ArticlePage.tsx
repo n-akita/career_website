@@ -43,7 +43,12 @@ export default function ArticlePage({ article }: { article: Article }) {
 
   const serviceIds = categoryServices[article.category] ?? ["doda", "bizreach"];
   const articleUrl = `${BASE_URL}/${article.category}/${article.slug}`;
-  const shareText = encodeURIComponent(`${article.title}\n`);
+  const articleImage = article.image
+    ? `${BASE_URL}${article.image}`
+    : `${BASE_URL}/images/ogp/default.png`;
+  const shareText = encodeURIComponent(
+    `${article.title}\n#転職 #キャリア #会社員の居場所戦略\n`
+  );
   const shareUrl = encodeURIComponent(articleUrl);
 
   // 関連記事（同カテゴリから自分以外を最大3件）
@@ -58,7 +63,9 @@ export default function ArticlePage({ article }: { article: Article }) {
         title={article.title}
         description={article.description}
         date={article.date}
+        dateModified={article.updated || article.date}
         url={articleUrl}
+        image={articleImage}
       />
       <BreadcrumbJsonLd
         items={[
@@ -79,7 +86,7 @@ export default function ArticlePage({ article }: { article: Article }) {
         />
         <div className="relative max-w-3xl mx-auto px-4 pt-10 pb-8 md:pt-12 md:pb-10">
           {/* パンくずリスト */}
-          <nav className="flex items-center gap-1.5 text-xs text-zinc-500 mb-6 flex-wrap">
+          <nav aria-label="パンくずリスト" className="flex items-center gap-1.5 text-xs text-zinc-500 mb-6 flex-wrap">
             <Link href="/" className="hover:text-zinc-300 transition-colors">トップ</Link>
             <span>/</span>
             <Link href={cat.href} className="hover:text-zinc-300 transition-colors">{cat.label}</Link>
@@ -91,7 +98,13 @@ export default function ArticlePage({ article }: { article: Article }) {
             {article.title}
           </h1>
           <div className="flex items-center gap-4 flex-wrap">
-            <p className="text-zinc-400 text-sm">{article.date}</p>
+            <p className="text-zinc-400 text-sm">
+              {article.date}
+              {article.updated && article.updated !== article.date && (
+                <span className="ml-2">（更新: {article.updated}）</span>
+              )}
+            </p>
+            <p className="text-zinc-400 text-sm">約{article.readingTime}分で読めます</p>
             {/* 広告表記 */}
             <span className="text-xs text-zinc-400 border border-zinc-600 px-2 py-0.5 rounded">
               PR・広告を含みます
@@ -134,6 +147,7 @@ export default function ArticlePage({ article }: { article: Article }) {
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 bg-zinc-900 text-white text-xs font-semibold px-4 py-2 rounded-lg hover:bg-zinc-800 transition-colors"
+            aria-label="Xでシェアする"
           >
             <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
               <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
@@ -145,6 +159,7 @@ export default function ArticlePage({ article }: { article: Article }) {
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 bg-[#00A4DE] text-white text-xs font-semibold px-5 py-2.5 rounded-lg hover:opacity-90 transition-opacity min-w-[44px] justify-center"
+            aria-label="はてなブックマークに追加する"
           >
             B!
           </a>
@@ -153,6 +168,7 @@ export default function ArticlePage({ article }: { article: Article }) {
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 bg-[#06C755] text-white text-xs font-semibold px-5 py-2.5 rounded-lg hover:opacity-90 transition-opacity"
+            aria-label="LINEでシェアする"
           >
             LINE
           </a>
@@ -227,6 +243,7 @@ export default function ArticlePage({ article }: { article: Article }) {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-zinc-400 hover:text-zinc-600 transition-colors"
+                    aria-label="ならならのXアカウント"
                   >
                     <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
                       <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />

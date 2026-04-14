@@ -6,7 +6,10 @@ import type { ArticleSection } from "@/components/CategoryPage";
 export const metadata: Metadata = {
   title: "転職ノウハウ",
   description:
-    "職務経歴書の書き方、面接戦略、年収の上げ方など、転職を成功させるためのノウハウを発信しています。",
+    "5回の転職経験をもとに、職務経歴書の書き方・面接突破のコツ・転職エージェントの選び方・年収交渉の方法など、転職を成功させるための実践的なノウハウを体系的にまとめています。",
+  alternates: {
+    canonical: "https://nara-career.com/tenshoku",
+  },
 };
 
 const sections: ArticleSection[] = [

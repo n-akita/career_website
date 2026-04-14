@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { ArticleMeta } from "@/lib/articles";
+import { BreadcrumbJsonLd } from "./JsonLd";
 
 export type ArticleSection = {
   label: string;
@@ -104,6 +105,17 @@ export default function CategoryPage({
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-16">
+      <BreadcrumbJsonLd
+        items={[
+          { name: "トップ", url: "https://nara-career.com" },
+          { name: title, url: `https://nara-career.com/${category}` },
+        ]}
+      />
+      <nav aria-label="パンくずリスト" className="flex items-center gap-1.5 text-xs text-zinc-500 mb-8 flex-wrap">
+        <Link href="/" className="hover:text-primary transition-colors">トップ</Link>
+        <span>/</span>
+        <span className="text-zinc-700 font-medium">{title}</span>
+      </nav>
       <div className="text-center mb-12">
         <Image
           src={image}

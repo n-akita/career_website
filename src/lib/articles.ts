@@ -8,6 +8,7 @@ export type Article = {
   title: string;
   description: string;
   date: string;
+  updated: string;
   tags: string[];
   image: string;
   readingTime: number;
@@ -35,6 +36,7 @@ export function getArticlesByCategory(category: string): ArticleMeta[] {
       title: (data.title as string) ?? "",
       description: (data.description as string) ?? "",
       date: (data.date as string) ?? "",
+      updated: (data.updated as string) ?? "",
       tags: (data.tags as string[]) ?? [],
       image: (data.image as string) ?? "",
       readingTime: Math.max(1, Math.round(content.length / 600)),
@@ -57,6 +59,7 @@ export function getArticle(category: string, slug: string): Article | null {
     title: (data.title as string) ?? "",
     description: (data.description as string) ?? "",
     date: (data.date as string) ?? "",
+    updated: (data.updated as string) ?? "",
     tags: (data.tags as string[]) ?? [],
     image: (data.image as string) ?? "",
     readingTime: Math.max(1, Math.round(content.length / 600)),

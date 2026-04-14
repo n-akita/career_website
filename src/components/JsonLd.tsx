@@ -26,6 +26,31 @@ export function WebSiteJsonLd() {
           name: "ならなら",
           url: "https://x.com/nara_nara_san",
         },
+        potentialAction: {
+          "@type": "SearchAction",
+          target: "https://nara-career.com/search?q={search_term_string}",
+          "query-input": "required name=search_term_string",
+        },
+      }}
+    />
+  );
+}
+
+export function OrganizationJsonLd() {
+  return (
+    <JsonLd
+      data={{
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        name: "会社員の居場所戦略",
+        url: "https://nara-career.com",
+        logo: "https://nara-career.com/images/avatar.png",
+        founder: {
+          "@type": "Person",
+          name: "ならなら",
+          url: "https://x.com/nara_nara_san",
+        },
+        sameAs: ["https://x.com/nara_nara_san"],
       }}
     />
   );
@@ -35,12 +60,16 @@ export function ArticleJsonLd({
   title,
   description,
   date,
+  dateModified,
   url,
+  image,
 }: {
   title: string;
   description: string;
   date: string;
+  dateModified?: string;
   url: string;
+  image?: string;
 }) {
   return (
     <JsonLd
@@ -50,8 +79,9 @@ export function ArticleJsonLd({
         headline: title,
         description,
         datePublished: date,
-        dateModified: date,
+        dateModified: dateModified || date,
         url,
+        image: image || "https://nara-career.com/images/ogp/default.png",
         author: {
           "@type": "Person",
           name: "ならなら",
@@ -60,6 +90,10 @@ export function ArticleJsonLd({
         publisher: {
           "@type": "Organization",
           name: "会社員の居場所戦略",
+          logo: {
+            "@type": "ImageObject",
+            url: "https://nara-career.com/images/avatar.png",
+          },
         },
       }}
     />
@@ -81,6 +115,29 @@ export function BreadcrumbJsonLd({
           position: i + 1,
           name: item.name,
           item: item.url,
+        })),
+      }}
+    />
+  );
+}
+
+export function FAQPageJsonLd({
+  items,
+}: {
+  items: { question: string; answer: string }[];
+}) {
+  return (
+    <JsonLd
+      data={{
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: items.map((item) => ({
+          "@type": "Question",
+          name: item.question,
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: item.answer,
+          },
         })),
       }}
     />

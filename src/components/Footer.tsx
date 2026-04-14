@@ -46,13 +46,13 @@ export default function Footer() {
               <p className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">人気の記事</p>
               <div className="flex flex-col gap-1 text-sm">
                 <Link href="/career/environment-decides-salary" className="hover:text-white transition-colors py-1.5 max-w-[200px] truncate">
-                  年収を決めるのは「居場所」
+                  年収は「居場所」で決まる
                 </Link>
                 <Link href="/career/career-story" className="hover:text-white transition-colors py-1.5 max-w-[200px] truncate">
-                  年収400万→3.5倍の話
+                  年収400万→1,400万の転職記録
                 </Link>
                 <Link href="/tenshoku/jtc-complete-guide" className="hover:text-white transition-colors py-1.5 max-w-[200px] truncate">
-                  JTC転職の教科書
+                  大手JTC転職の完全ガイド
                 </Link>
               </div>
             </div>
@@ -63,6 +63,7 @@ export default function Footer() {
               <div className="flex flex-col gap-1 text-sm">
                 <Link href="/about" className="hover:text-white transition-colors py-1.5">運営者情報</Link>
                 <Link href="/privacy" className="hover:text-white transition-colors py-1.5">プライバシーポリシー</Link>
+                <Link href="/disclaimer" className="hover:text-white transition-colors py-1.5">免責事項</Link>
                 <Link href="/contact" className="hover:text-white transition-colors py-1.5">お問い合わせ</Link>
               </div>
             </div>
