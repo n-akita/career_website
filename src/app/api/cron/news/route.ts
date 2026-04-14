@@ -355,104 +355,81 @@ ${articleList}
   return { article, draft: parsed.tweet };
 }
 
-// 主要ニュースサイトのRSSフィード一覧
-const PUBLISHER_RSS: Record<string, string[]> = {
-  "news.yahoo.co.jp": [
-    "https://news.yahoo.co.jp/rss/topics/business.xml",
-    "https://news.yahoo.co.jp/rss/topics/it.xml",
-    "https://news.yahoo.co.jp/rss/topics/domestic.xml",
-    "https://news.yahoo.co.jp/rss/topics/economy.xml",
-  ],
-  "asahi.com": ["https://www.asahi.com/rss/asahi/newsheadlines.rdf"],
-  "mainichi.jp": ["https://mainichi.jp/rss/etc/mainichi-flash.rss"],
-  "toyokeizai.net": ["https://toyokeizai.net/list/feed/rss"],
-  "diamond.jp": ["https://diamond.jp/feed/index.xml"],
-  "itmedia.co.jp": [
-    "https://rss.itmedia.co.jp/rss/2.0/itmedia_all.xml",
-    "https://rss.itmedia.co.jp/rss/2.0/itmedia_business.xml",
-  ],
-  "j-cast.com": ["https://www.j-cast.com/rss/all.xml"],
-  "nhk.or.jp": [
-    "https://www.nhk.or.jp/rss/news/cat0.xml",
-    "https://www.nhk.or.jp/rss/news/cat5.xml",
-  ],
-  "kyodo.co.jp": ["https://www.47news.jp/rss/national_summary.xml"],
-  "jiji.com": ["https://www.jiji.com/rss/ranking.rdf"],
-};
-
 async function resolveArticleUrl(article: Article): Promise<string> {
-  const { title, googleUrl, sourceUrl } = {
-    title: article.title,
-    googleUrl: article.link,
-    sourceUrl: article.sourceUrl || "",
-  };
+  const googleUrl = article.link;
 
-  // 記事タイトルからソース名を除去してキーワード抽出
-  const cleanTitle = title.replace(/ - [^-]+$/, "").replace(/（[^）]+）$/, "").trim();
-  const keywords = cleanTitle.split(/[\s、。「」（）【】,\-]+/).filter((w) => w.length >= 2);
+  try {
+    // Google News URLからBase64部分を抽出
+    const match = googleUrl.match(/articles\/([^?]+)/);
+    if (!match) return googleUrl;
+    const base64Str = match[1];
 
-  if (keywords.length < 2) return googleUrl;
-
-  // 1. ソースドメインに対応するRSSがあれば検索
-  const domain = sourceUrl.replace(/^https?:\/\//, "").replace(/\/$/, "");
-  const rssFeeds: string[] = [];
-
-  for (const [key, feeds] of Object.entries(PUBLISHER_RSS)) {
-    if (domain.includes(key) || key.includes(domain)) {
-      rssFeeds.push(...feeds);
-      break;
+    // Step 1: 記事ページからsignature/timestampを取得
+    const pageRes = await fetch(`https://news.google.com/articles/${base64Str}`, {
+      headers: { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36" },
+      signal: AbortSignal.timeout(5000),
+    });
+    if (!pageRes.ok) {
+      console.log("URL resolve: page fetch failed", pageRes.status);
+      return googleUrl;
     }
-  }
+    const html = await pageRes.text();
 
-  // 対応するRSSがなくても、一般的なRSSパスを試す
-  if (rssFeeds.length === 0 && sourceUrl) {
-    rssFeeds.push(`${sourceUrl}/feed`, `${sourceUrl}/rss`, `${sourceUrl}/feed/rss`);
-  }
+    const sigMatch = html.match(/data-n-a-sg="([^"]+)"/);
+    const tsMatch = html.match(/data-n-a-ts="([^"]+)"/);
+    if (!sigMatch || !tsMatch) {
+      console.log("URL resolve: signature/timestamp not found in HTML");
+      return googleUrl;
+    }
+    const signature = sigMatch[1];
+    const timestamp = tsMatch[1];
 
-  // Yahoo!ニュースのRSSは常に検索対象に含める（多くの記事がYahoo転載される）
-  if (!domain.includes("news.yahoo.co.jp")) {
-    rssFeeds.push(...PUBLISHER_RSS["news.yahoo.co.jp"]);
-  }
+    // Step 2: batchexecuteで元記事URLを取得
+    const innerStr = `["garturlreq",[["X","X",["X","X"],null,null,1,1,"US:en",null,1,null,null,null,null,null,0,1],"X","X",1,[1,1,1],1,1,null,0,0,null,0],"${base64Str}",${timestamp},"${signature}"]`;
+    const payload = JSON.stringify([[["Fbv4je", innerStr, null, "generic"]]]);
 
-  const parser = new XMLParser({ ignoreAttributes: false });
+    const batchRes = await fetch("https://news.google.com/_/DotsSplashUi/data/batchexecute", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+      },
+      body: `f.req=${encodeURIComponent(payload)}`,
+      signal: AbortSignal.timeout(5000),
+    });
+    if (!batchRes.ok) {
+      console.log("URL resolve: batchexecute failed", batchRes.status);
+      return googleUrl;
+    }
+    const batchText = await batchRes.text();
 
-  for (const feedUrl of rssFeeds) {
-    try {
-      const res = await fetch(feedUrl, {
-        headers: { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36" },
-        signal: AbortSignal.timeout(5000),
-      });
-      if (!res.ok) continue;
-      const xml = await res.text();
-      const feed = parser.parse(xml);
-
-      // RSS 2.0, Atom, or RDF format
-      const items = feed?.rss?.channel?.item
-        || feed?.feed?.entry
-        || feed?.["rdf:RDF"]?.item
-        || [];
-      const arr = Array.isArray(items) ? items : [items];
-
-      for (const item of arr) {
-        const itemTitle = (item.title as string) || "";
-        const matchCount = keywords.filter((k) => itemTitle.includes(k)).length;
-        // タイトルのキーワードが3つ以上一致すれば同じ記事とみなす
-        if (matchCount >= 3 || (matchCount >= 2 && keywords.length <= 4)) {
-          const url = (item.link as string) || item["@_href"] || "";
-          if (url && !url.includes("news.google.com")) {
-            // Yahoo!ニュースの場合、クエリパラメータを除去
-            if (url.includes("news.yahoo.co.jp")) {
-              return url.split("?")[0];
+    // レスポンスをパース: \n\nで分割し、2番目のパートからURLを抽出
+    const parts = batchText.split("\n\n");
+    for (const part of parts) {
+      try {
+        const lines = part.split("\n");
+        for (const line of lines) {
+          if (!line.startsWith("[")) continue;
+          const outer = JSON.parse(line);
+          if (!Array.isArray(outer) || !outer[0] || !outer[0][2]) continue;
+          const inner = JSON.parse(outer[0][2]);
+          if (inner && inner[1]) {
+            const resolvedUrl = inner[1] as string;
+            if (resolvedUrl.startsWith("http")) {
+              console.log("URL resolve: success →", resolvedUrl.substring(0, 80));
+              return resolvedUrl;
             }
-            return url;
           }
         }
+      } catch {
+        // このパートのパースに失敗したら次のパートを試す
       }
-    } catch {
-      // 個別のRSSフェッチ失敗は無視して次を試す
     }
-  }
 
-  console.log("URL resolve: falling back to Google News URL for:", cleanTitle.substring(0, 50));
-  return googleUrl;
+    console.log("URL resolve: could not parse batchexecute response");
+    return googleUrl;
+  } catch (err) {
+    console.log("URL resolve: error", err instanceof Error ? err.message : "unknown");
+    return googleUrl;
+  }
 }
