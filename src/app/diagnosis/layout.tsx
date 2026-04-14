@@ -4,6 +4,9 @@ export const metadata: Metadata = {
   title: "ならなら式転職診断",
   description:
     "5つの質問に答えるだけ。あなたに合ったキャリア戦略と推定年収アップ額がわかります。所要時間30秒・完全無料。",
+  alternates: {
+    canonical: "https://nara-career.com/diagnosis",
+  },
   openGraph: {
     title: "ならなら式転職診断 — あなたの推定年収アップ額は？",
     description:
