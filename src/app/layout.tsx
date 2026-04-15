@@ -34,14 +34,15 @@ export const metadata: Metadata = {
     images: [
       {
         url: "https://nara-career.com/images/ogp/default.png",
-        width: 1200,
-        height: 630,
+        width: 2848,
+        height: 1504,
         alt: "会社員の居場所戦略",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
+    site: "@nara_nara_san",
     creator: "@nara_nara_san",
     images: ["https://nara-career.com/images/ogp/default.png"],
   },
