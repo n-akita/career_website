@@ -34,8 +34,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: "https://nara-career.com/images/ogp/default.png",
-        width: 2848,
-        height: 1504,
+        width: 1200,
+        height: 630,
         alt: "会社員の居場所戦略",
       },
     ],
