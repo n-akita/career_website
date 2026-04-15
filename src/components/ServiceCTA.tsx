@@ -41,6 +41,9 @@ export default function ServiceCTA({
               rel="noopener noreferrer sponsored nofollow"
               className="shrink-0 inline-flex items-center justify-center gap-1 bg-primary text-white text-sm font-semibold px-5 py-2.5 rounded-lg hover:bg-primary-dark transition-colors w-full sm:w-auto"
             >
+              {svc.trackingPixel && (
+                <img src={svc.trackingPixel} height="1" width="1" alt="" className="absolute" style={{border:0}} />
+              )}
               {svc.cta}
               <svg
                 className="w-4 h-4"
