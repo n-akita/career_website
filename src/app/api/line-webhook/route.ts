@@ -141,7 +141,8 @@ function buildReplyCarousel(
   const labels = ["① 経験データ", "② 別の視点", "③ 追加Tips"];
 
   const bubbles = replies.map((reply, i) => {
-    const replyUrl = `${BASE_URL}/api/reply?s=${secret}&t=${b64(reply.text)}&id=${tweetId}`;
+    // Xアプリでリプライ画面を直接開く（テキスト入力済み）
+    const replyUrl = `https://x.com/intent/post?in_reply_to=${tweetId}&text=${encodeURIComponent(reply.text)}`;
     const editUrl = `${BASE_URL}/api/reply-edit?s=${secret}&t=${b64(reply.text)}&id=${tweetId}`;
 
     return {
