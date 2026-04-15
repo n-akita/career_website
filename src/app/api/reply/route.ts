@@ -117,20 +117,23 @@ export async function GET(req: NextRequest) {
     let detail = "";
     if (err instanceof Error) {
       message = err.message;
-      // twitter-api-v2 のエラーには data プロパティがある場合がある
-      const apiErr = err as Error & { data?: unknown; code?: number };
+      const apiErr = err as Error & { data?: { detail?: string }; code?: number };
       if (apiErr.data) {
-        detail = JSON.stringify(apiErr.data);
-      }
-      if (apiErr.code) {
-        detail += ` (code: ${apiErr.code})`;
+        detail = apiErr.data.detail || JSON.stringify(apiErr.data);
       }
     }
     console.error("Reply failed:", message, detail);
-    const displayMsg = detail
-      ? `エラー: ${message}<br><br><small style="color:#999;">${detail}</small>`
-      : `エラー: ${message}`;
-    return htmlResponse("リプライ失敗", displayMsg, 500);
+
+    // リプライ制限の場合はわかりやすいメッセージ
+    if (detail.includes("not allowed") || detail.includes("not been mentioned")) {
+      return htmlResponse(
+        "リプライ制限",
+        "このツイートはリプライが制限されています（フォロワーのみ、メンションされた人のみ等）。<br><br>別のツイートでお試しください。",
+        403
+      );
+    }
+
+    return htmlResponse("リプライ失敗", `エラー: ${message}<br><br><small style="color:#999;">${detail}</small>`, 500);
   }
 }
 
