@@ -113,9 +113,24 @@ export async function GET(req: NextRequest) {
       200
     );
   } catch (err: unknown) {
-    const message = err instanceof Error ? err.message : "Unknown error";
-    console.error("Reply failed:", message);
-    return htmlResponse("リプライ失敗", `エラー: ${message}`, 500);
+    let message = "Unknown error";
+    let detail = "";
+    if (err instanceof Error) {
+      message = err.message;
+      // twitter-api-v2 のエラーには data プロパティがある場合がある
+      const apiErr = err as Error & { data?: unknown; code?: number };
+      if (apiErr.data) {
+        detail = JSON.stringify(apiErr.data);
+      }
+      if (apiErr.code) {
+        detail += ` (code: ${apiErr.code})`;
+      }
+    }
+    console.error("Reply failed:", message, detail);
+    const displayMsg = detail
+      ? `エラー: ${message}<br><br><small style="color:#999;">${detail}</small>`
+      : `エラー: ${message}`;
+    return htmlResponse("リプライ失敗", displayMsg, 500);
   }
 }
 
