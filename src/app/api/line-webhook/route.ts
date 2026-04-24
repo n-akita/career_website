@@ -95,7 +95,7 @@ async function generateReplyCandidates(
 - 絵文字・ハッシュタグ不使用
 - 会社名は具体名を出さない（「大手通信」「婚活ベンチャー」「大手小売」等で表現）
 - 年収の実数は出さない（「3倍」「1.5倍」「+200万」等の表現はOK）
-- 文字数上限なし。刺さるなら250字でも400字でもOK。ただし冗長は禁物。
+- 各リプ最大200字厳守（技術制約）。目安は100〜180字。短くて刺さる方が強い。
 
 【禁止事項（最重要）】
 - 「まさにそれ！」「わかります」「私も経験しました」で始まる共感先行型 → 絶対NG
@@ -129,6 +129,7 @@ async function generateReplyCandidates(
    例：「出世しないと年収上がらないと思ってる人へ。転職4回で年収3倍になった私から一言。"出世"は社内の話、"年収"は市場の話です。」
 
 各案、必ず自分の実体験の具体(武器庫のどれか)を1つは埋め込むこと。一般論だけのリプは不採用。
+各案は必ず200字以内（技術制約のため超えると送信できない）。目安は100〜180字。
 
 以下のJSON形式のみを出力：
 {"replies":[{"type":"逆張り","text":"..."},{"type":"構造暴露","text":"..."},{"type":"一言断定","text":"..."}]}`,
@@ -160,9 +161,11 @@ function buildReplyCarousel(
   const labels = ["① 逆張り", "② 構造暴露", "③ 一言断定"];
 
   const bubbles = replies.map((reply, i) => {
+    // LINE Flex Messageのaction.uri上限1000字→base64後の実質上限は約200字。保険として切詰め。
+    const safeText = reply.text.length > 200 ? reply.text.substring(0, 200) : reply.text;
     // /api/reply 経由でXのリプライ画面にリダイレクト（URL長制限対策）
-    const replyUrl = `${BASE_URL}/api/reply?s=${secret}&t=${b64(reply.text)}&id=${tweetId}`;
-    const editUrl = `${BASE_URL}/api/reply-edit?s=${secret}&t=${b64(reply.text)}&id=${tweetId}`;
+    const replyUrl = `${BASE_URL}/api/reply?s=${secret}&t=${b64(safeText)}&id=${tweetId}`;
+    const editUrl = `${BASE_URL}/api/reply-edit?s=${secret}&t=${b64(safeText)}&id=${tweetId}`;
 
     return {
       type: "bubble",
@@ -182,7 +185,7 @@ function buildReplyCarousel(
         spacing: "sm",
         contents: [
           { type: "text", text: `@${authorName} への返信:`, size: "xxs", color: "#999999" },
-          { type: "text", text: reply.text, wrap: true, size: "sm", margin: "sm" },
+          { type: "text", text: safeText, wrap: true, size: "sm", margin: "sm" },
         ],
       },
       footer: {
