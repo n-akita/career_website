@@ -131,7 +131,14 @@ async function generateReplyCandidates(
 各案、必ず自分の実体験の具体(武器庫のどれか)を1つは埋め込むこと。一般論だけのリプは不採用。
 各案は必ず200字以内（技術制約のため超えると送信できない）。目安は100〜180字。
 
-以下のJSON形式のみを出力：
+【出力フォーマット厳守】
+- 純粋なJSONのみ出力。説明文・コードブロック(\`\`\`)・前置き後置き一切禁止。
+- typeの値は必ず「逆張り」「構造暴露」「一言断定」の3つを順番通り。
+- text値の中に半角ダブルクォート(")を使うな。引用は必ず日本語の「」を使う。
+- text値の中に改行を入れるな。1行で書く。
+- 配列は必ず3要素。
+
+出力例(これに完全準拠)：
 {"replies":[{"type":"逆張り","text":"..."},{"type":"構造暴露","text":"..."},{"type":"一言断定","text":"..."}]}`,
       },
     ],
@@ -144,8 +151,12 @@ async function generateReplyCandidates(
     const parsed = JSON.parse(jsonMatch![0]);
     return parsed.replies;
   } catch (e) {
-    console.error(`[Claude JSON parse failed] error=${(e as Error).message} raw=${text.substring(0, 500)}`);
-    return [{ type: "候補", text: text.substring(0, 200) }];
+    console.error(`[Claude JSON parse failed] error=${(e as Error).message} raw=${text.substring(0, 1000)}`);
+    return [
+      { type: "逆張り", text: "[生成失敗1] Vercelログを確認してください" },
+      { type: "構造暴露", text: "[生成失敗2] Vercelログを確認してください" },
+      { type: "一言断定", text: "[生成失敗3] Vercelログを確認してください" },
+    ];
   }
 }
 
