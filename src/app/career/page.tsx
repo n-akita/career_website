@@ -24,7 +24,6 @@ const sections: ArticleSection[] = [
     slugs: [
       "keio-to-venture",
       "two-billion-yen-night",
-      "from-zero-to-hero",
     ],
   },
   {

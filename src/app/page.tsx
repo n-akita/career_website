@@ -114,14 +114,14 @@ export default function Home() {
           <h2 className="text-3xl font-bold">コンテンツ</h2>
           <p className="text-zinc-500 mt-3 text-sm">あなたのキャリアを次のステージへ導くための3つのテーマ</p>
         </div>
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           <CategoryCard
             title="キャリアの考え方"
             description="生涯賃金の話、環境を変える選択肢、社内で評価される方法"
             href="/career"
             image="/images/career.png"
             accent="blue"
-            articleCount="7"
+            articleCount="6"
           />
           <CategoryCard
             title="転職ノウハウ"
@@ -138,6 +138,14 @@ export default function Home() {
             image="/images/sidejob.png"
             accent="emerald"
             articleCount="1"
+          />
+          <CategoryCard
+            title="体験談ストーリー"
+            description="建前を外した、ならならのキャリア一次情報"
+            href="/story"
+            image="/images/career_story_hero.png"
+            accent="amber"
+            articleCount="2"
           />
         </div>
       </section>
@@ -179,13 +187,17 @@ export default function Home() {
                           ? "bg-blue-50 text-blue-600"
                           : article.category === "tenshoku"
                           ? "bg-indigo-50 text-indigo-600"
-                          : "bg-emerald-50 text-emerald-600"
+                          : article.category === "sidejob"
+                          ? "bg-emerald-50 text-emerald-600"
+                          : "bg-amber-50 text-amber-700"
                       }`}>
                         {article.category === "career"
                           ? "Career"
                           : article.category === "tenshoku"
                           ? "Job Change"
-                          : "Side Job"}
+                          : article.category === "sidejob"
+                          ? "Side Job"
+                          : "Story"}
                       </span>
                       <span className="text-xs text-zinc-400">
                         {article.date} · 約{article.readingTime}分
@@ -356,13 +368,14 @@ function CategoryCard({
   description: string;
   href: string;
   image: string;
-  accent: "blue" | "indigo" | "emerald";
+  accent: "blue" | "indigo" | "emerald" | "amber";
   articleCount: string;
 }) {
   const accentStyles = {
     blue: "group-hover:border-blue-200 group-hover:shadow-blue-100/50",
     indigo: "group-hover:border-indigo-200 group-hover:shadow-indigo-100/50",
     emerald: "group-hover:border-emerald-200 group-hover:shadow-emerald-100/50",
+    amber: "group-hover:border-amber-200 group-hover:shadow-amber-100/50",
   };
 
   return (

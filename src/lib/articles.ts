@@ -68,6 +68,6 @@ export function getArticle(category: string, slug: string): Article | null {
 }
 
 export function getAllArticles(): ArticleMeta[] {
-  const categories = ["career", "tenshoku", "sidejob"];
+  const categories = ["career", "tenshoku", "sidejob", "story"];
   return categories.flatMap((cat) => getArticlesByCategory(cat));
 }

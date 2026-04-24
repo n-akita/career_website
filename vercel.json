@@ -1,1 +1,14 @@
-{}
+{
+  "redirects": [
+    {
+      "source": "/tenshoku/agent-review-8services",
+      "destination": "/story/agent-review-8services",
+      "permanent": true
+    },
+    {
+      "source": "/career/from-zero-to-hero",
+      "destination": "/story/from-zero-to-hero",
+      "permanent": true
+    }
+  ]
+}

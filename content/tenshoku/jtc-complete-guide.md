@@ -102,7 +102,7 @@ image: /images/ogp/jtc-complete-guide.png
 
 **詳しくはこちら：**
 - [転職エージェントとの付き合い方——毎週10分の電話が、年収を変えた](/tenshoku/agent-guide)
-- [転職4回で8社使った僕が本音で語る、転職エージェント格付け](/tenshoku/agent-review-8services)
+- [転職4回で8社使った僕が本音で語る、転職エージェント格付け](/story/agent-review-8services)
 - [年収1000万超えたら転職エージェントが変わる：ハイクラス転職のリアル](/tenshoku/high-salary-job-change)
 
 ---
@@ -164,7 +164,7 @@ JTCに入ったら、最初の3ヶ月が全てだ。
 **結果：** 部長の信頼を獲得し、4,000万円のメタバースプロジェクトを任された。会員1万人超、購買2,000万円、Xでトレンド入り。
 
 **詳しくはこちら：**
-- [上司に「何もできない」と言われた僕が、次の会社で4,000万のプロジェクトを任された話](/career/from-zero-to-hero)
+- [上司に「何もできない」と言われた僕が、次の会社で4,000万のプロジェクトを任された話](/story/from-zero-to-hero)
 - [大手入社1ヶ月目の赤っ恥リスト——会議室、メール、稟議](/tenshoku/embarrassing-first-month)
 
 ---

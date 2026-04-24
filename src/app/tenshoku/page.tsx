@@ -25,7 +25,7 @@ const sections: ArticleSection[] = [
   {
     label: "エージェントを使う",
     emoji: "🤝",
-    slugs: ["agent-guide", "agent-review-8services"],
+    slugs: ["agent-guide"],
   },
   {
     label: "面接・選考を突破する",

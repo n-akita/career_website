@@ -14,12 +14,14 @@ const categoryImages: Record<string, string> = {
   career: "/images/hero-city.jpg",
   tenshoku: "/images/hero-work.jpg",
   sidejob: "/images/hero-photo.jpg",
+  story: "/images/hero-work.jpg",
 };
 
 const categoryLabels: Record<string, { label: string; en: string; href: string }> = {
   career: { label: "キャリアの考え方", en: "Career", href: "/career" },
   tenshoku: { label: "転職ノウハウ", en: "Job Change", href: "/tenshoku" },
   sidejob: { label: "副業の始め方", en: "Side Job", href: "/sidejob" },
+  story: { label: "体験談ストーリー", en: "Story", href: "/story" },
 };
 
 const categoryServices: Record<string, string[]> = {
@@ -33,6 +35,8 @@ const categoryCtaHeadings: Record<string, string> = {
   tenshoku: "この記事で紹介した転職サービス",
   sidejob: "副業を始めるならこのサービス",
 };
+
+const isStory = (category: string) => category === "story";
 
 export default function ArticlePage({ article }: { article: Article }) {
   const cat = categoryLabels[article.category] ?? {
@@ -105,10 +109,12 @@ export default function ArticlePage({ article }: { article: Article }) {
               )}
             </p>
             <p className="text-zinc-400 text-sm">約{article.readingTime}分で読めます</p>
-            {/* 広告表記 */}
-            <span className="text-xs text-zinc-400 border border-zinc-600 px-2 py-0.5 rounded">
-              PR・広告を含みます
-            </span>
+            {/* 広告表記（storyカテゴリは広告なしのため非表示） */}
+            {!isStory(article.category) && (
+              <span className="text-xs text-zinc-400 border border-zinc-600 px-2 py-0.5 rounded">
+                PR・広告を含みます
+              </span>
+            )}
           </div>
           {article.tags.length > 0 && (
             <div className="flex flex-wrap gap-2 mt-3">
@@ -133,11 +139,52 @@ export default function ArticlePage({ article }: { article: Article }) {
         <TableOfContents content={article.content} />
         <MarkdownRenderer content={article.content} />
 
-        {/* サービスCTA */}
-        <ServiceCTA
-          serviceIds={serviceIds}
-          heading={categoryCtaHeadings[article.category]}
-        />
+        {/* サービスCTA（storyカテゴリは非掲載） */}
+        {!isStory(article.category) && (
+          <ServiceCTA
+            serviceIds={serviceIds}
+            heading={categoryCtaHeadings[article.category]}
+          />
+        )}
+
+        {/* ストーリー記事の導線：ノウハウ記事へ */}
+        {isStory(article.category) && (
+          <div className="my-12 bg-muted border border-border/60 rounded-2xl p-6 md:p-8">
+            <p className="text-xs font-semibold text-primary tracking-wider uppercase mb-2">
+              Related Knowledge
+            </p>
+            <h3 className="text-lg font-bold mb-3">実践的なノウハウも読む</h3>
+            <p className="text-sm text-zinc-500 leading-relaxed mb-5">
+              体験談だけでなく、転職を前に進めるための具体的な準備・選考対策もまとめています。
+            </p>
+            <div className="space-y-3">
+              <Link
+                href="/tenshoku"
+                className="flex items-center justify-between p-4 bg-white border border-border/60 rounded-xl hover:shadow-sm transition-all group"
+              >
+                <div>
+                  <p className="font-bold text-sm mb-0.5">転職ノウハウを読む</p>
+                  <p className="text-xs text-zinc-500">職務経歴書・面接・エージェントの使い方</p>
+                </div>
+                <svg className="w-4 h-4 text-zinc-300 group-hover:text-primary transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </Link>
+              <Link
+                href="/career"
+                className="flex items-center justify-between p-4 bg-white border border-border/60 rounded-xl hover:shadow-sm transition-all group"
+              >
+                <div>
+                  <p className="font-bold text-sm mb-0.5">キャリアの考え方を読む</p>
+                  <p className="text-xs text-zinc-500">環境を変える発想と生涯賃金の話</p>
+                </div>
+                <svg className="w-4 h-4 text-zinc-300 group-hover:text-primary transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </Link>
+            </div>
+          </div>
+        )}
 
         {/* シェアボタン */}
         <div className="my-10 flex items-center gap-3 flex-wrap">
@@ -207,23 +254,25 @@ export default function ArticlePage({ article }: { article: Article }) {
 
         {/* フッターCTA */}
         <div className="mt-12 pt-8 border-t border-border/60 space-y-6">
-          {/* 診断CTA */}
-          <Link
-            href="/diagnosis"
-            className="block bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl p-6 md:p-8 text-white text-center hover:from-blue-700 hover:to-indigo-700 transition-all group"
-          >
-            <p className="text-2xl mb-2">🧭</p>
-            <p className="font-bold text-lg mb-1">ならなら式転職診断</p>
-            <p className="text-blue-200 text-sm mb-4">
-              5つの質問であなたに合ったキャリア戦略がわかる
-            </p>
-            <span className="inline-flex items-center gap-1 text-sm font-semibold border border-white/30 px-5 py-2 rounded-lg group-hover:bg-white/10 transition-colors">
-              無料で診断する
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-              </svg>
-            </span>
-          </Link>
+          {/* 診断CTA（storyカテゴリはアフィリ導線を含むため非表示） */}
+          {!isStory(article.category) && (
+            <Link
+              href="/diagnosis"
+              className="block bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl p-6 md:p-8 text-white text-center hover:from-blue-700 hover:to-indigo-700 transition-all group"
+            >
+              <p className="text-2xl mb-2">🧭</p>
+              <p className="font-bold text-lg mb-1">ならなら式転職診断</p>
+              <p className="text-blue-200 text-sm mb-4">
+                5つの質問であなたに合ったキャリア戦略がわかる
+              </p>
+              <span className="inline-flex items-center gap-1 text-sm font-semibold border border-white/30 px-5 py-2 rounded-lg group-hover:bg-white/10 transition-colors">
+                無料で診断する
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </span>
+            </Link>
+          )}
 
           {/* 著者プロフィール */}
           <div className="bg-muted border border-border/60 rounded-2xl p-6 md:p-8">

@@ -28,6 +28,13 @@ const categoryConfig: Record<
     bgTo: "#18181b",
     emoji: "💼",
   },
+  story: {
+    label: "STORY",
+    color: "#f59e0b",
+    bgFrom: "#3a2e1a",
+    bgTo: "#18181b",
+    emoji: "🗣️",
+  },
 };
 
 export async function GET(request: NextRequest) {

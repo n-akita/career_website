@@ -32,6 +32,7 @@ export default function Header() {
           <NavLink href="/career">キャリアの考え方</NavLink>
           <NavLink href="/tenshoku">転職ノウハウ</NavLink>
           <NavLink href="/sidejob">副業の始め方</NavLink>
+          <NavLink href="/story">体験談</NavLink>
           <NavLink href="/about">ならならについて</NavLink>
           <Link
             href="/search"
@@ -72,6 +73,7 @@ export default function Header() {
           <MobileNavLink href="/career" onClick={() => setMenuOpen(false)}>キャリアの考え方</MobileNavLink>
           <MobileNavLink href="/tenshoku" onClick={() => setMenuOpen(false)}>転職ノウハウ</MobileNavLink>
           <MobileNavLink href="/sidejob" onClick={() => setMenuOpen(false)}>副業の始め方</MobileNavLink>
+          <MobileNavLink href="/story" onClick={() => setMenuOpen(false)}>体験談</MobileNavLink>
           <MobileNavLink href="/about" onClick={() => setMenuOpen(false)}>ならならについて</MobileNavLink>
           <MobileNavLink href="/search" onClick={() => setMenuOpen(false)}>記事を検索</MobileNavLink>
           <Link
