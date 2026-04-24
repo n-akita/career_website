@@ -122,8 +122,9 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ message: "No new articles (all posted)" });
     }
 
-    // 4. Claude APIで記事選定＋下書き生成
-    const { article, draft } = await selectAndGenerate(articles);
+    // 4. Claude APIで記事選定＋下書き生成（直近の投稿テーマを渡して連投回避）
+    const recentPosted = postedTitles.slice(-5);
+    const { article, draft } = await selectAndGenerate(articles, recentPosted);
 
     // 5. URL解決（元記事URLを取得）
     const resolvedUrl = await resolveArticleUrl(article);
@@ -173,7 +174,7 @@ export async function GET(req: NextRequest) {
         Authorization: `Bearer ${process.env.LINE_CHANNEL_ACCESS_TOKEN}`,
       },
       body: JSON.stringify({
-        messages: [message, { type: "text", text: draft }],
+        messages: [message],
       }),
     });
 
@@ -195,15 +196,15 @@ export async function GET(req: NextRequest) {
 async function fetchCareerNews() {
   const queries = [
     "転職 年収 2026",
-    "リストラ 賃上げ 早期退職",
+    "早期退職 希望退職",
     "大企業 採用 人手不足",
-    "AI 雇用 失業",
+    "AI 雇用 仕事",
     "副業 解禁 働き方",
-    "転職 大企業",
-    "初任給 引き上げ",
-    "ジョブ型 人事",
-    "大企業 年収",
-    "スタートアップ 年収",
+    "ジョブ型 導入",
+    "キャリア自律 学び直し",
+    "管理職 若手 離職",
+    "リスキリング スキル",
+    "組織風土 エンゲージメント",
   ];
   const allItems: Record<string, unknown>[] = [];
   const parser = new XMLParser({ ignoreAttributes: false });
@@ -287,7 +288,7 @@ async function fetchCareerNews() {
 
 type Article = { title: string; link: string; pubDate?: string; sourceUrl?: string; sourceName?: string };
 
-async function selectAndGenerate(articles: Article[]) {
+async function selectAndGenerate(articles: Article[], recentPosted: string[] = []) {
   const writingRules = `# X投稿ルール
 - 一人称：「私」
 - 性格：冷静、ドライ、論理的
@@ -308,6 +309,10 @@ async function selectAndGenerate(articles: Article[]) {
     })
     .join("\n");
 
+  const recentBlock = recentPosted.length > 0
+    ? `\n【直近の投稿タイトル（同じテーマの連投を避ける）】\n${recentPosted.map((t, i) => `(${i + 1}) ${t}`).join("\n")}\n`
+    : "";
+
   const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
   const response = await anthropic.messages.create({
@@ -319,13 +324,23 @@ async function selectAndGenerate(articles: Article[]) {
         role: "user",
         content: `以下のニュース候補から、ターゲット（28〜35歳の転職・キャリアに悩む会社員）が最も反応しそうな記事を1つ選び、投稿文を作成してください。
 
+【テーマのバリエーション（重要）】
+以下のテーマをバランスよくカバーすること。直近の投稿と同じテーマは避ける。
+- 賃金/給与（初任給引き上げ、賃上げ、年収格差）
+- 雇用/リストラ（早期退職、人手不足、採用動向）
+- 働き方（副業解禁、リモート、ジョブ型）
+- 組織/人事（管理職離れ、若手離職、エンゲージメント）
+- AI/スキル（仕事の変化、リスキリング、学び直し）
+- キャリア観（キャリア自律、転職観、出世観）
+${recentBlock}
 【選定基準（重要度順）】
-1. 今日・昨日のニュース速報や最新の出来事を最優先（「○○社がリストラ発表」「賃上げ率○%」「○○業界で人手不足深刻化」等）
-2. 具体的な数字やデータが含まれる記事を優先（「年収○万」「○%増」「○万人」等）
-3. 多くの会社員に関係する社会的なニュースを優先
-4. 個人のコラムやハウツー記事よりも、ニュース速報・調査結果を優先
-5. プレスリリースや特定企業の宣伝は避ける
-6. 一般論や抽象的な記事は避ける
+1. 直近の投稿と違うテーマを優先（同じテーマの連投を避ける）
+2. 今日・昨日のニュース速報や最新の出来事を優先
+3. 具体的な数字やデータが含まれる記事を優先
+4. 多くの会社員に関係する社会的なニュースを優先
+5. 個人のコラムやハウツー記事よりも、ニュース速報・調査結果を優先
+6. プレスリリースや特定企業の宣伝は避ける
+7. 一般論や抽象的な記事は避ける
 
 【ニュース候補】
 ${articleList}
