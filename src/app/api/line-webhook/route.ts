@@ -22,7 +22,7 @@ function b64(str: string): string {
 }
 
 async function replyMessages(replyToken: string, messages: unknown[]) {
-  await fetch("https://api.line.me/v2/bot/message/reply", {
+  const res = await fetch("https://api.line.me/v2/bot/message/reply", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -30,6 +30,10 @@ async function replyMessages(replyToken: string, messages: unknown[]) {
     },
     body: JSON.stringify({ replyToken, messages }),
   });
+  if (!res.ok) {
+    const body = await res.text().catch(() => "");
+    console.error(`[LINE reply failed] status=${res.status} body=${body}`);
+  }
 }
 
 // ツイートURLからtweetIdとusernameを抽出
@@ -133,11 +137,13 @@ async function generateReplyCandidates(
   });
 
   const text = response.content[0].type === "text" ? response.content[0].text.trim() : "";
+  console.log(`[Claude raw output] length=${text.length} stop_reason=${response.stop_reason}`);
   try {
     const jsonMatch = text.match(/\{[\s\S]*\}/);
     const parsed = JSON.parse(jsonMatch![0]);
     return parsed.replies;
-  } catch {
+  } catch (e) {
+    console.error(`[Claude JSON parse failed] error=${(e as Error).message} raw=${text.substring(0, 500)}`);
     return [{ type: "候補", text: text.substring(0, 200) }];
   }
 }
