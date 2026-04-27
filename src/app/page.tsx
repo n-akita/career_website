@@ -1,10 +1,22 @@
 import Image from "next/image";
 import Link from "next/link";
-import { getAllArticles } from "@/lib/articles";
+import { getAllArticles, getArticle } from "@/lib/articles";
 import { FAQPageJsonLd } from "@/components/JsonLd";
+
+const PICK_SLUGS: { category: string; slug: string }[] = [
+  { category: "career", slug: "dx-talent-salary" },
+  { category: "tenshoku", slug: "jtc-regret-checklist" },
+  { category: "career", slug: "venture-vs-enterprise-reality" },
+  { category: "tenshoku", slug: "job-change-count" },
+  { category: "sidejob", slug: "how-to-start-sidejob" },
+  { category: "career", slug: "two-billion-yen-night" },
+];
 
 export default function Home() {
   const articles = getAllArticles().slice(0, 6);
+  const pickedArticles = PICK_SLUGS
+    .map(({ category, slug }) => getArticle(category, slug))
+    .filter((a): a is NonNullable<typeof a> => a !== null);
 
   return (
     <>
@@ -162,7 +174,7 @@ export default function Home() {
                 <h2 className="text-3xl font-bold">最新の記事</h2>
               </div>
               <Link
-                href="/career"
+                href="/search"
                 className="text-sm text-primary font-semibold hover:underline flex items-center gap-1"
               >
                 すべての記事を見る
@@ -221,6 +233,48 @@ export default function Home() {
                 </Link>
               ))}
             </div>
+          </div>
+        </section>
+      )}
+
+      {/* ピックアップ記事セクション（内部リンク強化・SEO） */}
+      {pickedArticles.length > 0 && (
+        <section className="bg-white border-b border-border/60">
+          <div className="max-w-5xl mx-auto px-4 py-16 md:py-20">
+            <div className="mb-10">
+              <p className="text-sm font-semibold text-primary mb-2 tracking-wider uppercase">
+                Pick Up
+              </p>
+              <h2 className="text-2xl md:text-3xl font-bold">読まれているテーマから探す</h2>
+              <p className="text-zinc-500 mt-2 text-sm">
+                年収・転職回数・JTC・ベンチャーなど、よく読まれている記事をピックアップ。
+              </p>
+            </div>
+            <ul className="grid md:grid-cols-2 gap-x-8 gap-y-3">
+              {pickedArticles.map((a) => (
+                <li key={`${a.category}/${a.slug}`}>
+                  <Link
+                    href={`/${a.category}/${a.slug}`}
+                    className="group flex items-start gap-3 py-3 border-b border-border/60 hover:border-primary/40 transition-colors"
+                  >
+                    <span className={`text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded mt-1 shrink-0 ${
+                      a.category === "career"
+                        ? "bg-blue-50 text-blue-600"
+                        : a.category === "tenshoku"
+                        ? "bg-indigo-50 text-indigo-600"
+                        : a.category === "sidejob"
+                        ? "bg-emerald-50 text-emerald-600"
+                        : "bg-amber-50 text-amber-700"
+                    }`}>
+                      {a.category}
+                    </span>
+                    <p className="text-sm font-semibold text-zinc-700 group-hover:text-primary transition-colors leading-snug">
+                      {a.title}
+                    </p>
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
         </section>
       )}

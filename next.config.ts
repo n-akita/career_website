@@ -1,6 +1,15 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  async redirects() {
+    return [
+      {
+        source: "/tenshoku/agent-review-8services",
+        destination: "/story/agent-review-8services",
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {
