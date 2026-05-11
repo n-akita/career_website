@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { savePostedTitle } from "@/lib/posted-news";
 
 export const dynamic = "force-dynamic";
 
@@ -12,6 +13,7 @@ export async function GET(req: NextRequest) {
   const secret = req.nextUrl.searchParams.get("s");
   const tweetB64 = req.nextUrl.searchParams.get("t");
   const urlB64 = req.nextUrl.searchParams.get("u");
+  const titleB64 = req.nextUrl.searchParams.get("n");
 
   if (secret !== process.env.DRAFT_API_SECRET) {
     return htmlResponse("認証エラー", "不正なアクセスです。", 401);
@@ -23,6 +25,7 @@ export async function GET(req: NextRequest) {
 
   const tweet = decodeParam(tweetB64);
   const articleUrl = decodeParam(urlB64);
+  const articleTitle = titleB64 ? decodeParam(titleB64) : "";
   const tweetText = `${tweet}\n\n${articleUrl}`;
 
   try {
@@ -36,6 +39,11 @@ export async function GET(req: NextRequest) {
 
     const { data } = await client.v2.tweet(tweetText);
     const tweetUrl = `https://x.com/nara_nara_san/status/${data.id}`;
+
+    // 投稿成功時のみ「投稿済み」記録（重複防止用）
+    if (articleTitle) {
+      await savePostedTitle(articleTitle);
+    }
 
     // 投稿履歴をGitHubに記録
     await savePostHistory({
@@ -56,6 +64,10 @@ export async function GET(req: NextRequest) {
     );
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : "Unknown error";
+    console.error("[approve] tweet failed:", message);
+    try {
+      await sendLineBroadcast(`❌ 投稿失敗: ${message.substring(0, 200)}`);
+    } catch {}
     return htmlResponse("投稿失敗", `エラー: ${message}`, 500);
   }
 }
