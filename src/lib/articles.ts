@@ -30,11 +30,11 @@ export const BLOG_BASE = "/career";
 export const CAREER_CATEGORIES = ["mindset", "tenshoku", "sidejob", "story"] as const;
 
 /** トップ直下に独立ジャンルとして並設するカテゴリ（/<category>/<slug>） */
-export const GENRE_CATEGORIES = ["taishoku"] as const;
+export const GENRE_CATEGORIES = ["taishoku", "shikaku", "coaching", "english"] as const;
 
 export const CATEGORIES = [...CAREER_CATEGORIES, ...GENRE_CATEGORIES] as const;
 
-function isGenreCategory(category: string): boolean {
+export function isGenreCategory(category: string): boolean {
   return (GENRE_CATEGORIES as readonly string[]).includes(category);
 }
 

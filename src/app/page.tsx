@@ -86,6 +86,81 @@ export default function Home() {
               </p>
             </div>
           </Link>
+
+          <Link
+            href="/shikaku"
+            className="group block border border-border/60 rounded-2xl overflow-hidden bg-white hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+          >
+            <div className="p-7 md:p-8">
+              <div className="flex items-start gap-4 mb-4">
+                <span className="text-4xl">📚</span>
+                <div className="flex-1">
+                  <h3 className="text-xl font-bold mb-1">資格とリスキリング</h3>
+                  <p className="text-xs text-zinc-400">学び直し・資格・通信講座</p>
+                </div>
+              </div>
+              <p className="text-sm text-zinc-500 leading-relaxed mb-5">
+                転職・年収アップに本当に効く資格はどれか。採用側も経験したマーケターの視点で、
+                資格の選び方・独学と通信講座の使い分け・給付金の活用法を解説。
+              </p>
+              <p className="text-sm font-semibold text-primary flex items-center gap-1 group-hover:gap-2 transition-all">
+                資格のコンテンツを見る
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </p>
+            </div>
+          </Link>
+
+          <Link
+            href="/coaching"
+            className="group block border border-border/60 rounded-2xl overflow-hidden bg-white hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+          >
+            <div className="p-7 md:p-8">
+              <div className="flex items-start gap-4 mb-4">
+                <span className="text-4xl">🧭</span>
+                <div className="flex-1">
+                  <h3 className="text-xl font-bold mb-1">キャリア相談とコーチング</h3>
+                  <p className="text-xs text-zinc-400">キャリア迷子・相談先・コーチング比較</p>
+                </div>
+              </div>
+              <p className="text-sm text-zinc-500 leading-relaxed mb-5">
+                「このままでいいのか」に答えを出すための実践情報。キャリアの棚卸しのやり方から、
+                30万円超のキャリアコーチングは価値があるのかまで、転職5社の経験者が本音で整理。
+              </p>
+              <p className="text-sm font-semibold text-primary flex items-center gap-1 group-hover:gap-2 transition-all">
+                キャリア相談のコンテンツを見る
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </p>
+            </div>
+          </Link>
+
+          <Link
+            href="/english"
+            className="group block border border-border/60 rounded-2xl overflow-hidden bg-white hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+          >
+            <div className="p-7 md:p-8">
+              <div className="flex items-start gap-4 mb-4">
+                <span className="text-4xl">🌐</span>
+                <div className="flex-1">
+                  <h3 className="text-xl font-bold mb-1">ビジネス英語とTOEIC</h3>
+                  <p className="text-xs text-zinc-400">TOEIC・オンライン英会話・学習設計</p>
+                </div>
+              </div>
+              <p className="text-sm text-zinc-500 leading-relaxed mb-5">
+                英語はキャリアの武器になるのか。転職で評価されるTOEICスコアの目安から、
+                忙しい社会人の学習設計、英会話サービスの比較まで、キャリア目線で整理。
+              </p>
+              <p className="text-sm font-semibold text-primary flex items-center gap-1 group-hover:gap-2 transition-all">
+                英語のコンテンツを見る
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </p>
+            </div>
+          </Link>
         </div>
       </section>
 

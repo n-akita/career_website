@@ -42,6 +42,27 @@ const categoryConfig: Record<
     bgTo: "#18181b",
     emoji: "🚪",
   },
+  shikaku: {
+    label: "RESKILLING",
+    color: "#14b8a6",
+    bgFrom: "#134e4a",
+    bgTo: "#18181b",
+    emoji: "📚",
+  },
+  coaching: {
+    label: "COACHING",
+    color: "#a855f7",
+    bgFrom: "#3b1d5c",
+    bgTo: "#18181b",
+    emoji: "🧭",
+  },
+  english: {
+    label: "ENGLISH",
+    color: "#0ea5e9",
+    bgFrom: "#0c3a5c",
+    bgTo: "#18181b",
+    emoji: "🌐",
+  },
 };
 
 export async function GET(request: NextRequest) {

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Article } from "@/lib/articles";
-import { getRelatedArticles, articlePath } from "@/lib/articles";
+import { getRelatedArticles, articlePath, isGenreCategory } from "@/lib/articles";
 import MarkdownRenderer from "./MarkdownRenderer";
 import ReadingProgress from "./ReadingProgress";
 import TableOfContents from "./TableOfContents";
@@ -15,6 +15,9 @@ const categoryImages: Record<string, string> = {
   sidejob: "/images/hero-photo.jpg",
   story: "/images/hero-work.jpg",
   taishoku: "/images/hero-work.jpg",
+  shikaku: "/images/hero-photo.jpg",
+  coaching: "/images/hero-city.jpg",
+  english: "/images/hero-work.jpg",
 };
 
 const categoryLabels: Record<string, { label: string; en: string; href: string }> = {
@@ -23,12 +26,43 @@ const categoryLabels: Record<string, { label: string; en: string; href: string }
   sidejob: { label: "副業の始め方", en: "Side Job", href: "/career/sidejob" },
   story: { label: "体験談ストーリー", en: "Story", href: "/career/story" },
   taishoku: { label: "退職のリアル", en: "Resignation", href: "/taishoku" },
+  shikaku: { label: "資格とリスキリング", en: "Reskilling", href: "/shikaku" },
+  coaching: { label: "キャリア相談とコーチング", en: "Coaching", href: "/coaching" },
+  english: { label: "ビジネス英語とTOEIC", en: "English", href: "/english" },
 };
 
 const isStory = (category: string) => category === "story";
-/** アフィリエイト導線を含む独立ジャンル（診断CTAではなくジャンル内ハブへ誘導する） */
-const isTaishoku = (category: string) => category === "taishoku";
-const TAISHOKU_HUB_SLUG = "taishoku-daiko-guide";
+
+/** 独立ジャンルごとの固定導線（ハブ記事CTA）とシェア用ハッシュタグ */
+const genreConfig: Record<
+  string,
+  { hubSlug: string; hubTitle: string; hubSub: string; hashtags: string }
+> = {
+  taishoku: {
+    hubSlug: "taishoku-daiko-guide",
+    hubTitle: "安全な退職代行の選び方 完全ガイドを読む",
+    hubSub: "運営形態・料金・選び方の全体像を1本で。迷ったらまずここから",
+    hashtags: "#退職 #退職代行 #会社員の居場所戦略",
+  },
+  shikaku: {
+    hubSlug: "tenshoku-shikaku-guide",
+    hubTitle: "転職に効く資格の選び方 完全ガイドを読む",
+    hubSub: "資格の選び方・勉強法・給付金の全体像を1本で。迷ったらまずここから",
+    hashtags: "#資格 #リスキリング #会社員の居場所戦略",
+  },
+  coaching: {
+    hubSlug: "coaching-erabikata-guide",
+    hubTitle: "キャリアコーチングの選び方 完全ガイドを読む",
+    hubSub: "料金相場・エージェントとの違い・選び方の全体像を1本で。迷ったらまずここから",
+    hashtags: "#キャリア相談 #キャリアコーチング #会社員の居場所戦略",
+  },
+  english: {
+    hubSlug: "eigo-career-guide",
+    hubTitle: "英語はキャリアの武器になるか 完全ガイドを読む",
+    hubSub: "TOEICの目安スコア・学習設計・サービス選びの全体像を1本で。迷ったらまずここから",
+    hashtags: "#TOEIC #ビジネス英語 #会社員の居場所戦略",
+  },
+};
 
 export default function ArticlePage({ article }: { article: Article }) {
   const cat = categoryLabels[article.category] ?? {
@@ -36,17 +70,15 @@ export default function ArticlePage({ article }: { article: Article }) {
     en: article.category,
     href: `/career/${article.category}`,
   };
+  const isGenre = isGenreCategory(article.category);
+  const genre = genreConfig[article.category];
 
   const articleUrl = `${BASE_URL}${articlePath(article)}`;
   const articleImage = article.image
     ? `${BASE_URL}${article.image}`
     : `${BASE_URL}/images/ogp/default.png`;
   const shareText = encodeURIComponent(
-    `${article.title}\n${
-      isTaishoku(article.category)
-        ? "#退職 #退職代行 #会社員の居場所戦略"
-        : "#転職 #キャリア #会社員の居場所戦略"
-    }\n`
+    `${article.title}\n${genre?.hashtags ?? "#転職 #キャリア #会社員の居場所戦略"}\n`
   );
   const shareUrl = encodeURIComponent(articleUrl);
 
@@ -67,9 +99,7 @@ export default function ArticlePage({ article }: { article: Article }) {
       <BreadcrumbJsonLd
         items={[
           { name: "トップ", url: BASE_URL },
-          ...(isTaishoku(article.category)
-            ? []
-            : [{ name: "キャリア", url: `${BASE_URL}/career` }]),
+          ...(isGenre ? [] : [{ name: "キャリア", url: `${BASE_URL}/career` }]),
           { name: cat.label, url: `${BASE_URL}${cat.href}` },
           { name: article.title, url: articleUrl },
         ]}
@@ -93,7 +123,7 @@ export default function ArticlePage({ article }: { article: Article }) {
           {/* パンくずリスト */}
           <nav aria-label="パンくずリスト" className="flex items-center gap-1.5 text-xs text-zinc-500 mb-6 flex-wrap">
             <Link href="/" className="hover:text-zinc-300 transition-colors">トップ</Link>
-            {!isTaishoku(article.category) && (
+            {!isGenre && (
               <>
                 <span>/</span>
                 <Link href="/career" className="hover:text-zinc-300 transition-colors">キャリア</Link>
@@ -246,11 +276,11 @@ export default function ArticlePage({ article }: { article: Article }) {
         )}
 
         {/* ハブ記事への固定導線（ジャンルごとに出し分け） */}
-        {isTaishoku(article.category)
-          ? article.slug !== TAISHOKU_HUB_SLUG && (
+        {genre
+          ? article.slug !== genre.hubSlug && (
               <div className="my-10">
                 <Link
-                  href={`/taishoku/${TAISHOKU_HUB_SLUG}`}
+                  href={`/${article.category}/${genre.hubSlug}`}
                   className="group flex items-center justify-between gap-4 p-5 bg-muted border border-border/60 rounded-2xl hover:shadow-sm transition-all"
                 >
                   <div className="min-w-0">
@@ -258,10 +288,10 @@ export default function ArticlePage({ article }: { article: Article }) {
                       Complete Guide
                     </p>
                     <p className="font-bold text-sm md:text-base leading-snug">
-                      安全な退職代行の選び方 完全ガイドを読む
+                      {genre.hubTitle}
                     </p>
                     <p className="text-xs text-zinc-500 mt-1">
-                      運営形態・料金・選び方の全体像を1本で。迷ったらまずここから
+                      {genre.hubSub}
                     </p>
                   </div>
                   <svg className="w-5 h-5 text-zinc-300 group-hover:text-primary shrink-0 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -296,9 +326,9 @@ export default function ArticlePage({ article }: { article: Article }) {
 
         {/* フッターCTA */}
         <div className="mt-12 pt-8 border-t border-border/60 space-y-6">
-          {/* フラッグシップ記事CTA（story・taishoku・career-story自身では非表示） */}
+          {/* フラッグシップ記事CTA（story・独立ジャンル・career-story自身では非表示） */}
           {!isStory(article.category) &&
-            !isTaishoku(article.category) &&
+            !isGenre &&
             !(article.category === "mindset" && article.slug === "career-story") && (
             <Link
               href="/career/mindset/career-story"
