@@ -5,7 +5,7 @@ import { getRelatedArticles, articlePath } from "@/lib/articles";
 import MarkdownRenderer from "./MarkdownRenderer";
 import ReadingProgress from "./ReadingProgress";
 import TableOfContents from "./TableOfContents";
-import { ArticleJsonLd, BreadcrumbJsonLd } from "./JsonLd";
+import { ArticleJsonLd, BreadcrumbJsonLd, FAQPageJsonLd } from "./JsonLd";
 
 const BASE_URL = "https://nara-career.com";
 
@@ -74,6 +74,11 @@ export default function ArticlePage({ article }: { article: Article }) {
           { name: article.title, url: articleUrl },
         ]}
       />
+      {article.faq.length > 0 && (
+        <FAQPageJsonLd
+          items={article.faq.map((f) => ({ question: f.q, answer: f.a }))}
+        />
+      )}
 
       {/* ヒーロー */}
       <section className="bg-zinc-900 text-white relative">

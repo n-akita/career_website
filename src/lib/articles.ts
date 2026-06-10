@@ -2,6 +2,8 @@ import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 
+export type ArticleFaq = { q: string; a: string };
+
 export type Article = {
   slug: string;
   category: string;
@@ -12,6 +14,7 @@ export type Article = {
   tags: string[];
   related: string[];
   image: string;
+  faq: ArticleFaq[];
   readingTime: number;
   content: string;
 };
@@ -66,6 +69,7 @@ export function getArticlesByCategory(category: string): ArticleMeta[] {
       tags: (data.tags as string[]) ?? [],
       related: (data.related as string[]) ?? [],
       image: (data.image as string) ?? "",
+      faq: (data.faq as ArticleFaq[]) ?? [],
       readingTime: Math.max(1, Math.round(content.length / 600)),
     };
   });
@@ -90,6 +94,7 @@ export function getArticle(category: string, slug: string): Article | null {
     tags: (data.tags as string[]) ?? [],
     related: (data.related as string[]) ?? [],
     image: (data.image as string) ?? "",
+    faq: (data.faq as ArticleFaq[]) ?? [],
     readingTime: Math.max(1, Math.round(content.length / 600)),
     content,
   };
