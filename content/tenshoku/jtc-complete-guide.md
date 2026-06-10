@@ -2,7 +2,7 @@
 title: 【完全ガイド】JTC転職の教科書——ベンチャーから大手に年収3.5倍で移った全手順
 description: ベンチャーから大手JTCへの転職を成功させるための完全ロードマップ。準備・エージェント選び・職務経歴書・面接・入社後まで、5回の転職経験から全て解説。
 date: '2026-04-06'
-updated: '2026-04-14'
+updated: '2026-06-10'
 tags:
   - JTC
   - 転職
@@ -40,8 +40,8 @@ image: /images/ogp/jtc-complete-guide.png
 この事実を理解することが、全ての出発点になる。
 
 **詳しくはこちら：**
-- [年収を決めるのは「あなたの能力」ではなく「あなたの居場所」](/career/environment-decides-salary)
-- [ベンチャーと大手、結局どっちが得？給与・福利厚生・成長を本音で比較する](/career/venture-vs-enterprise-reality)
+- [年収を決めるのは「あなたの能力」ではなく「あなたの居場所」](/career/mindset/environment-decides-salary)
+- [ベンチャーと大手、結局どっちが得？給与・福利厚生・成長を本音で比較する](/career/mindset/venture-vs-enterprise-reality)
 
 ---
 
@@ -57,8 +57,8 @@ image: /images/ogp/jtc-complete-guide.png
 - 「一人でやってました」→「少人数チームのリード経験」
 
 **詳しくはこちら：**
-- [ベンチャーから大企業に転職できるのか？答えはYES——ただし条件がある](/tenshoku/venture-to-enterprise)
-- [ベンチャーの「なんでも屋」を大手に売る——職務経歴書の書き方](/tenshoku/resume-writing-guide)
+- [ベンチャーから大企業に転職できるのか？答えはYES——ただし条件がある](/career/tenshoku/venture-to-enterprise)
+- [ベンチャーの「なんでも屋」を大手に売る——職務経歴書の書き方](/career/tenshoku/resume-writing-guide)
 
 ---
 
@@ -80,8 +80,8 @@ image: /images/ogp/jtc-complete-guide.png
 7. 社内用語を使わない
 
 **詳しくはこちら：**
-- [転職エージェントがあなたをすぐに紹介しだす職務経歴書の書き方](/tenshoku/resume-for-agents)
-- [ベンチャーの「なんでも屋」を大手に売る——職務経歴書の書き方](/tenshoku/resume-writing-guide)
+- [転職エージェントがあなたをすぐに紹介しだす職務経歴書の書き方](/career/tenshoku/resume-for-agents)
+- [ベンチャーの「なんでも屋」を大手に売る——職務経歴書の書き方](/career/tenshoku/resume-writing-guide)
 
 ---
 
@@ -101,9 +101,9 @@ image: /images/ogp/jtc-complete-guide.png
 **エージェント選びより大事なのは「何を持っていくか」。** 職務経歴書をピカピカにしてからエージェントに行くのが鉄則だ。
 
 **詳しくはこちら：**
-- [転職エージェントとの付き合い方——毎週10分の電話が、年収を変えた](/tenshoku/agent-guide)
-- [転職4回で8社使った僕が本音で語る、転職エージェント格付け](/story/agent-review-8services)
-- [年収1000万超えたら転職エージェントが変わる：ハイクラス転職のリアル](/tenshoku/high-salary-job-change)
+- [転職エージェントとの付き合い方——毎週10分の電話が、年収を変えた](/career/tenshoku/agent-guide)
+- [転職4回で8社使った僕が本音で語る、転職エージェント格付け](/career/story/agent-review-8services)
+- [年収1000万超えたら転職エージェントが変わる：ハイクラス転職のリアル](/career/tenshoku/high-salary-job-change)
 
 ---
 
@@ -119,8 +119,8 @@ image: /images/ogp/jtc-complete-guide.png
 30代後半の面接では「ポテンシャル」ではなく「再現性」が問われる。「前の会社でこうやって成果を出した。御社でも同じ手法で成果を出せる」と言い切れるかどうか。
 
 **詳しくはこちら：**
-- [転職回数5回は多すぎ？面接で聞かれたこと全部書く](/tenshoku/job-change-count)
-- [30代後半の転職は無理？35歳で年収860万→1200万にした方法](/tenshoku/over-35-career-change)
+- [転職回数5回は多すぎ？面接で聞かれたこと全部書く](/career/tenshoku/job-change-count)
+- [30代後半の転職は無理？35歳で年収860万→1200万にした方法](/career/tenshoku/over-35-career-change)
 
 ---
 
@@ -141,8 +141,8 @@ JTCへの転職は年収が上がる。でも「入ってみたら思ってい�
 6. 自分の転職動機を正直に言語化できているか
 
 **詳しくはこちら：**
-- [JTC転職で後悔しないための6つのチェックリスト——僕が見落としたこと全部書く](/tenshoku/jtc-regret-checklist)
-- [大手入社1ヶ月目の赤っ恥リスト——会議室、メール、稟議](/tenshoku/embarrassing-first-month)
+- [JTC転職で後悔しないための6つのチェックリスト——僕が見落としたこと全部書く](/career/tenshoku/jtc-regret-checklist)
+- [大手入社1ヶ月目の赤っ恥リスト——会議室、メール、稟議](/career/tenshoku/embarrassing-first-month)
 
 ---
 
@@ -164,8 +164,8 @@ JTCに入ったら、最初の3ヶ月が全てだ。
 **結果：** 部長の信頼を獲得し、4,000万円のメタバースプロジェクトを任された。会員1万人超、購買2,000万円、Xでトレンド入り。
 
 **詳しくはこちら：**
-- [上司に「何もできない」と言われた僕が、次の会社で4,000万のプロジェクトを任された話](/story/from-zero-to-hero)
-- [大手入社1ヶ月目の赤っ恥リスト——会議室、メール、稟議](/tenshoku/embarrassing-first-month)
+- [上司に「何もできない」と言われた僕が、次の会社で4,000万のプロジェクトを任された話](/career/story/from-zero-to-hero)
+- [大手入社1ヶ月目の赤っ恥リスト——会議室、メール、稟議](/career/tenshoku/embarrassing-first-month)
 
 ---
 
@@ -181,7 +181,7 @@ JTCに入ったら、最初の3ヶ月が全てだ。
 ベンチャーや大手で「普通に」やっていたデジタルマーケティングのスキルが、地方自治体では「専門知識」として高く評価される。居場所を変えれば、同じスキルの価値が変わる。これは本業の転職と全く同じ原理だ。
 
 **詳しくはこちら：**
-- [副業で年収アップ。本業のスキルを「売る」方法を全部書く](/sidejob/how-to-start-sidejob)
+- [副業で年収アップ。本業のスキルを「売る」方法を全部書く](/career/sidejob/how-to-start-sidejob)
 
 ---
 
@@ -196,5 +196,7 @@ JTCに入ったら、最初の3ヶ月が全てだ。
 - **「内定をもらった。入社前に確認したい」** → STEP 6
 - **「入社した。最初の3ヶ月を乗り切りたい」** → STEP 7
 - **「本業は安定した。次は副業」** → STEP 8
+
+そして、転職活動の前にそもそも**「今の会社を辞めたいのに言い出せない」**で止まっている人もいると思う。上司が怖い、引き止めで消耗している——そんな状態なら、まず今の会社を安全に離れる方法から整理してほしい。[安全な退職代行の選び方 完全ガイド](/taishoku/taishoku-daiko-guide)に、労働組合・弁護士・民間の違いから費用相場までまとめている。
 
 あなたの「居場所」が見つかることを願っている。

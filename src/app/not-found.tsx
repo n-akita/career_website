@@ -21,19 +21,19 @@ export default function NotFound() {
           <p className="text-sm font-semibold text-zinc-500 mb-4">人気の記事</p>
           <div className="space-y-2 text-left">
             <Link
-              href="/career/environment-decides-salary"
+              href="/career/mindset/environment-decides-salary"
               className="block p-3 border border-border/60 rounded-lg hover:shadow-sm hover:-translate-y-0.5 transition-all text-sm font-medium hover:text-primary"
             >
               年収を決めるのは「あなたの能力」ではなく「あなたの居場所」
             </Link>
             <Link
-              href="/career/career-story"
+              href="/career/mindset/career-story"
               className="block p-3 border border-border/60 rounded-lg hover:shadow-sm hover:-translate-y-0.5 transition-all text-sm font-medium hover:text-primary"
             >
               年収400万→1,400万。5社の転職ストーリー
             </Link>
             <Link
-              href="/tenshoku/jtc-complete-guide"
+              href="/career/tenshoku/jtc-complete-guide"
               className="block p-3 border border-border/60 rounded-lg hover:shadow-sm hover:-translate-y-0.5 transition-all text-sm font-medium hover:text-primary"
             >
               JTC転職の教科書

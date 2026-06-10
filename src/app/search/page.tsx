@@ -8,6 +8,10 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://nara-career.com/search",
   },
+  robots: {
+    index: false,
+    follow: true,
+  },
 };
 
 export default function SearchPage() {

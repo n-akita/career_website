@@ -24,7 +24,8 @@ export function WebSiteJsonLd() {
         author: {
           "@type": "Person",
           name: "ならなら",
-          url: "https://x.com/nara_nara_san",
+          url: "https://nara-career.com/about",
+          sameAs: ["https://x.com/nara_nara_san"],
         },
         potentialAction: {
           "@type": "SearchAction",
@@ -48,7 +49,8 @@ export function OrganizationJsonLd() {
         founder: {
           "@type": "Person",
           name: "ならなら",
-          url: "https://x.com/nara_nara_san",
+          url: "https://nara-career.com/about",
+          sameAs: ["https://x.com/nara_nara_san"],
         },
         sameAs: ["https://x.com/nara_nara_san"],
       }}
@@ -85,7 +87,8 @@ export function ArticleJsonLd({
         author: {
           "@type": "Person",
           name: "ならなら",
-          url: "https://x.com/nara_nara_san",
+          url: "https://nara-career.com/about",
+          sameAs: ["https://x.com/nara_nara_san"],
         },
         publisher: {
           "@type": "Organization",
@@ -116,6 +119,39 @@ export function BreadcrumbJsonLd({
           name: item.name,
           item: item.url,
         })),
+      }}
+    />
+  );
+}
+
+export function CollectionPageJsonLd({
+  name,
+  description,
+  url,
+  items,
+}: {
+  name: string;
+  description: string;
+  url: string;
+  items: { name: string; url: string }[];
+}) {
+  return (
+    <JsonLd
+      data={{
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        name,
+        description,
+        url,
+        mainEntity: {
+          "@type": "ItemList",
+          itemListElement: items.map((item, i) => ({
+            "@type": "ListItem",
+            position: i + 1,
+            name: item.name,
+            url: item.url,
+          })),
+        },
       }}
     />
   );

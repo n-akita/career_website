@@ -26,18 +26,9 @@ export default function PrivacyPage() {
         <section>
           <h2 className="text-lg font-bold mb-3">広告について</h2>
           <p>
-            当サイトでは、第三者配信の広告サービスおよびアフィリエイトプログラムを利用しています。
-            広告配信事業者は、ユーザーの興味に応じた広告を表示するために、Cookie を使用することがあります。
-            Cookie の利用を望まない場合は、ブラウザの設定から無効にすることが可能です。
+            当サイトは現在、アフィリエイトプログラムおよび第三者配信の広告サービスを利用していません。
+            将来的に広告を掲載する場合は、本ポリシーを更新のうえ、該当ページに広告である旨を明示します。
           </p>
-          <p className="mt-2">当サイトが参加しているアフィリエイトプログラム：</p>
-          <ul className="list-disc list-inside mt-1 space-y-1">
-            <li>A8.net</li>
-            <li>もしもアフィリエイト</li>
-            <li>afb</li>
-            <li>バリューコマース</li>
-            <li>アクセストレード</li>
-          </ul>
         </section>
 
         <section>

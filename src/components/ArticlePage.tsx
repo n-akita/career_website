@@ -1,9 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Article } from "@/lib/articles";
-import { getArticlesByCategory } from "@/lib/articles";
+import { getRelatedArticles, articlePath } from "@/lib/articles";
 import MarkdownRenderer from "./MarkdownRenderer";
-import ServiceCTA from "./ServiceCTA";
 import ReadingProgress from "./ReadingProgress";
 import TableOfContents from "./TableOfContents";
 import { ArticleJsonLd, BreadcrumbJsonLd } from "./JsonLd";
@@ -11,54 +10,48 @@ import { ArticleJsonLd, BreadcrumbJsonLd } from "./JsonLd";
 const BASE_URL = "https://nara-career.com";
 
 const categoryImages: Record<string, string> = {
-  career: "/images/hero-city.jpg",
+  mindset: "/images/hero-city.jpg",
   tenshoku: "/images/hero-work.jpg",
   sidejob: "/images/hero-photo.jpg",
   story: "/images/hero-work.jpg",
+  taishoku: "/images/hero-work.jpg",
 };
 
 const categoryLabels: Record<string, { label: string; en: string; href: string }> = {
-  career: { label: "キャリアの考え方", en: "Career", href: "/career" },
-  tenshoku: { label: "転職ノウハウ", en: "Job Change", href: "/tenshoku" },
-  sidejob: { label: "副業の始め方", en: "Side Job", href: "/sidejob" },
-  story: { label: "体験談ストーリー", en: "Story", href: "/story" },
-};
-
-const categoryServices: Record<string, string[]> = {
-  career: ["doda", "jac", "bizreach"],
-  tenshoku: ["doda", "jac", "bizreach"],
-  sidejob: ["bizreach", "visasq"],
-};
-
-const categoryCtaHeadings: Record<string, string> = {
-  career: "僕が実際に使った転職サービス",
-  tenshoku: "この記事で紹介した転職サービス",
-  sidejob: "副業を始めるならこのサービス",
+  mindset: { label: "キャリアの考え方", en: "Career", href: "/career/mindset" },
+  tenshoku: { label: "転職ノウハウ", en: "Job Change", href: "/career/tenshoku" },
+  sidejob: { label: "副業の始め方", en: "Side Job", href: "/career/sidejob" },
+  story: { label: "体験談ストーリー", en: "Story", href: "/career/story" },
+  taishoku: { label: "退職のリアル", en: "Resignation", href: "/taishoku" },
 };
 
 const isStory = (category: string) => category === "story";
+/** アフィリエイト導線を含む独立ジャンル（診断CTAではなくジャンル内ハブへ誘導する） */
+const isTaishoku = (category: string) => category === "taishoku";
+const TAISHOKU_HUB_SLUG = "taishoku-daiko-guide";
 
 export default function ArticlePage({ article }: { article: Article }) {
   const cat = categoryLabels[article.category] ?? {
     label: article.category,
     en: article.category,
-    href: `/${article.category}`,
+    href: `/career/${article.category}`,
   };
 
-  const serviceIds = categoryServices[article.category] ?? ["doda", "bizreach"];
-  const articleUrl = `${BASE_URL}/${article.category}/${article.slug}`;
+  const articleUrl = `${BASE_URL}${articlePath(article)}`;
   const articleImage = article.image
     ? `${BASE_URL}${article.image}`
     : `${BASE_URL}/images/ogp/default.png`;
   const shareText = encodeURIComponent(
-    `${article.title}\n#転職 #キャリア #会社員の居場所戦略\n`
+    `${article.title}\n${
+      isTaishoku(article.category)
+        ? "#退職 #退職代行 #会社員の居場所戦略"
+        : "#転職 #キャリア #会社員の居場所戦略"
+    }\n`
   );
   const shareUrl = encodeURIComponent(articleUrl);
 
-  // 関連記事（同カテゴリから自分以外を最大3件）
-  const relatedArticles = getArticlesByCategory(article.category)
-    .filter((a) => a.slug !== article.slug)
-    .slice(0, 3);
+  // 関連記事（frontmatter指定を優先しつつ、タグの近い記事をカテゴリ横断で取得）
+  const relatedArticles = getRelatedArticles(article, 4);
 
   return (
     <>
@@ -74,6 +67,9 @@ export default function ArticlePage({ article }: { article: Article }) {
       <BreadcrumbJsonLd
         items={[
           { name: "トップ", url: BASE_URL },
+          ...(isTaishoku(article.category)
+            ? []
+            : [{ name: "キャリア", url: `${BASE_URL}/career` }]),
           { name: cat.label, url: `${BASE_URL}${cat.href}` },
           { name: article.title, url: articleUrl },
         ]}
@@ -92,6 +88,12 @@ export default function ArticlePage({ article }: { article: Article }) {
           {/* パンくずリスト */}
           <nav aria-label="パンくずリスト" className="flex items-center gap-1.5 text-xs text-zinc-500 mb-6 flex-wrap">
             <Link href="/" className="hover:text-zinc-300 transition-colors">トップ</Link>
+            {!isTaishoku(article.category) && (
+              <>
+                <span>/</span>
+                <Link href="/career" className="hover:text-zinc-300 transition-colors">キャリア</Link>
+              </>
+            )}
             <span>/</span>
             <Link href={cat.href} className="hover:text-zinc-300 transition-colors">{cat.label}</Link>
             <span>/</span>
@@ -109,12 +111,6 @@ export default function ArticlePage({ article }: { article: Article }) {
               )}
             </p>
             <p className="text-zinc-400 text-sm">約{article.readingTime}分で読めます</p>
-            {/* 広告表記（storyカテゴリは広告なしのため非表示） */}
-            {!isStory(article.category) && (
-              <span className="text-xs text-zinc-400 border border-zinc-600 px-2 py-0.5 rounded">
-                PR・広告を含みます
-              </span>
-            )}
           </div>
           {article.tags.length > 0 && (
             <div className="flex flex-wrap gap-2 mt-3">
@@ -139,14 +135,6 @@ export default function ArticlePage({ article }: { article: Article }) {
         <TableOfContents content={article.content} />
         <MarkdownRenderer content={article.content} />
 
-        {/* サービスCTA（storyカテゴリは非掲載） */}
-        {!isStory(article.category) && (
-          <ServiceCTA
-            serviceIds={serviceIds}
-            heading={categoryCtaHeadings[article.category]}
-          />
-        )}
-
         {/* ストーリー記事の導線：ノウハウ記事へ */}
         {isStory(article.category) && (
           <div className="my-12 bg-muted border border-border/60 rounded-2xl p-6 md:p-8">
@@ -159,7 +147,7 @@ export default function ArticlePage({ article }: { article: Article }) {
             </p>
             <div className="space-y-3">
               <Link
-                href="/tenshoku"
+                href="/career/tenshoku"
                 className="flex items-center justify-between p-4 bg-white border border-border/60 rounded-xl hover:shadow-sm transition-all group"
               >
                 <div>
@@ -171,7 +159,7 @@ export default function ArticlePage({ article }: { article: Article }) {
                 </svg>
               </Link>
               <Link
-                href="/career"
+                href="/career/mindset"
                 className="flex items-center justify-between p-4 bg-white border border-border/60 rounded-xl hover:shadow-sm transition-all group"
               >
                 <div>
@@ -224,12 +212,12 @@ export default function ArticlePage({ article }: { article: Article }) {
         {/* 関連記事 */}
         {relatedArticles.length > 0 && (
           <div className="my-12 border-t border-border/60 pt-10">
-            <h3 className="text-lg font-bold mb-6">同じカテゴリの記事</h3>
+            <h3 className="text-lg font-bold mb-6">あわせて読みたい</h3>
             <div className="space-y-3">
               {relatedArticles.map((a) => (
                 <Link
-                  key={a.slug}
-                  href={`/${a.category}/${a.slug}`}
+                  key={`${a.category}/${a.slug}`}
+                  href={articlePath(a)}
                   className="group flex items-start gap-3 p-4 border border-border/60 rounded-xl bg-white hover:shadow-sm hover:-translate-y-0.5 transition-all"
                 >
                   <div className="flex-1 min-w-0">
@@ -252,21 +240,72 @@ export default function ArticlePage({ article }: { article: Article }) {
           </div>
         )}
 
+        {/* ハブ記事への固定導線（ジャンルごとに出し分け） */}
+        {isTaishoku(article.category)
+          ? article.slug !== TAISHOKU_HUB_SLUG && (
+              <div className="my-10">
+                <Link
+                  href={`/taishoku/${TAISHOKU_HUB_SLUG}`}
+                  className="group flex items-center justify-between gap-4 p-5 bg-muted border border-border/60 rounded-2xl hover:shadow-sm transition-all"
+                >
+                  <div className="min-w-0">
+                    <p className="text-xs font-semibold text-primary tracking-wider uppercase mb-1">
+                      Complete Guide
+                    </p>
+                    <p className="font-bold text-sm md:text-base leading-snug">
+                      安全な退職代行の選び方 完全ガイドを読む
+                    </p>
+                    <p className="text-xs text-zinc-500 mt-1">
+                      運営形態・料金・選び方の全体像を1本で。迷ったらまずここから
+                    </p>
+                  </div>
+                  <svg className="w-5 h-5 text-zinc-300 group-hover:text-primary shrink-0 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </Link>
+              </div>
+            )
+          : !(article.category === "tenshoku" && article.slug === "jtc-complete-guide") && (
+              <div className="my-10">
+                <Link
+                  href="/career/tenshoku/jtc-complete-guide"
+                  className="group flex items-center justify-between gap-4 p-5 bg-muted border border-border/60 rounded-2xl hover:shadow-sm transition-all"
+                >
+                  <div className="min-w-0">
+                    <p className="text-xs font-semibold text-primary tracking-wider uppercase mb-1">
+                      Complete Guide
+                    </p>
+                    <p className="font-bold text-sm md:text-base leading-snug">
+                      ベンチャーから大手への転職 完全ガイドを読む
+                    </p>
+                    <p className="text-xs text-zinc-500 mt-1">
+                      転職活動の全体像を1本で。迷ったらまずここから
+                    </p>
+                  </div>
+                  <svg className="w-5 h-5 text-zinc-300 group-hover:text-primary shrink-0 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </Link>
+              </div>
+            )}
+
         {/* フッターCTA */}
         <div className="mt-12 pt-8 border-t border-border/60 space-y-6">
-          {/* 診断CTA（storyカテゴリはアフィリ導線を含むため非表示） */}
-          {!isStory(article.category) && (
+          {/* フラッグシップ記事CTA（story・taishoku・career-story自身では非表示） */}
+          {!isStory(article.category) &&
+            !isTaishoku(article.category) &&
+            !(article.category === "mindset" && article.slug === "career-story") && (
             <Link
-              href="/diagnosis"
+              href="/career/mindset/career-story"
               className="block bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl p-6 md:p-8 text-white text-center hover:from-blue-700 hover:to-indigo-700 transition-all group"
             >
-              <p className="text-2xl mb-2">🧭</p>
-              <p className="font-bold text-lg mb-1">ならなら式転職診断</p>
+              <p className="text-2xl mb-2">📖</p>
+              <p className="font-bold text-lg mb-1">年収400万→3.5倍。5回転職した僕の全記録</p>
               <p className="text-blue-200 text-sm mb-4">
-                5つの質問であなたに合ったキャリア戦略がわかる
+                「場所を変えるだけで年収は上がる」——このサイトの原点になった話
               </p>
               <span className="inline-flex items-center gap-1 text-sm font-semibold border border-white/30 px-5 py-2 rounded-lg group-hover:bg-white/10 transition-colors">
-                無料で診断する
+                全記録を読む
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                 </svg>

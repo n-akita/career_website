@@ -14,9 +14,10 @@ type Article = {
 };
 
 const categoryLabels: Record<string, { label: string; color: string }> = {
-  career: { label: "キャリア", color: "bg-blue-100 text-blue-700" },
+  mindset: { label: "キャリア", color: "bg-blue-100 text-blue-700" },
   tenshoku: { label: "転職ノウハウ", color: "bg-indigo-100 text-indigo-700" },
   sidejob: { label: "副業", color: "bg-emerald-100 text-emerald-700" },
+  story: { label: "体験談", color: "bg-amber-100 text-amber-700" },
 };
 
 export default function SearchClient({ articles }: { articles: Article[] }) {
@@ -74,7 +75,7 @@ export default function SearchClient({ articles }: { articles: Article[] }) {
           return (
             <Link
               key={`${a.category}/${a.slug}`}
-              href={`/${a.category}/${a.slug}`}
+              href={`/career/${a.category}/${a.slug}`}
               className="block p-5 border border-border/60 rounded-xl bg-white hover:shadow-md hover:-translate-y-0.5 transition-all"
             >
               <div className="flex items-center gap-2 mb-2">

@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { ArticleMeta } from "@/lib/articles";
-import { BreadcrumbJsonLd } from "./JsonLd";
+import { articlePath, categoryPath } from "@/lib/articles";
+import { BreadcrumbJsonLd, CollectionPageJsonLd } from "./JsonLd";
 
 export type ArticleSection = {
   label: string;
@@ -18,6 +19,8 @@ type Props = {
   category: string;
   sections?: ArticleSection[];
   featured?: string; // slug of featured article
+  /** パンくずの親階層。トップ直下の独立ジャンルは null を渡す（デフォルトはキャリア） */
+  parent?: { name: string; href: string } | null;
 };
 
 function ArticleCard({
@@ -31,7 +34,7 @@ function ArticleCard({
 }) {
   return (
     <Link
-      href={`/${category}/${article.slug}`}
+      href={articlePath({ category, slug: article.slug })}
       className={`group block border rounded-xl bg-white hover:shadow-md hover:-translate-y-0.5 transition-all ${
         featured
           ? "border-primary/30 ring-1 ring-primary/10 p-6 md:p-8"
@@ -100,6 +103,7 @@ export default function CategoryPage({
   category,
   sections,
   featured,
+  parent = { name: "キャリア", href: "/career" },
 }: Props) {
   const articleMap = new Map(articles.map((a) => [a.slug, a]));
 
@@ -108,11 +112,27 @@ export default function CategoryPage({
       <BreadcrumbJsonLd
         items={[
           { name: "トップ", url: "https://nara-career.com" },
-          { name: title, url: `https://nara-career.com/${category}` },
+          ...(parent ? [{ name: parent.name, url: `https://nara-career.com${parent.href}` }] : []),
+          { name: title, url: `https://nara-career.com${categoryPath(category)}` },
         ]}
+      />
+      <CollectionPageJsonLd
+        name={title}
+        description={description}
+        url={`https://nara-career.com${categoryPath(category)}`}
+        items={articles.map((a) => ({
+          name: a.title,
+          url: `https://nara-career.com${articlePath({ category, slug: a.slug })}`,
+        }))}
       />
       <nav aria-label="パンくずリスト" className="flex items-center gap-1.5 text-xs text-zinc-500 mb-8 flex-wrap">
         <Link href="/" className="hover:text-primary transition-colors">トップ</Link>
+        {parent && (
+          <>
+            <span>/</span>
+            <Link href={parent.href} className="hover:text-primary transition-colors">{parent.name}</Link>
+          </>
+        )}
         <span>/</span>
         <span className="text-zinc-700 font-medium">{title}</span>
       </nav>

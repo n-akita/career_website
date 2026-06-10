@@ -34,11 +34,12 @@ export default function Footer() {
             <div>
               <p className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">コンテンツ</p>
               <div className="flex flex-col gap-1 text-sm">
-                <Link href="/career" className="hover:text-white transition-colors py-1.5">キャリアの考え方</Link>
-                <Link href="/tenshoku" className="hover:text-white transition-colors py-1.5">転職ノウハウ</Link>
-                <Link href="/sidejob" className="hover:text-white transition-colors py-1.5">副業の始め方</Link>
-                <Link href="/story" className="hover:text-white transition-colors py-1.5">体験談ストーリー</Link>
-                <Link href="/diagnosis" className="hover:text-white transition-colors py-1.5">転職診断</Link>
+                <Link href="/career/mindset" className="hover:text-white transition-colors py-1.5">キャリアの考え方</Link>
+                <Link href="/career/tenshoku" className="hover:text-white transition-colors py-1.5">転職ノウハウ</Link>
+                <Link href="/career/sidejob" className="hover:text-white transition-colors py-1.5">副業の始め方</Link>
+                <Link href="/career/story" className="hover:text-white transition-colors py-1.5">体験談ストーリー</Link>
+                <Link href="/taishoku" className="hover:text-white transition-colors py-1.5">退職のリアル</Link>
+                <Link href="/career/diagnosis" className="hover:text-white transition-colors py-1.5">転職診断</Link>
               </div>
             </div>
 
@@ -46,13 +47,13 @@ export default function Footer() {
             <div>
               <p className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">人気の記事</p>
               <div className="flex flex-col gap-1 text-sm">
-                <Link href="/career/environment-decides-salary" className="hover:text-white transition-colors py-1.5 max-w-[200px] truncate">
+                <Link href="/career/mindset/environment-decides-salary" className="hover:text-white transition-colors py-1.5 max-w-[200px] truncate">
                   年収は「居場所」で決まる
                 </Link>
-                <Link href="/career/career-story" className="hover:text-white transition-colors py-1.5 max-w-[200px] truncate">
+                <Link href="/career/mindset/career-story" className="hover:text-white transition-colors py-1.5 max-w-[200px] truncate">
                   年収400万→1,400万の転職記録
                 </Link>
-                <Link href="/tenshoku/jtc-complete-guide" className="hover:text-white transition-colors py-1.5 max-w-[200px] truncate">
+                <Link href="/career/tenshoku/jtc-complete-guide" className="hover:text-white transition-colors py-1.5 max-w-[200px] truncate">
                   大手JTC転職の完全ガイド
                 </Link>
               </div>
@@ -66,6 +67,7 @@ export default function Footer() {
                 <Link href="/privacy" className="hover:text-white transition-colors py-1.5">プライバシーポリシー</Link>
                 <Link href="/disclaimer" className="hover:text-white transition-colors py-1.5">免責事項</Link>
                 <Link href="/contact" className="hover:text-white transition-colors py-1.5">お問い合わせ</Link>
+                <a href="/feed.xml" className="hover:text-white transition-colors py-1.5">RSSフィード</a>
               </div>
             </div>
           </div>

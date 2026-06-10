@@ -23,6 +23,9 @@ export const metadata: Metadata = {
     "5回の転職で年収3.5倍（400万→1,200万）を実現。ベンチャーから大手JTCへの転職経験をもとに、環境を変えるキャリア戦略・転職ノウハウ・副業の始め方を発信。",
   alternates: {
     canonical: "https://nara-career.com",
+    types: {
+      "application/rss+xml": "https://nara-career.com/feed.xml",
+    },
   },
   openGraph: {
     type: "website",

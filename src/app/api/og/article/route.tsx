@@ -7,7 +7,7 @@ const categoryConfig: Record<
   string,
   { label: string; color: string; bgFrom: string; bgTo: string; emoji: string }
 > = {
-  career: {
+  mindset: {
     label: "CAREER",
     color: "#3b82f6",
     bgFrom: "#1e3a5f",
@@ -35,14 +35,21 @@ const categoryConfig: Record<
     bgTo: "#18181b",
     emoji: "🗣️",
   },
+  taishoku: {
+    label: "RESIGNATION",
+    color: "#f43f5e",
+    bgFrom: "#4c1d2e",
+    bgTo: "#18181b",
+    emoji: "🚪",
+  },
 };
 
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
   const title = searchParams.get("title") || "会社員の居場所戦略";
-  const category = searchParams.get("category") || "career";
+  const category = searchParams.get("category") || "mindset";
 
-  const config = categoryConfig[category] || categoryConfig.career;
+  const config = categoryConfig[category] || categoryConfig.mindset;
 
   // タイトルが長い場合はフォントサイズを小さくする
   const titleLen = title.length;

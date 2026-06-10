@@ -29,10 +29,10 @@ export default function Header() {
 
         {/* デスクトップメニュー */}
         <nav className="hidden md:flex items-center gap-1 text-sm font-medium">
-          <NavLink href="/career">キャリアの考え方</NavLink>
-          <NavLink href="/tenshoku">転職ノウハウ</NavLink>
-          <NavLink href="/sidejob">副業の始め方</NavLink>
-          <NavLink href="/story">体験談</NavLink>
+          <NavLink href="/career/mindset">キャリアの考え方</NavLink>
+          <NavLink href="/career/tenshoku">転職ノウハウ</NavLink>
+          <NavLink href="/career/sidejob">副業の始め方</NavLink>
+          <NavLink href="/career/story">体験談</NavLink>
           <NavLink href="/about">ならならについて</NavLink>
           <Link
             href="/search"
@@ -44,10 +44,10 @@ export default function Header() {
             </svg>
           </Link>
           <Link
-            href="/diagnosis"
+            href="/career/tenshoku/jtc-complete-guide"
             className="ml-2 px-4 py-2 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-primary-dark transition-colors"
           >
-            ならなら式転職診断
+            転職 完全ガイド
           </Link>
         </nav>
 
@@ -70,18 +70,18 @@ export default function Header() {
       {/* モバイルメニュー */}
       {menuOpen && (
         <nav className="md:hidden border-t border-border/60 bg-white/95 backdrop-blur-lg px-4 py-3 flex flex-col gap-1 text-sm font-medium animate-[slideDown_0.2s_ease-out]">
-          <MobileNavLink href="/career" onClick={() => setMenuOpen(false)}>キャリアの考え方</MobileNavLink>
-          <MobileNavLink href="/tenshoku" onClick={() => setMenuOpen(false)}>転職ノウハウ</MobileNavLink>
-          <MobileNavLink href="/sidejob" onClick={() => setMenuOpen(false)}>副業の始め方</MobileNavLink>
-          <MobileNavLink href="/story" onClick={() => setMenuOpen(false)}>体験談</MobileNavLink>
+          <MobileNavLink href="/career/mindset" onClick={() => setMenuOpen(false)}>キャリアの考え方</MobileNavLink>
+          <MobileNavLink href="/career/tenshoku" onClick={() => setMenuOpen(false)}>転職ノウハウ</MobileNavLink>
+          <MobileNavLink href="/career/sidejob" onClick={() => setMenuOpen(false)}>副業の始め方</MobileNavLink>
+          <MobileNavLink href="/career/story" onClick={() => setMenuOpen(false)}>体験談</MobileNavLink>
           <MobileNavLink href="/about" onClick={() => setMenuOpen(false)}>ならならについて</MobileNavLink>
           <MobileNavLink href="/search" onClick={() => setMenuOpen(false)}>記事を検索</MobileNavLink>
           <Link
-            href="/diagnosis"
+            href="/career/tenshoku/jtc-complete-guide"
             onClick={() => setMenuOpen(false)}
             className="mx-3 mt-1 px-4 py-2.5 rounded-lg bg-primary text-white text-sm font-semibold text-center hover:bg-primary-dark transition-colors"
           >
-            ならなら式転職診断
+            転職 完全ガイド
           </Link>
         </nav>
       )}
