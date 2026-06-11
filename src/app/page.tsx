@@ -23,7 +23,8 @@ export default function Home() {
             働く人の「選び方」を変えるメディア
           </h1>
           <p className="text-base text-zinc-300 max-w-lg leading-relaxed">
-            会社・サービス・働き方——人生を左右する選択を、実体験ベースの一次情報で支えます。
+            転職・退職・資格・英語——会社員の人生を左右する選択を、
+            5社の転職で年収3.5倍を実現した運営者が、実体験ベースの一次情報で支えます。
           </p>
         </div>
       </section>
@@ -35,132 +36,51 @@ export default function Home() {
             Contents
           </p>
           <h2 className="text-2xl md:text-3xl font-bold">コンテンツ</h2>
+          <p className="text-sm text-zinc-500 mt-2">
+            実体験を核にした「キャリア・退職」を主軸に、学び直し・英語まで横断して扱っています。
+          </p>
         </div>
-        <div className="grid md:grid-cols-2 gap-6">
-          <Link
+
+        {/* 主軸ジャンル（大カード） */}
+        <div className="grid md:grid-cols-2 gap-6 mb-6">
+          <PrimaryCard
             href="/career"
-            className="group block border border-border/60 rounded-2xl overflow-hidden bg-white hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
-          >
-            <div className="p-7 md:p-8">
-              <div className="flex items-start gap-4 mb-4">
-                <span className="text-4xl">🏢</span>
-                <div className="flex-1">
-                  <h3 className="text-xl font-bold mb-1">会社員の居場所戦略</h3>
-                  <p className="text-xs text-zinc-400">キャリア・転職・副業</p>
-                </div>
-              </div>
-              <p className="text-sm text-zinc-500 leading-relaxed mb-5">
-                5回の転職で年収3.5倍を実現した運営者が、出世ではなく「環境を変える」キャリア戦略を発信。
-                転職ノウハウから体験談まで、実体験ベースの一次情報。
-              </p>
-              <p className="text-sm font-semibold text-primary flex items-center gap-1 group-hover:gap-2 transition-all">
-                キャリアのコンテンツを見る
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </p>
-            </div>
-          </Link>
-
-          <Link
+            emoji="🏢"
+            title="会社員の居場所戦略"
+            sub="キャリア・転職・副業"
+            body="5回の転職で年収3.5倍を実現した運営者が、出世ではなく「環境を変える」キャリア戦略を発信。転職ノウハウから体験談まで、実体験ベースの一次情報。"
+            cta="キャリアのコンテンツを見る"
+          />
+          <PrimaryCard
             href="/taishoku"
-            className="group block border border-border/60 rounded-2xl overflow-hidden bg-white hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
-          >
-            <div className="p-7 md:p-8">
-              <div className="flex items-start gap-4 mb-4">
-                <span className="text-4xl">🚪</span>
-                <div className="flex-1">
-                  <h3 className="text-xl font-bold mb-1">退職のリアル</h3>
-                  <p className="text-xs text-zinc-400">退職代行・辞め方・辞めた後</p>
-                </div>
-              </div>
-              <p className="text-sm text-zinc-500 leading-relaxed mb-5">
-                「辞めたいのに言えない」を解決する実践情報。安全な退職代行の選び方、
-                労働組合と弁護士の違い、退職代行を受けた側の管理職が見た実情まで。
-              </p>
-              <p className="text-sm font-semibold text-primary flex items-center gap-1 group-hover:gap-2 transition-all">
-                退職のコンテンツを見る
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </p>
-            </div>
-          </Link>
+            emoji="🚪"
+            title="退職のリアル"
+            sub="退職代行・辞め方・辞めた後"
+            body="「辞めたいのに言えない」を解決する実践情報。安全な退職代行の選び方、労働組合と弁護士の違い、退職代行を受けた側の管理職が見た実情まで。"
+            cta="退職のコンテンツを見る"
+          />
+        </div>
 
-          <Link
+        {/* サテライトジャンル（小カード） */}
+        <div className="grid sm:grid-cols-3 gap-4">
+          <SecondaryCard
             href="/shikaku"
-            className="group block border border-border/60 rounded-2xl overflow-hidden bg-white hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
-          >
-            <div className="p-7 md:p-8">
-              <div className="flex items-start gap-4 mb-4">
-                <span className="text-4xl">📚</span>
-                <div className="flex-1">
-                  <h3 className="text-xl font-bold mb-1">資格とリスキリング</h3>
-                  <p className="text-xs text-zinc-400">学び直し・資格・通信講座</p>
-                </div>
-              </div>
-              <p className="text-sm text-zinc-500 leading-relaxed mb-5">
-                転職・年収アップに本当に効く資格はどれか。採用側も経験したマーケターの視点で、
-                資格の選び方・独学と通信講座の使い分け・給付金の活用法を解説。
-              </p>
-              <p className="text-sm font-semibold text-primary flex items-center gap-1 group-hover:gap-2 transition-all">
-                資格のコンテンツを見る
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </p>
-            </div>
-          </Link>
-
-          <Link
+            emoji="📚"
+            title="資格とリスキリング"
+            body="採用側も経験したマーケター視点で、転職・年収アップに本当に効く資格と通信講座の選び方を解説。"
+          />
+          <SecondaryCard
             href="/coaching"
-            className="group block border border-border/60 rounded-2xl overflow-hidden bg-white hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
-          >
-            <div className="p-7 md:p-8">
-              <div className="flex items-start gap-4 mb-4">
-                <span className="text-4xl">🧭</span>
-                <div className="flex-1">
-                  <h3 className="text-xl font-bold mb-1">キャリア相談とコーチング</h3>
-                  <p className="text-xs text-zinc-400">キャリア迷子・相談先・コーチング比較</p>
-                </div>
-              </div>
-              <p className="text-sm text-zinc-500 leading-relaxed mb-5">
-                「このままでいいのか」に答えを出すための実践情報。キャリアの棚卸しのやり方から、
-                30万円超のキャリアコーチングは価値があるのかまで、転職5社の経験者が本音で整理。
-              </p>
-              <p className="text-sm font-semibold text-primary flex items-center gap-1 group-hover:gap-2 transition-all">
-                キャリア相談のコンテンツを見る
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </p>
-            </div>
-          </Link>
-
-          <Link
+            emoji="🧭"
+            title="キャリア相談とコーチング"
+            body="「このままでいいのか」に答えを出す。30万円超のキャリアコーチングは価値があるのか、本音で整理。"
+          />
+          <SecondaryCard
             href="/english"
-            className="group block border border-border/60 rounded-2xl overflow-hidden bg-white hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
-          >
-            <div className="p-7 md:p-8">
-              <div className="flex items-start gap-4 mb-4">
-                <span className="text-4xl">🌐</span>
-                <div className="flex-1">
-                  <h3 className="text-xl font-bold mb-1">ビジネス英語とTOEIC</h3>
-                  <p className="text-xs text-zinc-400">TOEIC・オンライン英会話・学習設計</p>
-                </div>
-              </div>
-              <p className="text-sm text-zinc-500 leading-relaxed mb-5">
-                英語はキャリアの武器になるのか。転職で評価されるTOEICスコアの目安から、
-                忙しい社会人の学習設計、英会話サービスの比較まで、キャリア目線で整理。
-              </p>
-              <p className="text-sm font-semibold text-primary flex items-center gap-1 group-hover:gap-2 transition-all">
-                英語のコンテンツを見る
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </p>
-            </div>
-          </Link>
+            emoji="🌐"
+            title="ビジネス英語とTOEIC"
+            body="転職で評価されるTOEICの目安から、忙しい社会人の学習設計・英会話サービス比較までキャリア目線で。"
+          />
         </div>
       </section>
 
@@ -205,5 +125,70 @@ export default function Home() {
         </div>
       </section>
     </>
+  );
+}
+
+function PrimaryCard({
+  href,
+  emoji,
+  title,
+  sub,
+  body,
+  cta,
+}: {
+  href: string;
+  emoji: string;
+  title: string;
+  sub: string;
+  body: string;
+  cta: string;
+}) {
+  return (
+    <Link
+      href={href}
+      className="group block border border-border/60 rounded-2xl overflow-hidden bg-white hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+    >
+      <div className="p-7 md:p-8">
+        <div className="flex items-start gap-4 mb-4">
+          <span className="text-4xl">{emoji}</span>
+          <div className="flex-1">
+            <h3 className="text-xl font-bold mb-1">{title}</h3>
+            <p className="text-xs text-zinc-400">{sub}</p>
+          </div>
+        </div>
+        <p className="text-sm text-zinc-500 leading-relaxed mb-5">{body}</p>
+        <p className="text-sm font-semibold text-primary flex items-center gap-1 group-hover:gap-2 transition-all">
+          {cta}
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
+        </p>
+      </div>
+    </Link>
+  );
+}
+
+function SecondaryCard({
+  href,
+  emoji,
+  title,
+  body,
+}: {
+  href: string;
+  emoji: string;
+  title: string;
+  body: string;
+}) {
+  return (
+    <Link
+      href={href}
+      className="group block border border-border/60 rounded-xl bg-white p-6 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300"
+    >
+      <div className="flex items-center gap-3 mb-3">
+        <span className="text-2xl">{emoji}</span>
+        <h3 className="text-base font-bold group-hover:text-primary transition-colors">{title}</h3>
+      </div>
+      <p className="text-[13px] text-zinc-500 leading-relaxed">{body}</p>
+    </Link>
   );
 }

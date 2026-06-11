@@ -8,12 +8,12 @@ export default function Footer() {
           {/* ブランド */}
           <div className="max-w-sm">
             <p className="flex items-center gap-2 font-bold text-white text-lg mb-3">
-              <span>🏢</span> 会社員の居場所戦略
+              <span>🏢</span> ならなら
             </p>
             <p className="text-sm text-zinc-400 leading-relaxed mb-4">
-              出世も大事。でも&ldquo;職場を変える&rdquo;だけで年収が上がることもある。
-              5社の転職で年収3.5倍を実現した「ならなら」が、
-              環境を味方につけるキャリア戦略を発信。
+              働く人の「選び方」を変えるメディア。
+              5社の転職で年収3.5倍を実現した「ならなら」が、転職・退職・資格・英語まで、
+              人生を左右する選択を実体験ベースの一次情報で支える。
             </p>
             {/* SNSアイコン */}
             <a
@@ -77,7 +77,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-zinc-800 mt-10 pt-6 text-center text-xs text-zinc-500">
-          &copy; {new Date().getFullYear()} 会社員の居場所戦略 All Rights Reserved.
+          &copy; {new Date().getFullYear()} ならなら（nara-career.com） All Rights Reserved.
         </div>
       </div>
     </footer>
