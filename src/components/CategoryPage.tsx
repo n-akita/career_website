@@ -3,6 +3,7 @@ import Link from "next/link";
 import type { ArticleMeta } from "@/lib/articles";
 import { articlePath, categoryPath } from "@/lib/articles";
 import { BreadcrumbJsonLd, CollectionPageJsonLd } from "./JsonLd";
+import GenreSubNav from "./GenreSubNav";
 
 export type ArticleSection = {
   label: string;
@@ -108,7 +109,9 @@ export default function CategoryPage({
   const articleMap = new Map(articles.map((a) => [a.slug, a]));
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-16">
+    <>
+      <GenreSubNav category={category} currentPath={categoryPath(category)} />
+      <div className="max-w-3xl mx-auto px-4 py-16">
       <BreadcrumbJsonLd
         items={[
           { name: "トップ", url: "https://nara-career.com" },
@@ -210,6 +213,7 @@ export default function CategoryPage({
           ))}
         </div>
       )}
-    </div>
+      </div>
+    </>
   );
 }

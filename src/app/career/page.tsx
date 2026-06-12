@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { CAREER_CATEGORIES, getArticlesByCategory, getArticle, articlePath } from "@/lib/articles";
 import { FAQPageJsonLd } from "@/components/JsonLd";
+import GenreSubNav from "@/components/GenreSubNav";
 
 export const metadata: Metadata = {
   title: "年収を上げる転職戦略｜会社員の居場所戦略",
@@ -49,6 +50,9 @@ export default function CareerTop() {
           },
         ]}
       />
+      {/* ジャンル内サブナビ */}
+      <GenreSubNav category="career" currentPath="/career" />
+
       {/* ヒーローセクション */}
       <section className="relative min-h-[480px] md:min-h-[620px] flex items-center overflow-hidden">
         <Image

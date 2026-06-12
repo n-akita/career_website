@@ -6,6 +6,7 @@ import MarkdownRenderer from "./MarkdownRenderer";
 import ReadingProgress from "./ReadingProgress";
 import TableOfContents from "./TableOfContents";
 import { ArticleJsonLd, BreadcrumbJsonLd, FAQPageJsonLd } from "./JsonLd";
+import GenreSubNav from "./GenreSubNav";
 
 const BASE_URL = "https://nara-career.com";
 
@@ -125,6 +126,9 @@ export default function ArticlePage({ article }: { article: Article }) {
           items={article.faq.map((f) => ({ question: f.q, answer: f.a }))}
         />
       )}
+
+      {/* ジャンル内サブナビ */}
+      <GenreSubNav category={article.category} currentPath={articlePath(article)} />
 
       {/* ヒーロー */}
       <section className="bg-zinc-900 text-white relative">
