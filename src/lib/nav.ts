@@ -4,8 +4,13 @@
 // ここはクライアント安全な「表示名 + パス」だけを持つ独立モジュールにしている。
 // パスの正本ロジックは articles.ts の categoryPath() 側にあり、本ファイルはそれと整合させる。
 
-export type NavChild = { label: string; href: string };
-export type NavItem = { label: string; href: string; children?: NavChild[] };
+export type NavChild = { label: string; href: string; emoji: string };
+export type NavItem = {
+  label: string;
+  href: string;
+  emoji: string;
+  children?: NavChild[];
+};
 
 /** カテゴリ slug → 日本語表示名（Header/Footer/トップで共有） */
 export const CATEGORY_LABELS: Record<string, string> = {
@@ -21,28 +26,52 @@ export const CATEGORY_LABELS: Record<string, string> = {
   kaikei: "会計・確定申告",
 };
 
+/** カテゴリ slug → アイコン絵文字（トップページのカードと揃える） */
+export const CATEGORY_EMOJI: Record<string, string> = {
+  mindset: "💡",
+  tenshoku: "📝",
+  sidejob: "💼",
+  story: "📖",
+  taishoku: "🚪",
+  shikaku: "📚",
+  coaching: "🧭",
+  english: "🌐",
+  furusato: "🎁",
+  kaikei: "🧾",
+};
+
 /** アンブレラ型グローバルナビ。キャリアは4サブカテゴリを子に持つ。 */
 export const GLOBAL_NAV: NavItem[] = [
   {
     label: "キャリア・転職",
     href: "/career",
+    emoji: "🏢",
     children: [
-      { label: CATEGORY_LABELS.mindset, href: "/career/mindset" },
-      { label: CATEGORY_LABELS.tenshoku, href: "/career/tenshoku" },
-      { label: CATEGORY_LABELS.sidejob, href: "/career/sidejob" },
-      { label: CATEGORY_LABELS.story, href: "/career/story" },
+      { label: CATEGORY_LABELS.mindset, href: "/career/mindset", emoji: CATEGORY_EMOJI.mindset },
+      { label: CATEGORY_LABELS.tenshoku, href: "/career/tenshoku", emoji: CATEGORY_EMOJI.tenshoku },
+      { label: CATEGORY_LABELS.sidejob, href: "/career/sidejob", emoji: CATEGORY_EMOJI.sidejob },
+      { label: CATEGORY_LABELS.story, href: "/career/story", emoji: CATEGORY_EMOJI.story },
     ],
   },
-  { label: CATEGORY_LABELS.taishoku, href: "/taishoku" },
-  { label: CATEGORY_LABELS.shikaku, href: "/shikaku" },
-  { label: CATEGORY_LABELS.coaching, href: "/coaching" },
-  { label: CATEGORY_LABELS.english, href: "/english" },
+  { label: CATEGORY_LABELS.taishoku, href: "/taishoku", emoji: CATEGORY_EMOJI.taishoku },
+  { label: CATEGORY_LABELS.shikaku, href: "/shikaku", emoji: CATEGORY_EMOJI.shikaku },
+  { label: CATEGORY_LABELS.coaching, href: "/coaching", emoji: CATEGORY_EMOJI.coaching },
+  { label: CATEGORY_LABELS.english, href: "/english", emoji: CATEGORY_EMOJI.english },
   {
     label: "お金と税金",
     href: "/kaikei",
+    emoji: "💰",
     children: [
-      { label: CATEGORY_LABELS.furusato, href: "/furusato" },
-      { label: CATEGORY_LABELS.kaikei, href: "/kaikei" },
+      { label: CATEGORY_LABELS.furusato, href: "/furusato", emoji: CATEGORY_EMOJI.furusato },
+      { label: CATEGORY_LABELS.kaikei, href: "/kaikei", emoji: CATEGORY_EMOJI.kaikei },
     ],
   },
 ];
+
+/** 現在のパスがナビ項目（またはその子）に属するか */
+export function isNavItemActive(pathname: string, item: NavItem): boolean {
+  const matches = (href: string) =>
+    pathname === href || pathname.startsWith(`${href}/`);
+  if (matches(item.href)) return true;
+  return item.children?.some((c) => matches(c.href)) ?? false;
+}
