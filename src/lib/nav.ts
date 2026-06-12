@@ -17,6 +17,8 @@ export const CATEGORY_LABELS: Record<string, string> = {
   shikaku: "資格・学び直し",
   coaching: "キャリア相談",
   english: "ビジネス英語",
+  furusato: "ふるさと納税",
+  kaikei: "会計・確定申告",
 };
 
 /** アンブレラ型グローバルナビ。キャリアは4サブカテゴリを子に持つ。 */
@@ -35,4 +37,12 @@ export const GLOBAL_NAV: NavItem[] = [
   { label: CATEGORY_LABELS.shikaku, href: "/shikaku" },
   { label: CATEGORY_LABELS.coaching, href: "/coaching" },
   { label: CATEGORY_LABELS.english, href: "/english" },
+  {
+    label: "お金と税金",
+    href: "/kaikei",
+    children: [
+      { label: CATEGORY_LABELS.furusato, href: "/furusato" },
+      { label: CATEGORY_LABELS.kaikei, href: "/kaikei" },
+    ],
+  },
 ];

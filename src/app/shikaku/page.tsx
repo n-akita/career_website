@@ -56,9 +56,18 @@ const sections: ArticleSection[] = [
     ],
   },
   {
+    label: "IT・AIスキルを学ぶ",
+    emoji: "🤖",
+    slugs: [
+      "kyufukin-programming-school",
+      "seisei-ai-school",
+      "techacademy-hyouban",
+    ],
+  },
+  {
     label: "制度を使い倒す",
     emoji: "🏛️",
-    slugs: ["kyouiku-kunren-kyufukin-guide"],
+    slugs: ["kyouiku-kunren-kyufukin-guide", "reskilling-hojokin-school"],
   },
 ];
 

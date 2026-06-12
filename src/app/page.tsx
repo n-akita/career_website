@@ -37,7 +37,7 @@ export default function Home() {
           </p>
           <h2 className="text-2xl md:text-3xl font-bold">コンテンツ</h2>
           <p className="text-sm text-zinc-500 mt-2">
-            実体験を核にした「キャリア・退職」を主軸に、学び直し・英語まで横断して扱っています。
+            実体験を核にした「キャリア・退職」を主軸に、学び直し・英語・お金の手続きまで横断して扱っています。
           </p>
         </div>
 
@@ -80,6 +80,18 @@ export default function Home() {
             emoji="🌐"
             title="ビジネス英語とTOEIC"
             body="転職で評価されるTOEICの目安から、忙しい社会人の学習設計・英会話サービス比較までキャリア目線で。"
+          />
+          <SecondaryCard
+            href="/furusato"
+            emoji="🎁"
+            title="ふるさと納税の歩き方"
+            body="仕組み・限度額・ポイント還元禁止後のサイト選びまで。毎年実践している会社員が手続きの不安を解消。"
+          />
+          <SecondaryCard
+            href="/kaikei"
+            emoji="🧾"
+            title="会計ソフトと確定申告"
+            body="freee・マネーフォワードの選び方からインボイス・副業の確定申告まで、毎年自分で申告する立場で解説。"
           />
         </div>
       </section>

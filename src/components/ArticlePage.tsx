@@ -18,6 +18,8 @@ const categoryImages: Record<string, string> = {
   shikaku: "/images/hero-photo.jpg",
   coaching: "/images/hero-city.jpg",
   english: "/images/hero-work.jpg",
+  furusato: "/images/hero-photo.jpg",
+  kaikei: "/images/hero-work.jpg",
 };
 
 const categoryLabels: Record<string, { label: string; en: string; href: string }> = {
@@ -29,6 +31,8 @@ const categoryLabels: Record<string, { label: string; en: string; href: string }
   shikaku: { label: "資格とリスキリング", en: "Reskilling", href: "/shikaku" },
   coaching: { label: "キャリア相談とコーチング", en: "Coaching", href: "/coaching" },
   english: { label: "ビジネス英語とTOEIC", en: "English", href: "/english" },
+  furusato: { label: "ふるさと納税", en: "Furusato Tax", href: "/furusato" },
+  kaikei: { label: "会計ソフトと確定申告", en: "Accounting", href: "/kaikei" },
 };
 
 const isStory = (category: string) => category === "story";
@@ -61,6 +65,18 @@ const genreConfig: Record<
     hubTitle: "英語はキャリアの武器になるか 完全ガイドを読む",
     hubSub: "TOEICの目安スコア・学習設計・サービス選びの全体像を1本で。迷ったらまずここから",
     hashtags: "#TOEIC #ビジネス英語 #会社員の居場所戦略",
+  },
+  furusato: {
+    hubSlug: "furusato-nouzei-guide",
+    hubTitle: "ふるさと納税の始め方 完全ガイドを読む",
+    hubSub: "仕組み・限度額・サイト選び・手続きの全体像を1本で。迷ったらまずここから",
+    hashtags: "#ふるさと納税 #節税 #会社員の居場所戦略",
+  },
+  kaikei: {
+    hubSlug: "kaikei-soft-erabikata",
+    hubTitle: "会計ソフトの選び方 完全ガイドを読む",
+    hubSub: "freee・マネーフォワード・弥生の違いと選び方の全体像を1本で。迷ったらまずここから",
+    hashtags: "#確定申告 #会計ソフト #会社員の居場所戦略",
   },
 };
 

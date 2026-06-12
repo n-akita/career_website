@@ -63,6 +63,20 @@ const categoryConfig: Record<
     bgTo: "#18181b",
     emoji: "🌐",
   },
+  furusato: {
+    label: "FURUSATO TAX",
+    color: "#f97316",
+    bgFrom: "#4a2a12",
+    bgTo: "#18181b",
+    emoji: "🎁",
+  },
+  kaikei: {
+    label: "ACCOUNTING",
+    color: "#84cc16",
+    bgFrom: "#2c3a14",
+    bgTo: "#18181b",
+    emoji: "🧾",
+  },
 };
 
 export async function GET(request: NextRequest) {

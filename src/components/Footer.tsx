@@ -42,6 +42,8 @@ export default function Footer() {
                 <Link href="/shikaku" className="hover:text-white transition-colors py-1.5">資格とリスキリング</Link>
                 <Link href="/coaching" className="hover:text-white transition-colors py-1.5">キャリア相談とコーチング</Link>
                 <Link href="/english" className="hover:text-white transition-colors py-1.5">ビジネス英語とTOEIC</Link>
+                <Link href="/furusato" className="hover:text-white transition-colors py-1.5">ふるさと納税</Link>
+                <Link href="/kaikei" className="hover:text-white transition-colors py-1.5">会計ソフトと確定申告</Link>
                 <Link href="/career/diagnosis" className="hover:text-white transition-colors py-1.5">転職診断</Link>
               </div>
             </div>
