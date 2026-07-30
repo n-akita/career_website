@@ -56,6 +56,10 @@ export const metadata: Metadata = {
   verification: {
     google: "fJ5jfg772oVZ2SaK2S-UIzH6wqUoSexqGDsoqTEKG1s",
   },
+  // AdSenseの所有者確認用メタタグ（サイト確認が弾かれたときの保険）
+  other: {
+    "google-adsense-account": "ca-pub-1375496123662459",
+  },
 };
 
 export default function RootLayout({
