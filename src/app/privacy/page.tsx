@@ -26,16 +26,31 @@ export default function PrivacyPage() {
         <section>
           <h2 className="text-lg font-bold mb-3">広告について</h2>
           <p>
-            当サイトは現在、アフィリエイトプログラムおよび第三者配信の広告サービスを利用していません。
-            将来的に広告を掲載する場合は、本ポリシーを更新のうえ、該当ページに広告である旨を明示します。
+            当サイトは、第三者配信の広告サービス「Google AdSense」を利用しています。
+            広告配信事業者は、ユーザーの興味に応じた広告を表示するために Cookie を使用することがあります。
+            Cookie を無効にする設定や、Google AdSense に関する詳細は
+            <a
+              href="https://policies.google.com/technologies/ads"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary hover:underline"
+            >
+              「広告 – ポリシーと規約 – Google」
+            </a>
+            をご確認ください。
+          </p>
+          <p className="mt-3">
+            また、当サイトではアフィリエイトプログラムを利用した記事を掲載する場合があります。
+            その場合は、該当ページにその旨を明示します。
           </p>
         </section>
 
         <section>
-          <h2 className="text-lg font-bold mb-3">アクセス解析ツールについて</h2>
+          <h2 className="text-lg font-bold mb-3">アクセス解析について</h2>
           <p>
-            当サイトでは、Google アナリティクスを利用してアクセス情報を収集しています。
-            データは匿名で収集されており、個人を特定するものではありません。
+            当サイトはアクセス解析ツール（Google アナリティクス）を使用しており、
+            Cookie を利用してトラフィックデータを収集することがあります。
+            これらのデータは匿名で収集され、個人を特定するものではありません。
             この機能は Cookie を無効にすることで収集を拒否できます。
             詳しくは Google アナリティクスの利用規約をご確認ください。
           </p>
@@ -66,6 +81,10 @@ export default function PrivacyPage() {
             よりお願いいたします。
           </p>
         </section>
+
+        <p className="text-xs text-zinc-500 pt-4 border-t border-zinc-200">
+          最終更新日：2026年7月30日
+        </p>
       </div>
     </div>
   );

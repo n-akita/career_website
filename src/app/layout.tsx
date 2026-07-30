@@ -76,6 +76,12 @@ export default function RootLayout({
         })(window,document,'script','dataLayer','GTM-TZLBHG5Q');
       `}</Script>
       <body className="min-h-full flex flex-col">
+        {/* Google AdSense: React が <head> へ巻き上げるため、生HTMLに素のタグが出る */}
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1375496123662459"
+          crossOrigin="anonymous"
+        />
         <a href="#main-content" className="skip-to-content">メインコンテンツへスキップ</a>
         <noscript>
           <iframe
