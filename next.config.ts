@@ -10,7 +10,24 @@ const MINDSET_SLUGS = [
   "venture-vs-enterprise-reality",
 ];
 
+// 「週間上野御徒町」は別Vercelプロジェクト。/ueno-okachimachi 配下をそちらへ中継する
+// （マルチゾーン構成）。子側は basePath=/ueno-okachimachi なので転送先にも同じ接頭辞が要る。
+const UENO_ORIGIN = "https://ueno-okachimachi.vercel.app";
+
 const nextConfig: NextConfig = {
+  async rewrites() {
+    return [
+      {
+        source: "/ueno-okachimachi",
+        destination: `${UENO_ORIGIN}/ueno-okachimachi`,
+      },
+      {
+        // ページだけでなく _next/static 等のアセットもこのルールで流れる
+        source: "/ueno-okachimachi/:path*",
+        destination: `${UENO_ORIGIN}/ueno-okachimachi/:path*`,
+      },
+    ];
+  },
   async redirects() {
     return [
       // 旧URL（2026-04の初期リダイレクト）を新URLへ1ホップで直行させる
