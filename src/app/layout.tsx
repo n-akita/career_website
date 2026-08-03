@@ -16,11 +16,11 @@ const notoSansJP = Noto_Sans_JP({
 export const metadata: Metadata = {
   metadataBase: new URL("https://nara-career.com"),
   title: {
-    default: "年収を上げる転職戦略｜会社員の居場所戦略",
-    template: "%s | 会社員の居場所戦略",
+    default: "ならならの実験場｜作ったものと使ったものの記録",
+    template: "%s | ならならの実験場",
   },
   description:
-    "5回の転職で年収3.5倍（400万→1,200万）を実現。ベンチャーから大手JTCへの転職経験をもとに、環境を変えるキャリア戦略・転職ノウハウ・副業の始め方を発信。",
+    "現役の会社員エンジニアが、自分で作ったサービスと自分で使ったサービスを試して記録している個人サイト。作りかけのものも、使ってみて期待外れだったものも、判断した理由ごとそのまま置いています。",
   alternates: {
     canonical: "https://nara-career.com",
     types: {
@@ -30,16 +30,17 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "ja_JP",
-    siteName: "会社員の居場所戦略",
-    title: "会社員の居場所戦略",
+    siteName: "ならならの実験場",
+    title: "ならならの実験場",
     description:
-      "5回の転職で年収3.5倍。出世ではなく「環境を変える」キャリア戦略を発信。",
+      "会社員エンジニアが、自分で作ったサービスと自分で使ったサービスを試して記録している個人サイト。",
     images: [
       {
-        url: "https://nara-career.com/images/ogp/default.png",
+        // 静的PNGは旧サイト名が焼き込まれているため、/api/og の動的生成を正とする
+        url: "https://nara-career.com/api/og",
         width: 1200,
         height: 630,
-        alt: "会社員の居場所戦略",
+        alt: "ならならの実験場",
       },
     ],
   },
@@ -47,7 +48,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     site: "@nara_nara_san",
     creator: "@nara_nara_san",
-    images: ["https://nara-career.com/images/ogp/default.png"],
+    images: ["https://nara-career.com/api/og"],
   },
   robots: {
     index: true,

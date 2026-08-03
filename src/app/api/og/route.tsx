@@ -32,7 +32,7 @@ export async function GET() {
         />
 
         {/* Emoji */}
-        <div style={{ fontSize: "80px", marginBottom: "24px" }}>🧭</div>
+        <div style={{ fontSize: "80px", marginBottom: "24px" }}>🧪</div>
 
         {/* Site title */}
         <div
@@ -45,7 +45,7 @@ export async function GET() {
             marginBottom: "20px",
           }}
         >
-          会社員の居場所戦略
+          ならならの実験場
         </div>
 
         {/* Tagline */}
@@ -57,7 +57,7 @@ export async function GET() {
             lineHeight: 1.5,
           }}
         >
-          5回の転職で年収3.5倍。出世ではなく「環境を変える」キャリア戦略を発信。
+          作ったものと、使ったものの記録。
         </div>
 
         {/* Footer */}

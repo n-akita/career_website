@@ -8,12 +8,12 @@ export default function Footer() {
           {/* ブランド */}
           <div className="max-w-sm">
             <p className="flex items-center gap-2 font-bold text-white text-lg mb-3">
-              <span>🏢</span> ならなら
+              <span>🧪</span> ならならの実験場
             </p>
             <p className="text-sm text-zinc-400 leading-relaxed mb-4">
-              働く人の「選び方」を変えるメディア。
-              5社の転職で年収3.5倍を実現した「ならなら」が、転職・退職・資格・英語まで、
-              人生を左右する選択を実体験ベースの一次情報で支える。
+              現役の会社員エンジニアが、自分で作ったサービスと自分で使ったサービスを
+              試して記録している個人サイト。
+              作りかけのものも、使ってみて期待外れだったものも、そのまま置いています。
             </p>
             {/* SNSアイコン */}
             <a
@@ -50,16 +50,19 @@ export default function Footer() {
 
             {/* 人気記事 */}
             <div>
-              <p className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">人気の記事</p>
+              <p className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">まずはここから</p>
               <div className="flex flex-col gap-1 text-sm">
-                <Link href="/career/mindset/environment-decides-salary" className="hover:text-white transition-colors py-1.5 max-w-[200px] truncate">
-                  年収は「居場所」で決まる
+                <Link href="/taishoku/taishoku-daiko-guide" className="hover:text-white transition-colors py-1.5 max-w-[200px] truncate">
+                  退職代行の選び方ガイド
                 </Link>
-                <Link href="/career/mindset/career-story" className="hover:text-white transition-colors py-1.5 max-w-[200px] truncate">
-                  年収400万→1,400万の転職記録
+                <Link href="/shikaku/tenshoku-shikaku-guide" className="hover:text-white transition-colors py-1.5 max-w-[200px] truncate">
+                  資格の選び方ガイド
                 </Link>
-                <Link href="/career/tenshoku/jtc-complete-guide" className="hover:text-white transition-colors py-1.5 max-w-[200px] truncate">
-                  大手JTC転職の完全ガイド
+                <Link href="/furusato/furusato-nouzei-guide" className="hover:text-white transition-colors py-1.5 max-w-[200px] truncate">
+                  ふるさと納税の始め方
+                </Link>
+                <Link href="/kaikei/kaikei-soft-erabikata" className="hover:text-white transition-colors py-1.5 max-w-[200px] truncate">
+                  会計ソフトの選び方
                 </Link>
               </div>
             </div>
@@ -79,7 +82,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-zinc-800 mt-10 pt-6 text-center text-xs text-zinc-500">
-          &copy; {new Date().getFullYear()} ならなら（nara-career.com） All Rights Reserved.
+          &copy; {new Date().getFullYear()} ならならの実験場（nara-career.com） All Rights Reserved.
         </div>
       </div>
     </footer>

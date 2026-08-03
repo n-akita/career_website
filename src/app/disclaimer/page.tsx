@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "免責事項",
   description:
-    "「会社員の居場所戦略」の免責事項です。当サイトの情報利用に関する注意事項をご確認ください。",
+    "「ならならの実験場」の免責事項です。当サイトの情報利用に関する注意事項をご確認ください。",
   alternates: {
     canonical: "https://nara-career.com/disclaimer",
   },
@@ -18,7 +18,7 @@ export default function DisclaimerPage() {
         <section>
           <h2 className="text-lg font-bold mb-3">当サイトの情報について</h2>
           <p>
-            当サイト「会社員の居場所戦略」（以下、当サイト）は、転職やキャリアに関する情報を提供することを目的としています。
+            当サイト「ならならの実験場」（以下、当サイト）は、運営者が自ら作成・利用したサービスや制度に関する記録を公開することを目的としています。
             掲載されている情報は、運営者個人の経験および見解に基づくものであり、すべての方に当てはまることを保証するものではありません。
           </p>
         </section>

@@ -6,7 +6,8 @@ import { FAQPageJsonLd } from "@/components/JsonLd";
 import GenreSubNav from "@/components/GenreSubNav";
 
 export const metadata: Metadata = {
-  title: "年収を上げる転職戦略｜会社員の居場所戦略",
+  // layout の title.template が「 | ならならの実験場」を付けるのでサイト名は書かない
+  title: "年収を上げる転職戦略",
   description:
     "5回の転職で年収3.5倍を実現。ベンチャーから大手JTCへの転職経験をもとに、環境を変えるキャリア戦略・転職ノウハウ・副業の始め方を発信。",
   alternates: {

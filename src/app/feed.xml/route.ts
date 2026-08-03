@@ -40,10 +40,10 @@ export async function GET() {
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>会社員の居場所戦略</title>
-    <link>${BASE_URL}/career</link>
+    <title>ならならの実験場</title>
+    <link>${BASE_URL}</link>
     <atom:link href="${BASE_URL}/feed.xml" rel="self" type="application/rss+xml" />
-    <description>5回の転職で年収3.5倍。出世ではなく「環境を変える」キャリア戦略を発信。</description>
+    <description>会社員エンジニアが、自分で作ったサービスと自分で使ったサービスを試して記録している個人サイト。</description>
     <language>ja</language>
     <lastBuildDate>${lastBuildDate}</lastBuildDate>
 ${items}

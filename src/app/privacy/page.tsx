@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "プライバシーポリシー",
   description:
-    "「会社員の居場所戦略」のプライバシーポリシーです。個人情報の取り扱い・広告・アクセス解析について記載しています。",
+    "「ならならの実験場」のプライバシーポリシーです。個人情報の取り扱い・広告・アクセス解析について記載しています。",
   alternates: {
     canonical: "https://nara-career.com/privacy",
   },
@@ -18,7 +18,7 @@ export default function PrivacyPage() {
         <section>
           <h2 className="text-lg font-bold mb-3">個人情報の利用目的</h2>
           <p>
-            当サイト「会社員の居場所戦略」（以下、当サイト）では、お問い合わせの際に、お名前・メールアドレス等の個人情報をご入力いただく場合がございます。
+            当サイト「ならならの実験場」（以下、当サイト）では、お問い合わせの際に、お名前・メールアドレス等の個人情報をご入力いただく場合がございます。
             取得した個人情報は、お問い合わせに対する回答のためにのみ利用し、それ以外の目的では利用いたしません。
           </p>
         </section>

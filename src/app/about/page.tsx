@@ -28,7 +28,7 @@ export default function AboutPage() {
             className="mx-auto rounded-full border-4 border-white/20 mb-6"
           />
           <h1 className="text-3xl md:text-4xl font-bold mb-3">ならなら</h1>
-          <p className="text-zinc-400 mb-6">会社員の居場所戦略 運営者</p>
+          <p className="text-zinc-400 mb-6">ならならの実験場 運営者</p>
           <p className="text-zinc-300 leading-relaxed max-w-lg mx-auto">
             デジタルマーケティング歴10年。中小企業から大手企業まで5社を渡り歩き、
             年収を<strong className="text-white">3.5倍</strong>に。

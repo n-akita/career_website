@@ -17,10 +17,10 @@ export function WebSiteJsonLd() {
       data={{
         "@context": "https://schema.org",
         "@type": "WebSite",
-        name: "会社員の居場所戦略",
+        name: "ならならの実験場",
         url: "https://nara-career.com",
         description:
-          "5回の転職で年収3.5倍。出世ではなく「環境を変える」キャリア戦略を発信。",
+          "会社員エンジニアが、自分で作ったサービスと自分で使ったサービスを試して記録している個人サイト。",
         author: {
           "@type": "Person",
           name: "ならなら",
@@ -43,7 +43,7 @@ export function OrganizationJsonLd() {
       data={{
         "@context": "https://schema.org",
         "@type": "Organization",
-        name: "会社員の居場所戦略",
+        name: "ならならの実験場",
         url: "https://nara-career.com",
         logo: "https://nara-career.com/images/avatar.png",
         founder: {
@@ -83,7 +83,7 @@ export function ArticleJsonLd({
         datePublished: date,
         dateModified: dateModified || date,
         url,
-        image: image || "https://nara-career.com/images/ogp/default.png",
+        image: image || "https://nara-career.com/api/og",
         author: {
           "@type": "Person",
           name: "ならなら",
@@ -92,7 +92,7 @@ export function ArticleJsonLd({
         },
         publisher: {
           "@type": "Organization",
-          name: "会社員の居場所戦略",
+          name: "ならならの実験場",
           logo: {
             "@type": "ImageObject",
             url: "https://nara-career.com/images/avatar.png",

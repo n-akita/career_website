@@ -49,13 +49,13 @@ export default function Header() {
     >
       <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between gap-2">
         <Link href="/" className="flex items-center gap-2 group shrink-0">
-          <span className="text-2xl">🏢</span>
+          <span className="text-2xl">🧪</span>
           <span className="flex flex-col leading-none">
-            <span className="text-lg font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent group-hover:from-blue-500 group-hover:to-blue-700 transition-all whitespace-nowrap">
-              ならなら
+            <span className="text-[17px] font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent group-hover:from-blue-500 group-hover:to-blue-700 transition-all whitespace-nowrap">
+              ならならの実験場
             </span>
             <span className="text-[10px] text-zinc-400 mt-0.5 hidden xl:block whitespace-nowrap">
-              働く人の「選び方」を変えるメディア
+              作ったものと使ったものの記録
             </span>
           </span>
         </Link>

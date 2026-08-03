@@ -4,7 +4,7 @@ import SearchClient from "@/components/SearchClient";
 
 export const metadata: Metadata = {
   title: "記事を検索",
-  description: "会社員の居場所戦略の全記事からキーワードで検索できます。",
+  description: "ならならの実験場の全記事からキーワードで検索できます。",
   alternates: {
     canonical: "https://nara-career.com/search",
   },
