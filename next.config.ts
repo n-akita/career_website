@@ -10,23 +10,32 @@ const MINDSET_SLUGS = [
   "venture-vs-enterprise-reality",
 ];
 
-// 「週間上野御徒町」は別Vercelプロジェクト。/ueno-okachimachi 配下をそちらへ中継する
-// （マルチゾーン構成）。子側は basePath=/ueno-okachimachi なので転送先にも同じ接頭辞が要る。
-const UENO_ORIGIN = "https://ueno-okachimachi.vercel.app";
+// 「週間◯◯」シリーズは町ごとに別Vercelプロジェクト。各 /<町> 配下をそちらへ
+// 中継する（マルチゾーン構成）。子側は basePath=/<町> なので、転送先にも
+// 同じ接頭辞が要る。町を増やすときはここに 1 行足す。
+//
+// origin は各プロジェクトの production エイリアス。toyosu だけ末尾に -nu が
+// 付いているのは、toyosu.vercel.app が他所に取られていて Vercel が
+// 別名を割り当てたため。勝手に変わる値ではないが、プロジェクトを作り直したら
+// `vercel project ls` の Latest Production URL で取り直すこと。
+const ZONES = [
+  { path: "ueno-okachimachi", origin: "https://ueno-okachimachi.vercel.app" },
+  { path: "toyosu", origin: "https://toyosu-nu.vercel.app" },
+];
 
 const nextConfig: NextConfig = {
   async rewrites() {
-    return [
+    return ZONES.flatMap((zone) => [
       {
-        source: "/ueno-okachimachi",
-        destination: `${UENO_ORIGIN}/ueno-okachimachi`,
+        source: `/${zone.path}`,
+        destination: `${zone.origin}/${zone.path}`,
       },
       {
         // ページだけでなく _next/static 等のアセットもこのルールで流れる
-        source: "/ueno-okachimachi/:path*",
-        destination: `${UENO_ORIGIN}/ueno-okachimachi/:path*`,
+        source: `/${zone.path}/:path*`,
+        destination: `${zone.origin}/${zone.path}/:path*`,
       },
-    ];
+    ]);
   },
   async redirects() {
     return [
