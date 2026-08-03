@@ -177,63 +177,23 @@ export default function AboutPage() {
             <AchievementCard icon="📈" number="2倍" label="入会者数を月1,000→2,000人に" />
             <AchievementCard icon="🚀" number="全国展開" label="ゼロから立ち上げたサービス" />
             <AchievementCard icon="🏛️" number="地方DX" label="自治体のデジタル化推進（副業）" />
-            <AchievementCard icon="✍️" number="毎日" label="X（Twitter）でキャリア情報を発信" />
+            <AchievementCard icon="✍️" number="100本超" label="このサイトで公開した記事" />
           </div>
         </section>
 
-        {/* 発信メディア & CTA */}
+        {/* お問い合わせ */}
         <section>
-          <SectionHeading label="Follow" title="発信メディア" />
-          <div className="grid sm:grid-cols-2 gap-4 mb-8">
-            <a
-              href="https://x.com/nara_nara_san"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-4 p-5 border border-border/60 rounded-xl hover:shadow-md hover:-translate-y-0.5 transition-all bg-white"
-            >
-              <div className="w-12 h-12 bg-zinc-900 rounded-xl flex items-center justify-center shrink-0">
-                <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                </svg>
-              </div>
-              <div>
-                <p className="font-semibold">X (Twitter)</p>
-                <p className="text-sm text-zinc-500">@nara_nara_san</p>
-              </div>
-            </a>
-            <div className="flex items-center gap-4 p-5 border border-border/60 rounded-xl bg-blue-50/50">
-              <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center shrink-0">
-                <span className="text-white text-lg">📝</span>
-              </div>
-              <div>
-                <p className="font-semibold">ブログ</p>
-                <p className="text-sm text-zinc-500">このサイト</p>
-              </div>
-            </div>
-          </div>
+          <SectionHeading label="Contact" title="お問い合わせ" />
           <div className="bg-muted border border-border/60 rounded-2xl p-8 text-center">
-            <p className="text-zinc-600 mb-4">
-              キャリアや転職のリアルな気づきを発信しています。
+            <p className="text-zinc-600 mb-5">
+              記事の内容についての質問や、取り上げてほしいテーマがあればお気軽にどうぞ。
             </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <a
-                href="https://x.com/nara_nara_san"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 bg-zinc-900 text-white font-semibold px-6 py-3 rounded-lg hover:bg-zinc-800 transition-colors text-sm"
-              >
-                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                </svg>
-                Xをフォローする
-              </a>
-              <Link
-                href="/contact"
-                className="inline-flex items-center gap-2 border border-zinc-300 text-zinc-700 font-semibold px-6 py-3 rounded-lg hover:bg-white transition-colors text-sm"
-              >
-                お問い合わせ
-              </Link>
-            </div>
+            <Link
+              href="/contact"
+              className="inline-flex items-center gap-2 bg-primary text-white font-semibold px-6 py-3 rounded-lg hover:bg-primary-dark transition-colors text-sm"
+            >
+              お問い合わせフォームへ
+            </Link>
           </div>
         </section>
 

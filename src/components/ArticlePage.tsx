@@ -38,46 +38,40 @@ const categoryLabels: Record<string, { label: string; en: string; href: string }
 
 const isStory = (category: string) => category === "story";
 
-/** 独立ジャンルごとの固定導線（ハブ記事CTA）とシェア用ハッシュタグ */
+/** 独立ジャンルごとの固定導線（ハブ記事CTA） */
 const genreConfig: Record<
   string,
-  { hubSlug: string; hubTitle: string; hubSub: string; hashtags: string }
+  { hubSlug: string; hubTitle: string; hubSub: string }
 > = {
   taishoku: {
     hubSlug: "taishoku-daiko-guide",
     hubTitle: "安全な退職代行の選び方 完全ガイドを読む",
     hubSub: "運営形態・料金・選び方の全体像を1本で。迷ったらまずここから",
-    hashtags: "#退職 #退職代行 #ならならの実験場",
   },
   shikaku: {
     hubSlug: "tenshoku-shikaku-guide",
     hubTitle: "転職に効く資格の選び方 完全ガイドを読む",
     hubSub: "資格の選び方・勉強法・給付金の全体像を1本で。迷ったらまずここから",
-    hashtags: "#資格 #リスキリング #ならならの実験場",
   },
   coaching: {
     hubSlug: "coaching-erabikata-guide",
     hubTitle: "キャリアコーチングの選び方 完全ガイドを読む",
     hubSub: "料金相場・エージェントとの違い・選び方の全体像を1本で。迷ったらまずここから",
-    hashtags: "#キャリア相談 #キャリアコーチング #ならならの実験場",
   },
   english: {
     hubSlug: "eigo-career-guide",
     hubTitle: "英語はキャリアの武器になるか 完全ガイドを読む",
     hubSub: "TOEICの目安スコア・学習設計・サービス選びの全体像を1本で。迷ったらまずここから",
-    hashtags: "#TOEIC #ビジネス英語 #ならならの実験場",
   },
   furusato: {
     hubSlug: "furusato-nouzei-guide",
     hubTitle: "ふるさと納税の始め方 完全ガイドを読む",
     hubSub: "仕組み・限度額・サイト選び・手続きの全体像を1本で。迷ったらまずここから",
-    hashtags: "#ふるさと納税 #節税 #ならならの実験場",
   },
   kaikei: {
     hubSlug: "kaikei-soft-erabikata",
     hubTitle: "会計ソフトの選び方 完全ガイドを読む",
     hubSub: "freee・マネーフォワード・弥生の違いと選び方の全体像を1本で。迷ったらまずここから",
-    hashtags: "#確定申告 #会計ソフト #ならならの実験場",
   },
 };
 
@@ -96,9 +90,6 @@ export default function ArticlePage({ article }: { article: Article }) {
   const articleImage = article.image
     ? `${BASE_URL}${article.image}`
     : `${BASE_URL}/api/og/article?title=${encodeURIComponent(article.title)}&category=${article.category}`;
-  const shareText = encodeURIComponent(
-    `${article.title}\n${genre?.hashtags ?? "#転職 #キャリア #ならならの実験場"}\n`
-  );
   const shareUrl = encodeURIComponent(articleUrl);
 
   // 関連記事（frontmatter指定を優先しつつ、タグの近い記事をカテゴリ横断で取得）
@@ -234,18 +225,6 @@ export default function ArticlePage({ article }: { article: Article }) {
         {/* シェアボタン */}
         <div className="my-10 flex items-center gap-3 flex-wrap">
           <span className="text-sm font-semibold text-zinc-500">Share</span>
-          <a
-            href={`https://x.com/intent/tweet?text=${shareText}&url=${shareUrl}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 bg-zinc-900 text-white text-xs font-semibold px-4 py-2 rounded-lg hover:bg-zinc-800 transition-colors"
-            aria-label="Xでシェアする"
-          >
-            <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-            </svg>
-            Xでシェア
-          </a>
           <a
             href={`https://b.hatena.ne.jp/entry/${articleUrl}`}
             target="_blank"
@@ -383,34 +362,12 @@ export default function ArticlePage({ article }: { article: Article }) {
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-1">
                   <p className="font-bold">ならなら</p>
-                  <a
-                    href="https://x.com/nara_nara_san"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-zinc-400 hover:text-zinc-600 transition-colors"
-                    aria-label="ならならのXアカウント"
-                  >
-                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                    </svg>
-                  </a>
                 </div>
                 <p className="text-sm text-zinc-500 leading-relaxed mb-3">
                   デジタルマーケティング歴10年。5社の転職で年収3.5倍を実現。
                   「出世しなくても環境を変えるだけで年収は上がる」をテーマに発信中。
                 </p>
                 <div className="flex flex-wrap gap-3">
-                  <a
-                    href="https://x.com/nara_nara_san"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 bg-zinc-900 text-white font-semibold px-4 py-2 rounded-lg hover:bg-zinc-800 transition-colors text-xs"
-                  >
-                    <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                    </svg>
-                    フォローする
-                  </a>
                   <Link
                     href={cat.href}
                     className="inline-flex items-center gap-1.5 border border-zinc-300 text-zinc-600 font-semibold px-4 py-2 rounded-lg hover:bg-white transition-colors text-xs"

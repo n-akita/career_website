@@ -24,9 +24,7 @@ export function WebSiteJsonLd() {
         author: {
           "@type": "Person",
           name: "ならなら",
-          url: "https://nara-career.com/about",
-          sameAs: ["https://x.com/nara_nara_san"],
-        },
+          url: "https://nara-career.com/about",        },
         potentialAction: {
           "@type": "SearchAction",
           target: "https://nara-career.com/search?q={search_term_string}",
@@ -49,11 +47,7 @@ export function OrganizationJsonLd() {
         founder: {
           "@type": "Person",
           name: "ならなら",
-          url: "https://nara-career.com/about",
-          sameAs: ["https://x.com/nara_nara_san"],
-        },
-        sameAs: ["https://x.com/nara_nara_san"],
-      }}
+          url: "https://nara-career.com/about",        },      }}
     />
   );
 }
@@ -87,9 +81,7 @@ export function ArticleJsonLd({
         author: {
           "@type": "Person",
           name: "ならなら",
-          url: "https://nara-career.com/about",
-          sameAs: ["https://x.com/nara_nara_san"],
-        },
+          url: "https://nara-career.com/about",        },
         publisher: {
           "@type": "Organization",
           name: "ならならの実験場",

@@ -44,12 +44,6 @@ export const metadata: Metadata = {
       },
     ],
   },
-  twitter: {
-    card: "summary_large_image",
-    site: "@nara_nara_san",
-    creator: "@nara_nara_san",
-    images: ["https://nara-career.com/api/og"],
-  },
   robots: {
     index: true,
     follow: true,

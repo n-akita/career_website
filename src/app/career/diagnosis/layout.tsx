@@ -20,13 +20,6 @@ export const metadata: Metadata = {
       },
     ],
   },
-  twitter: {
-    card: "summary_large_image",
-    title: "ならなら式キャリア戦闘力診断 — あなたの戦闘力は？",
-    description:
-      "10の質問でキャリア戦闘力を測定。レーダーチャートで5つの武器を可視化。",
-    images: ["/api/og/diagnosis?type=general"],
-  },
 };
 
 export default function DiagnosisLayout({
