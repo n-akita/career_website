@@ -21,7 +21,7 @@ const sections: ArticleSection[] = [
   {
     label: "お得に選ぶ",
     emoji: "🎁",
-    slugs: ["furusato-site-hikaku", "furusato-kangenritsu"],
+    slugs: ["furusato-site-hikaku", "furusato-kangenritsu", "furusato-shine-muscat"],
   },
   {
     label: "手続きで失敗しない",
