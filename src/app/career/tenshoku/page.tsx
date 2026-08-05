@@ -25,7 +25,12 @@ const sections: ArticleSection[] = [
   {
     label: "エージェントを使う",
     emoji: "🤝",
-    slugs: ["agent-guide"],
+    slugs: ["agent-guide", "it-engineer-tenshoku-agent"],
+  },
+  {
+    label: "職種別に考える",
+    emoji: "💻",
+    slugs: ["mikeiken-engineer-tenshoku"],
   },
   {
     label: "面接・選考を突破する",
