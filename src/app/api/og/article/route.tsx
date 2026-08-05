@@ -77,6 +77,13 @@ const categoryConfig: Record<
     bgTo: "#18181b",
     emoji: "🧾",
   },
+  hikari: {
+    label: "FIBER",
+    color: "#0ea5e9",
+    bgFrom: "#0f3547",
+    bgTo: "#18181b",
+    emoji: "🌐",
+  },
   sim: {
     label: "MOBILE",
     color: "#06b6d4",

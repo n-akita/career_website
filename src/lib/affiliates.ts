@@ -228,6 +228,44 @@ export const AFFILIATE_SERVICES: Record<string, AffiliateService> = {
     cta: "無料資料請求してみる",
   },
 
+  // ── 光回線（/hikari） ──────────────────
+  docomoHikari: {
+    id: "docomoHikari",
+    name: "ドコモ光",
+    affiliateUrl: "",
+    fallbackPath: "/hikari/hikari-hikaku",
+    description:
+      "ドコモのスマホを使っているならまず候補。セット割が家族の回線数だけ効くのが強み",
+    cta: "料金プランを見てみる",
+  },
+  softbankHikari: {
+    id: "softbankHikari",
+    name: "ソフトバンク光",
+    affiliateUrl: "",
+    fallbackPath: "/hikari/hikari-hikaku",
+    description:
+      "ソフトバンク・ワイモバイルのスマホとセットで割引。マンションでも導入しやすい光コラボ",
+    cta: "料金プランを見てみる",
+  },
+  auHikari: {
+    id: "auHikari",
+    name: "auひかり",
+    affiliateUrl: "",
+    fallbackPath: "/hikari/hikari-hikaku",
+    description:
+      "au・UQのスマホとセット割。NTT回線とは別系統のため、混雑時の速度で有利になる場合がある",
+    cta: "提供エリアを確認する",
+  },
+  nuroHikari: {
+    id: "nuroHikari",
+    name: "NURO光",
+    affiliateUrl: "",
+    fallbackPath: "/hikari/hikari-hikaku",
+    description:
+      "独自回線で高速をうたうサービス。提供エリアが限られるので、まずエリア判定から",
+    cta: "提供エリアを確認する",
+  },
+
   // ── スマホ・通信費（/sim） ──────────────────
   uqMobile: {
     id: "uqMobile",
@@ -417,6 +455,11 @@ export const GENRE_CTA: Record<string, GenreCtaConfig> = {
     heading: "おすすめのオンライン英会話・英語学習",
     lead: "どれも無料体験あり。目的（話す量・ビジネス特化・TOEIC）で選ぶと失敗しない。",
     serviceIds: ["nativecamp", "dmmEikaiwa", "bizmates", "sutasapuToeic"],
+  },
+  hikari: {
+    heading: "主要な光回線",
+    lead: "使っているスマホのキャリアで決めるのが基本。キャッシュバックは受取条件を必ず確認してから。",
+    serviceIds: ["docomoHikari", "softbankHikari", "auHikari", "nuroHikari"],
   },
   sim: {
     heading: "スマホ代の見直し先",

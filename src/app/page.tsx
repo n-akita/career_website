@@ -83,6 +83,12 @@ const INDEX_SECTIONS: {
     categories: ["sim"],
   },
   {
+    label: CATEGORY_LABELS.hikari,
+    href: "/hikari",
+    note: "光コラボの卸構造、キャッシュバックの原資、マンションの配線方式。",
+    categories: ["hikari"],
+  },
+  {
     label: CATEGORY_LABELS.furusato,
     href: "/furusato",
     note: "限度額の計算、サイトの選び方、ワンストップ特例の手続き。",

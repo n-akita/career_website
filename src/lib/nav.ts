@@ -25,6 +25,7 @@ export const CATEGORY_LABELS: Record<string, string> = {
   english: "ビジネス英語",
   blog: "副業ブログ",
   sim: "スマホ・通信費",
+  hikari: "光回線",
   furusato: "ふるさと納税",
   kaikei: "会計・確定申告",
 };
@@ -42,6 +43,7 @@ export const CATEGORY_EMOJI: Record<string, string> = {
   english: "🌐",
   blog: "✍️",
   sim: "📱",
+  hikari: "🌐",
   furusato: "🎁",
   kaikei: "🧾",
 };
@@ -59,13 +61,35 @@ export const GLOBAL_NAV: NavItem[] = [
       { label: CATEGORY_LABELS.story, href: "/career/story", emoji: CATEGORY_EMOJI.story },
     ],
   },
-  { label: CATEGORY_LABELS.taishoku, href: "/taishoku", emoji: CATEGORY_EMOJI.taishoku },
-  { label: CATEGORY_LABELS.shitsugyo, href: "/shitsugyo", emoji: CATEGORY_EMOJI.shitsugyo },
-  { label: CATEGORY_LABELS.shikaku, href: "/shikaku", emoji: CATEGORY_EMOJI.shikaku },
-  { label: CATEGORY_LABELS.coaching, href: "/coaching", emoji: CATEGORY_EMOJI.coaching },
-  { label: CATEGORY_LABELS.english, href: "/english", emoji: CATEGORY_EMOJI.english },
+  {
+    label: "退職・失業保険",
+    href: "/taishoku",
+    emoji: CATEGORY_EMOJI.taishoku,
+    children: [
+      { label: CATEGORY_LABELS.taishoku, href: "/taishoku", emoji: CATEGORY_EMOJI.taishoku },
+      { label: CATEGORY_LABELS.shitsugyo, href: "/shitsugyo", emoji: CATEGORY_EMOJI.shitsugyo },
+    ],
+  },
+  {
+    label: "学び直し・相談",
+    href: "/shikaku",
+    emoji: CATEGORY_EMOJI.shikaku,
+    children: [
+      { label: CATEGORY_LABELS.shikaku, href: "/shikaku", emoji: CATEGORY_EMOJI.shikaku },
+      { label: CATEGORY_LABELS.english, href: "/english", emoji: CATEGORY_EMOJI.english },
+      { label: CATEGORY_LABELS.coaching, href: "/coaching", emoji: CATEGORY_EMOJI.coaching },
+    ],
+  },
   { label: CATEGORY_LABELS.blog, href: "/blog", emoji: CATEGORY_EMOJI.blog },
-  { label: CATEGORY_LABELS.sim, href: "/sim", emoji: CATEGORY_EMOJI.sim },
+  {
+    label: "固定費の見直し",
+    href: "/sim",
+    emoji: "📉",
+    children: [
+      { label: CATEGORY_LABELS.sim, href: "/sim", emoji: CATEGORY_EMOJI.sim },
+      { label: CATEGORY_LABELS.hikari, href: "/hikari", emoji: CATEGORY_EMOJI.hikari },
+    ],
+  },
   {
     label: "お金と税金",
     href: "/kaikei",
@@ -199,6 +223,17 @@ export const GENRE_SUBNAV: Record<string, GenreSubNavConfig> = {
       { label: "親のスマホ代", href: "/sim/senior-sim" },
     ],
     cta: { label: "携帯料金はなぜ高いのか", href: "/sim/why-phone-bill-high" },
+  },
+  hikari: {
+    genre: CATEGORY_LABELS.hikari,
+    emoji: CATEGORY_EMOJI.hikari,
+    href: "/hikari",
+    links: [
+      { label: "光コラボの仕組み", href: "/hikari/hikari-collabo-shikumi" },
+      { label: "どこがいい？比較", href: "/hikari/hikari-hikaku" },
+      { label: "マンションの光回線", href: "/hikari/mansion-hikari" },
+    ],
+    cta: { label: "光回線の選び方", href: "/hikari/hikari-hikaku" },
   },
   furusato: {
     genre: CATEGORY_LABELS.furusato,

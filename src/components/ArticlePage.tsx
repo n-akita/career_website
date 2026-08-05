@@ -24,6 +24,7 @@ const categoryImages: Record<string, string> = {
   english: "/images/hero-work.jpg",
   blog: "/images/hero-photo.jpg",
   sim: "/images/hero-city.jpg",
+  hikari: "/images/hero-city.jpg",
   furusato: "/images/hero-photo.jpg",
   kaikei: "/images/hero-work.jpg",
 };
@@ -40,6 +41,7 @@ const categoryLabels: Record<string, { label: string; en: string; href: string }
   english: { label: "ビジネス英語とTOEIC", en: "English", href: "/english" },
   blog: { label: "副業ブログの実験室", en: "Blog", href: "/blog" },
   sim: { label: "スマホ代と通信費", en: "Mobile", href: "/sim" },
+  hikari: { label: "光回線とネット環境", en: "Fiber", href: "/hikari" },
   furusato: { label: "ふるさと納税", en: "Furusato Tax", href: "/furusato" },
   kaikei: { label: "会計ソフトと確定申告", en: "Accounting", href: "/kaikei" },
 };
@@ -75,6 +77,11 @@ const genreConfig: Record<
     hubSlug: "eigo-career-guide",
     hubTitle: "英語はキャリアの武器になるか 完全ガイドを読む",
     hubSub: "TOEICの目安スコア・学習設計・サービス選びの全体像を1本で。迷ったらまずここから",
+  },
+  hikari: {
+    hubSlug: "hikari-hikaku",
+    hubTitle: "光回線の選び方 完全ガイドを読む",
+    hubSub: "スマホのキャリアで決まる。セット割とキャッシュバックの見方を1本で",
   },
   sim: {
     hubSlug: "why-phone-bill-high",
