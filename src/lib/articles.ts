@@ -15,6 +15,8 @@ export type Article = {
   related: string[];
   image: string;
   faq: ArticleFaq[];
+  /** 狙いの検索KW。表示には使わず、週次のGSC順位検証（seo-checkup）が参照する */
+  targetKeywords: string[];
   readingTime: number;
   content: string;
 };
@@ -70,6 +72,7 @@ export function getArticlesByCategory(category: string): ArticleMeta[] {
       related: (data.related as string[]) ?? [],
       image: (data.image as string) ?? "",
       faq: (data.faq as ArticleFaq[]) ?? [],
+      targetKeywords: (data.targetKeywords as string[]) ?? [],
       readingTime: Math.max(1, Math.round(content.length / 600)),
     };
   });
@@ -95,6 +98,7 @@ export function getArticle(category: string, slug: string): Article | null {
     related: (data.related as string[]) ?? [],
     image: (data.image as string) ?? "",
     faq: (data.faq as ArticleFaq[]) ?? [],
+    targetKeywords: (data.targetKeywords as string[]) ?? [],
     readingTime: Math.max(1, Math.round(content.length / 600)),
     content,
   };
