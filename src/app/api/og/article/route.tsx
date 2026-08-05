@@ -77,6 +77,13 @@ const categoryConfig: Record<
     bgTo: "#18181b",
     emoji: "🧾",
   },
+  sim: {
+    label: "MOBILE",
+    color: "#06b6d4",
+    bgFrom: "#123a44",
+    bgTo: "#18181b",
+    emoji: "📱",
+  },
   blog: {
     label: "SIDE BLOG",
     color: "#a855f7",

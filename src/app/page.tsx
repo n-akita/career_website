@@ -77,6 +77,12 @@ const INDEX_SECTIONS: {
     categories: ["blog"],
   },
   {
+    label: CATEGORY_LABELS.sim,
+    href: "/sim",
+    note: "携帯料金の仕組み、不要オプションの外し方、親のスマホ代の下げ方。",
+    categories: ["sim"],
+  },
+  {
     label: CATEGORY_LABELS.furusato,
     href: "/furusato",
     note: "限度額の計算、サイトの選び方、ワンストップ特例の手続き。",

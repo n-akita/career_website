@@ -65,6 +65,7 @@ const INDEX = [
   ['src/app/career/diagnosis/page.tsx', '/career/diagnosis', 'career', 'キャリア診断ツール'],
   ['src/app/shitsugyo/page.tsx', '/shitsugyo', 'shitsugyo', '失業保険・退職後手続き 記事一覧'],
   ['src/app/blog/page.tsx', '/blog', 'blog', '副業ブログ 記事一覧'],
+  ['src/app/sim/page.tsx', '/sim', 'sim', 'スマホ・通信費 記事一覧'],
   ['src/app/career/tenshoku/page.tsx', '/career/tenshoku', 'tenshoku', '転職 記事一覧'],
   ['src/app/career/mindset/page.tsx', '/career/mindset', 'mindset', 'マインドセット 記事一覧'],
   ['src/app/career/story/page.tsx', '/career/story', 'story', 'ストーリー 記事一覧'],

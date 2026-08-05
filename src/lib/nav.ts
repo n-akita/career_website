@@ -24,6 +24,7 @@ export const CATEGORY_LABELS: Record<string, string> = {
   coaching: "キャリア相談",
   english: "ビジネス英語",
   blog: "副業ブログ",
+  sim: "スマホ・通信費",
   furusato: "ふるさと納税",
   kaikei: "会計・確定申告",
 };
@@ -40,6 +41,7 @@ export const CATEGORY_EMOJI: Record<string, string> = {
   coaching: "🧭",
   english: "🌐",
   blog: "✍️",
+  sim: "📱",
   furusato: "🎁",
   kaikei: "🧾",
 };
@@ -63,6 +65,7 @@ export const GLOBAL_NAV: NavItem[] = [
   { label: CATEGORY_LABELS.coaching, href: "/coaching", emoji: CATEGORY_EMOJI.coaching },
   { label: CATEGORY_LABELS.english, href: "/english", emoji: CATEGORY_EMOJI.english },
   { label: CATEGORY_LABELS.blog, href: "/blog", emoji: CATEGORY_EMOJI.blog },
+  { label: CATEGORY_LABELS.sim, href: "/sim", emoji: CATEGORY_EMOJI.sim },
   {
     label: "お金と税金",
     href: "/kaikei",
@@ -185,6 +188,17 @@ export const GENRE_SUBNAV: Record<string, GenreSubNavConfig> = {
       { label: "確定申告", href: "/blog/blog-kakuteishinkoku" },
     ],
     cta: { label: "副業ブログの始め方ガイド", href: "/blog/fukugyou-blog-hajimekata" },
+  },
+  sim: {
+    genre: CATEGORY_LABELS.sim,
+    emoji: CATEGORY_EMOJI.sim,
+    href: "/sim",
+    links: [
+      { label: "不要オプションの外し方", href: "/sim/shop-option-trap" },
+      { label: "料金が高い理由", href: "/sim/why-phone-bill-high" },
+      { label: "親のスマホ代", href: "/sim/senior-sim" },
+    ],
+    cta: { label: "携帯料金はなぜ高いのか", href: "/sim/why-phone-bill-high" },
   },
   furusato: {
     genre: CATEGORY_LABELS.furusato,

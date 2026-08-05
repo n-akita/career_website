@@ -228,6 +228,44 @@ export const AFFILIATE_SERVICES: Record<string, AffiliateService> = {
     cta: "無料資料請求してみる",
   },
 
+  // ── スマホ・通信費（/sim） ──────────────────
+  uqMobile: {
+    id: "uqMobile",
+    name: "UQモバイル",
+    affiliateUrl: "",
+    fallbackPath: "/sim/senior-sim",
+    description:
+      "au回線のサブブランド。全国に店舗があり、対面で相談しながら乗り換えたい人に向く",
+    cta: "料金プランを見てみる",
+  },
+  ymobile: {
+    id: "ymobile",
+    name: "ワイモバイル",
+    affiliateUrl: "",
+    fallbackPath: "/sim/senior-sim",
+    description:
+      "ソフトバンク回線のサブブランド。店舗数が多く、家族割やネットセット割の割引幅が大きい",
+    cta: "料金プランを見てみる",
+  },
+  aeonMobile: {
+    id: "aeonMobile",
+    name: "イオンモバイル",
+    affiliateUrl: "",
+    fallbackPath: "/sim/senior-sim",
+    description:
+      "イオン店舗で相談・契約ができる格安SIM。細かい容量プランが選べて、使う量が少ない人ほど安くなる",
+    cta: "料金プランを見てみる",
+  },
+  iijmio: {
+    id: "iijmio",
+    name: "IIJmio",
+    affiliateUrl: "",
+    fallbackPath: "/sim/why-phone-bill-high",
+    description:
+      "老舗のMVNO。小容量が安く、端末セールも多い。設定を自分でできる人向けのコスパ枠",
+    cta: "料金プランを見てみる",
+  },
+
   // ── 副業ブログ・レンタルサーバー（/blog） ──────────────────
   xserver: {
     id: "xserver",
@@ -379,6 +417,11 @@ export const GENRE_CTA: Record<string, GenreCtaConfig> = {
     heading: "おすすめのオンライン英会話・英語学習",
     lead: "どれも無料体験あり。目的（話す量・ビジネス特化・TOEIC）で選ぶと失敗しない。",
     serviceIds: ["nativecamp", "dmmEikaiwa", "bizmates", "sutasapuToeic"],
+  },
+  sim: {
+    heading: "スマホ代の見直し先",
+    lead: "使うデータ量と「店舗で相談したいか」で選ぶのが失敗しないコツ。回線品質はサブブランドなら大差ない。",
+    serviceIds: ["uqMobile", "ymobile", "aeonMobile", "iijmio"],
   },
   blog: {
     heading: "副業ブログを始めるためのレンタルサーバー",
