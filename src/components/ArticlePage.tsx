@@ -7,6 +7,8 @@ import ReadingProgress from "./ReadingProgress";
 import TableOfContents from "./TableOfContents";
 import { ArticleJsonLd, BreadcrumbJsonLd, FAQPageJsonLd } from "./JsonLd";
 import GenreSubNav from "./GenreSubNav";
+import ServiceCTA from "./ServiceCTA";
+import { hasLiveAffiliate, SHOW_SERVICE_CTA } from "@/lib/affiliates";
 
 const BASE_URL = "https://nara-career.com";
 
@@ -180,8 +182,17 @@ export default function ArticlePage({ article }: { article: Article }) {
 
       {/* 本文 */}
       <article className="max-w-3xl mx-auto px-4 py-12 md:py-16">
+        {/* ステマ規制対応: CTA表示ON かつ アフィリリンク稼働中のカテゴリのみ冒頭にPR表記 */}
+        {SHOW_SERVICE_CTA && hasLiveAffiliate(article.category) && (
+          <p className="text-xs text-zinc-400 mb-6">
+            ※本記事にはプロモーション（広告）が含まれます
+          </p>
+        )}
         <TableOfContents content={article.content} />
         <MarkdownRenderer content={article.content} />
+
+        {/* ジャンル別サービスCTA（affiliates.ts で一元管理） */}
+        <ServiceCTA category={article.category} currentPath={articlePath(article)} />
 
         {/* ストーリー記事の導線：ノウハウ記事へ */}
         {isStory(article.category) && (
