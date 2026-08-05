@@ -103,6 +103,17 @@ export const AFFILIATE_SERVICES: Record<string, AffiliateService> = {
     cta: "公式サイトで詳細を見る",
   },
 
+  // ── 失業保険・給付金サポート（/shitsugyo） ──────────────────
+  taishokuConcierge: {
+    id: "taishokuConcierge",
+    name: "退職コンシェルジュ",
+    affiliateUrl: "",
+    fallbackPath: "/shitsugyo/kyufukin-support-hikaku",
+    description:
+      "社会保険給付金サポートの代表格。受給できる可能性のある給付金を無料のWEB説明会で診断できる",
+    cta: "無料WEB説明会に参加してみる",
+  },
+
   // ── キャリアコーチング（/coaching） ──────────────────
   posiwill: {
     id: "posiwill",
@@ -319,6 +330,11 @@ export const GENRE_CTA: Record<string, GenreCtaConfig> = {
     heading: "安全に頼める退職代行サービス",
     lead: "運営形態（労働組合・弁護士）でできることが違う。比較して自分の状況に合うものを。",
     serviceIds: ["taishokuGuardian", "taishokuMiyabi", "taishokuJobs"],
+  },
+  shitsugyo: {
+    heading: "退職後のお金の不安に使えるサービス",
+    lead: "まず自分がもらえる額と時期を把握するのが先。そのうえで、手続きに不安があればサポートも選択肢。",
+    serviceIds: ["taishokuConcierge", "taishokuGuardian", "taishokuMiyabi"],
   },
   shikaku: {
     heading: "資格取得におすすめの通信講座",

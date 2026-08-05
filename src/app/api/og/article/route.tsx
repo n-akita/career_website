@@ -77,6 +77,13 @@ const categoryConfig: Record<
     bgTo: "#18181b",
     emoji: "🧾",
   },
+  shitsugyo: {
+    label: "AFTER RESIGNATION",
+    color: "#f59e0b",
+    bgFrom: "#4a3520",
+    bgTo: "#18181b",
+    emoji: "📋",
+  },
 };
 
 export async function GET(request: NextRequest) {

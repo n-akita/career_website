@@ -18,6 +18,7 @@ const categoryImages: Record<string, string> = {
   sidejob: "/images/hero-photo.jpg",
   story: "/images/hero-work.jpg",
   taishoku: "/images/hero-work.jpg",
+  shitsugyo: "/images/hero-city.jpg",
   shikaku: "/images/hero-photo.jpg",
   coaching: "/images/hero-city.jpg",
   english: "/images/hero-work.jpg",
@@ -31,6 +32,7 @@ const categoryLabels: Record<string, { label: string; en: string; href: string }
   sidejob: { label: "副業の始め方", en: "Side Job", href: "/career/sidejob" },
   story: { label: "体験談ストーリー", en: "Story", href: "/career/story" },
   taishoku: { label: "退職のリアル", en: "Resignation", href: "/taishoku" },
+  shitsugyo: { label: "失業保険と退職後の手続き", en: "After Resignation", href: "/shitsugyo" },
   shikaku: { label: "資格とリスキリング", en: "Reskilling", href: "/shikaku" },
   coaching: { label: "キャリア相談とコーチング", en: "Coaching", href: "/coaching" },
   english: { label: "ビジネス英語とTOEIC", en: "English", href: "/english" },
@@ -49,6 +51,11 @@ const genreConfig: Record<
     hubSlug: "taishoku-daiko-guide",
     hubTitle: "安全な退職代行の選び方 完全ガイドを読む",
     hubSub: "運営形態・料金・選び方の全体像を1本で。迷ったらまずここから",
+  },
+  shitsugyo: {
+    hubSlug: "taishokugo-tetsuduki-list",
+    hubTitle: "退職後の手続き 完全ガイドを読む",
+    hubSub: "健康保険・年金・失業保険・住民税。順番と期限の全体像を1本で",
   },
   shikaku: {
     hubSlug: "tenshoku-shikaku-guide",

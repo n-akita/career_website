@@ -27,6 +27,7 @@ export default function Footer() {
                 <Link href="/career/sidejob" className="hover:text-white transition-colors py-1.5">副業の始め方</Link>
                 <Link href="/career/story" className="hover:text-white transition-colors py-1.5">体験談ストーリー</Link>
                 <Link href="/taishoku" className="hover:text-white transition-colors py-1.5">退職のリアル</Link>
+                <Link href="/shitsugyo" className="hover:text-white transition-colors py-1.5">失業保険と退職後の手続き</Link>
                 <Link href="/shikaku" className="hover:text-white transition-colors py-1.5">資格とリスキリング</Link>
                 <Link href="/coaching" className="hover:text-white transition-colors py-1.5">キャリア相談とコーチング</Link>
                 <Link href="/english" className="hover:text-white transition-colors py-1.5">ビジネス英語とTOEIC</Link>

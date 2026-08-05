@@ -47,6 +47,12 @@ const INDEX_SECTIONS: {
     categories: ["taishoku"],
   },
   {
+    label: CATEGORY_LABELS.shitsugyo,
+    href: "/shitsugyo",
+    note: "失業保険がいつ・いくらもらえるか、退職後の手続きの順番と期限。",
+    categories: ["shitsugyo"],
+  },
+  {
     label: CATEGORY_LABELS.shikaku,
     href: "/shikaku",
     note: "通信講座の比較、教育訓練給付金、勉強の進め方。",
