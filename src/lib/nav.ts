@@ -26,6 +26,7 @@ export const CATEGORY_LABELS: Record<string, string> = {
   blog: "副業ブログ",
   sim: "スマホ・通信費",
   hikari: "光回線",
+  denki: "電気・ガス",
   furusato: "ふるさと納税",
   kaikei: "会計・確定申告",
 };
@@ -44,6 +45,7 @@ export const CATEGORY_EMOJI: Record<string, string> = {
   blog: "✍️",
   sim: "📱",
   hikari: "🌐",
+  denki: "💡",
   furusato: "🎁",
   kaikei: "🧾",
 };
@@ -88,6 +90,7 @@ export const GLOBAL_NAV: NavItem[] = [
     children: [
       { label: CATEGORY_LABELS.sim, href: "/sim", emoji: CATEGORY_EMOJI.sim },
       { label: CATEGORY_LABELS.hikari, href: "/hikari", emoji: CATEGORY_EMOJI.hikari },
+      { label: CATEGORY_LABELS.denki, href: "/denki", emoji: CATEGORY_EMOJI.denki },
     ],
   },
   {
@@ -234,6 +237,17 @@ export const GENRE_SUBNAV: Record<string, GenreSubNavConfig> = {
       { label: "マンションの光回線", href: "/hikari/mansion-hikari" },
     ],
     cta: { label: "光回線の選び方", href: "/hikari/hikari-hikaku" },
+  },
+  denki: {
+    genre: CATEGORY_LABELS.denki,
+    emoji: CATEGORY_EMOJI.denki,
+    href: "/denki",
+    links: [
+      { label: "電気代の補助金", href: "/denki/denkidai-hojokin" },
+      { label: "乗り換えのデメリット", href: "/denki/denryoku-norikae-demerit" },
+      { label: "退職後の固定費", href: "/denki/taishoku-koteihi-minaoshi" },
+    ],
+    cta: { label: "電力会社の乗り換えで損しないために", href: "/denki/denryoku-norikae-demerit" },
   },
   furusato: {
     genre: CATEGORY_LABELS.furusato,

@@ -67,6 +67,7 @@ const INDEX = [
   ['src/app/blog/page.tsx', '/blog', 'blog', '副業ブログ 記事一覧'],
   ['src/app/sim/page.tsx', '/sim', 'sim', 'スマホ・通信費 記事一覧'],
   ['src/app/hikari/page.tsx', '/hikari', 'hikari', '光回線 記事一覧'],
+  ['src/app/denki/page.tsx', '/denki', 'denki', '電気・ガス 記事一覧'],
   ['src/app/career/tenshoku/page.tsx', '/career/tenshoku', 'tenshoku', '転職 記事一覧'],
   ['src/app/career/mindset/page.tsx', '/career/mindset', 'mindset', 'マインドセット 記事一覧'],
   ['src/app/career/story/page.tsx', '/career/story', 'story', 'ストーリー 記事一覧'],

@@ -228,6 +228,17 @@ export const AFFILIATE_SERVICES: Record<string, AffiliateService> = {
     cta: "無料資料請求してみる",
   },
 
+  // ── 電気・ガス（/denki） ──────────────────
+  enechange: {
+    id: "enechange",
+    name: "エネチェンジ",
+    affiliateUrl: "",
+    fallbackPath: "/denki/denryoku-norikae-demerit",
+    description:
+      "電力・ガスの料金比較サイト。今の使用量を入れると、乗り換えでいくら変わるかを試算できる",
+    cta: "電気料金を比較してみる",
+  },
+
   // ── 光回線（/hikari） ──────────────────
   docomoHikari: {
     id: "docomoHikari",
@@ -455,6 +466,11 @@ export const GENRE_CTA: Record<string, GenreCtaConfig> = {
     heading: "おすすめのオンライン英会話・英語学習",
     lead: "どれも無料体験あり。目的（話す量・ビジネス特化・TOEIC）で選ぶと失敗しない。",
     serviceIds: ["nativecamp", "dmmEikaiwa", "bizmates", "sutasapuToeic"],
+  },
+  denki: {
+    heading: "電気・ガスの見直しに使えるサービス",
+    lead: "まず今の使用量(検針票のkWh)を手元に。比較サイトの試算は条件次第で変わるので、契約前に公式で最終確認を。",
+    serviceIds: ["enechange"],
   },
   hikari: {
     heading: "主要な光回線",

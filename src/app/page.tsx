@@ -89,6 +89,12 @@ const INDEX_SECTIONS: {
     categories: ["hikari"],
   },
   {
+    label: CATEGORY_LABELS.denki,
+    href: "/denki",
+    note: "電気代の補助金、乗り換えの本当のデメリット、退職後の固定費の削り方。",
+    categories: ["denki"],
+  },
+  {
     label: CATEGORY_LABELS.furusato,
     href: "/furusato",
     note: "限度額の計算、サイトの選び方、ワンストップ特例の手続き。",

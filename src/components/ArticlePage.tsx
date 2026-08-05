@@ -25,6 +25,7 @@ const categoryImages: Record<string, string> = {
   blog: "/images/hero-photo.jpg",
   sim: "/images/hero-city.jpg",
   hikari: "/images/hero-city.jpg",
+  denki: "/images/hero-photo.jpg",
   furusato: "/images/hero-photo.jpg",
   kaikei: "/images/hero-work.jpg",
 };
@@ -42,6 +43,7 @@ const categoryLabels: Record<string, { label: string; en: string; href: string }
   blog: { label: "副業ブログの実験室", en: "Blog", href: "/blog" },
   sim: { label: "スマホ代と通信費", en: "Mobile", href: "/sim" },
   hikari: { label: "光回線とネット環境", en: "Fiber", href: "/hikari" },
+  denki: { label: "電気・ガスと固定費", en: "Utilities", href: "/denki" },
   furusato: { label: "ふるさと納税", en: "Furusato Tax", href: "/furusato" },
   kaikei: { label: "会計ソフトと確定申告", en: "Accounting", href: "/kaikei" },
 };
@@ -77,6 +79,11 @@ const genreConfig: Record<
     hubSlug: "eigo-career-guide",
     hubTitle: "英語はキャリアの武器になるか 完全ガイドを読む",
     hubSub: "TOEICの目安スコア・学習設計・サービス選びの全体像を1本で。迷ったらまずここから",
+  },
+  denki: {
+    hubSlug: "denryoku-norikae-demerit",
+    hubTitle: "電力会社の乗り換えで損しないための全知識を読む",
+    hubSub: "停電リスク・市場連動型・賃貸の可否。本当のデメリットを1本で",
   },
   hikari: {
     hubSlug: "hikari-hikaku",

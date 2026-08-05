@@ -77,6 +77,13 @@ const categoryConfig: Record<
     bgTo: "#18181b",
     emoji: "🧾",
   },
+  denki: {
+    label: "UTILITIES",
+    color: "#eab308",
+    bgFrom: "#3f3512",
+    bgTo: "#18181b",
+    emoji: "💡",
+  },
   hikari: {
     label: "FIBER",
     color: "#0ea5e9",
