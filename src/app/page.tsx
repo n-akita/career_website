@@ -71,6 +71,12 @@ const INDEX_SECTIONS: {
     categories: ["english"],
   },
   {
+    label: CATEGORY_LABELS.blog,
+    href: "/blog",
+    note: "会社員が副業ブログを始めるときの費用、住民税、続けた結果。",
+    categories: ["blog"],
+  },
+  {
     label: CATEGORY_LABELS.furusato,
     href: "/furusato",
     note: "限度額の計算、サイトの選び方、ワンストップ特例の手続き。",

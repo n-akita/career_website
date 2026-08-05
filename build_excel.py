@@ -85,7 +85,7 @@ for a in ART:
         "uc": a.get("updateCount", 0), "pv_cum": CUMm.get(k, 0), "pv_wk": WKm.get(k, 0),
     })
 
-CAT_ORDER = ["共通","career","tenshoku","mindset","story","sidejob","taishoku","shitsugyo","shikaku","coaching","english","kaikei","furusato"]
+CAT_ORDER = ["共通","career","tenshoku","mindset","story","sidejob","taishoku","shitsugyo","shikaku","coaching","english","blog","kaikei","furusato"]
 order = {c:i for i,c in enumerate(CAT_ORDER)}
 rows.sort(key=lambda r: (order.get(r["cat"], 99), r["date"] or datetime.date(2100,1,1), r["type"]!="インデックス"))
 

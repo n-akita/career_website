@@ -23,6 +23,7 @@ export const CATEGORY_LABELS: Record<string, string> = {
   shikaku: "資格・学び直し",
   coaching: "キャリア相談",
   english: "ビジネス英語",
+  blog: "副業ブログ",
   furusato: "ふるさと納税",
   kaikei: "会計・確定申告",
 };
@@ -38,6 +39,7 @@ export const CATEGORY_EMOJI: Record<string, string> = {
   shikaku: "📚",
   coaching: "🧭",
   english: "🌐",
+  blog: "✍️",
   furusato: "🎁",
   kaikei: "🧾",
 };
@@ -60,6 +62,7 @@ export const GLOBAL_NAV: NavItem[] = [
   { label: CATEGORY_LABELS.shikaku, href: "/shikaku", emoji: CATEGORY_EMOJI.shikaku },
   { label: CATEGORY_LABELS.coaching, href: "/coaching", emoji: CATEGORY_EMOJI.coaching },
   { label: CATEGORY_LABELS.english, href: "/english", emoji: CATEGORY_EMOJI.english },
+  { label: CATEGORY_LABELS.blog, href: "/blog", emoji: CATEGORY_EMOJI.blog },
   {
     label: "お金と税金",
     href: "/kaikei",
@@ -170,6 +173,18 @@ export const GENRE_SUBNAV: Record<string, GenreSubNavConfig> = {
       { label: "社会人の勉強法", href: "/english/toeic-benkyou-shakaijin" },
     ],
     cta: { label: "英語×キャリア完全ガイド", href: "/english/eigo-career-guide" },
+  },
+  blog: {
+    genre: CATEGORY_LABELS.blog,
+    emoji: CATEGORY_EMOJI.blog,
+    href: "/blog",
+    links: [
+      { label: "会社にばれない？", href: "/blog/fukugyou-blog-bareru" },
+      { label: "サーバー比較", href: "/blog/rental-server-hikaku" },
+      { label: "エックスサーバーvsConoHa", href: "/blog/xserver-conoha-dochira" },
+      { label: "確定申告", href: "/blog/blog-kakuteishinkoku" },
+    ],
+    cta: { label: "副業ブログの始め方ガイド", href: "/blog/fukugyou-blog-hajimekata" },
   },
   furusato: {
     genre: CATEGORY_LABELS.furusato,

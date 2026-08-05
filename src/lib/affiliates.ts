@@ -228,6 +228,35 @@ export const AFFILIATE_SERVICES: Record<string, AffiliateService> = {
     cta: "無料資料請求してみる",
   },
 
+  // ── 副業ブログ・レンタルサーバー（/blog） ──────────────────
+  xserver: {
+    id: "xserver",
+    name: "エックスサーバー",
+    affiliateUrl: "",
+    fallbackPath: "/blog/rental-server-hikaku",
+    description:
+      "国内シェア最大級の定番サーバー。表示速度と安定性に定評があり、WordPressの導入も管理画面から完結する",
+    cta: "料金プランを見てみる",
+  },
+  conohaWing: {
+    id: "conohaWing",
+    name: "ConoHa WING",
+    affiliateUrl: "",
+    fallbackPath: "/blog/xserver-conoha-dochira",
+    description:
+      "表示速度の速さを打ち出す後発サーバー。長期割引の実質月額が安く、初期費用も無料で始めやすい",
+    cta: "料金プランを見てみる",
+  },
+  lolipop: {
+    id: "lolipop",
+    name: "ロリポップ",
+    affiliateUrl: "",
+    fallbackPath: "/blog/rental-server-hikaku",
+    description:
+      "月数百円台から使える低価格サーバー。まず最小コストで試したい人向けの選択肢",
+    cta: "料金プランを見てみる",
+  },
+
   // ── 会計ソフト（/kaikei・/career/sidejob） ──────────────────
   freee: {
     id: "freee",
@@ -350,6 +379,11 @@ export const GENRE_CTA: Record<string, GenreCtaConfig> = {
     heading: "おすすめのオンライン英会話・英語学習",
     lead: "どれも無料体験あり。目的（話す量・ビジネス特化・TOEIC）で選ぶと失敗しない。",
     serviceIds: ["nativecamp", "dmmEikaiwa", "bizmates", "sutasapuToeic"],
+  },
+  blog: {
+    heading: "副業ブログを始めるためのレンタルサーバー",
+    lead: "初期費用の大半はサーバー代。まず1年続ける前提で、実質月額と管理のしやすさで選ぶのが現実的。",
+    serviceIds: ["xserver", "conohaWing", "lolipop"],
   },
   kaikei: {
     heading: "おすすめの会計ソフト",

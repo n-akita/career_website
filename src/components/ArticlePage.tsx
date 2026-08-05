@@ -22,6 +22,7 @@ const categoryImages: Record<string, string> = {
   shikaku: "/images/hero-photo.jpg",
   coaching: "/images/hero-city.jpg",
   english: "/images/hero-work.jpg",
+  blog: "/images/hero-photo.jpg",
   furusato: "/images/hero-photo.jpg",
   kaikei: "/images/hero-work.jpg",
 };
@@ -36,6 +37,7 @@ const categoryLabels: Record<string, { label: string; en: string; href: string }
   shikaku: { label: "資格とリスキリング", en: "Reskilling", href: "/shikaku" },
   coaching: { label: "キャリア相談とコーチング", en: "Coaching", href: "/coaching" },
   english: { label: "ビジネス英語とTOEIC", en: "English", href: "/english" },
+  blog: { label: "副業ブログの実験室", en: "Blog", href: "/blog" },
   furusato: { label: "ふるさと納税", en: "Furusato Tax", href: "/furusato" },
   kaikei: { label: "会計ソフトと確定申告", en: "Accounting", href: "/kaikei" },
 };
@@ -71,6 +73,11 @@ const genreConfig: Record<
     hubSlug: "eigo-career-guide",
     hubTitle: "英語はキャリアの武器になるか 完全ガイドを読む",
     hubSub: "TOEICの目安スコア・学習設計・サービス選びの全体像を1本で。迷ったらまずここから",
+  },
+  blog: {
+    hubSlug: "fukugyou-blog-hajimekata",
+    hubTitle: "会社員の副業ブログ 始め方ガイドを読む",
+    hubSub: "初期費用・かかる時間・収益化までの現実的な道筋を1本で",
   },
   furusato: {
     hubSlug: "furusato-nouzei-guide",

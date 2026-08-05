@@ -77,6 +77,13 @@ const categoryConfig: Record<
     bgTo: "#18181b",
     emoji: "🧾",
   },
+  blog: {
+    label: "SIDE BLOG",
+    color: "#a855f7",
+    bgFrom: "#3b2153",
+    bgTo: "#18181b",
+    emoji: "✍️",
+  },
   shitsugyo: {
     label: "AFTER RESIGNATION",
     color: "#f59e0b",

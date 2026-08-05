@@ -32,7 +32,7 @@ export const BLOG_BASE = "/career";
 export const CAREER_CATEGORIES = ["mindset", "tenshoku", "sidejob", "story"] as const;
 
 /** トップ直下に独立ジャンルとして並設するカテゴリ（/<category>/<slug>） */
-export const GENRE_CATEGORIES = ["taishoku", "shitsugyo", "shikaku", "coaching", "english", "furusato", "kaikei"] as const;
+export const GENRE_CATEGORIES = ["taishoku", "shitsugyo", "shikaku", "coaching", "english", "blog", "furusato", "kaikei"] as const;
 
 export const CATEGORIES = [...CAREER_CATEGORIES, ...GENRE_CATEGORIES] as const;
 
