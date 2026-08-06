@@ -47,6 +47,7 @@ const sections: ArticleSection[] = [
     label: "講座を比べる",
     emoji: "⚖️",
     slugs: [
+      "tsushin-kouza-hikaku",
       "takken-tsushin-kouza-hikaku",
       "boki-tsushin-kouza-hikaku",
       "fp-tsushin-kouza-hikaku",

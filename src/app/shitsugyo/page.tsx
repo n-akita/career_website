@@ -21,7 +21,7 @@ const sections: ArticleSection[] = [
   {
     label: "手続きを進める",
     emoji: "📋",
-    slugs: ["taishokudaiko-shitsugyohoken"],
+    slugs: ["taishokudaiko-shitsugyohoken", "hokensho-kirikae", "baito-fukugyo"],
   },
   {
     label: "サポートを検討する",

@@ -42,6 +42,7 @@ const sections: ArticleSection[] = [
     emoji: "⚖️",
     slugs: [
       "online-eikaiwa-hikaku",
+      "eigo-coaching-hikaku",
       "nativecamp-hyouban",
       "dmm-eikaiwa-hyouban",
       "rarejob-hyouban",
