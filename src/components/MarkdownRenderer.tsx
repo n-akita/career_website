@@ -9,6 +9,7 @@ type Token =
   | { type: "hr" }
   | { type: "image"; src: string; alt: string }
   | { type: "list"; items: string[] }
+  | { type: "orderedList"; items: string[]; start: number }
   | { type: "table"; headers: string[]; alignments: string[]; rows: string[][] }
   | { type: "code"; lang: string; code: string }
   | { type: "p"; text: string };
@@ -79,6 +80,19 @@ function parseMarkdown(content: string): Token[] {
         i++;
       }
       tokens.push({ type: "list", items });
+      continue;
+    }
+
+    // ordered list（"1. " 形式。手順記事で多用されるため段落に潰さず ol で出す）
+    const olMatch = line.match(/^(\d+)\. /);
+    if (olMatch) {
+      const start = Number(olMatch[1]);
+      const items: string[] = [];
+      while (i < lines.length && /^\d+\. /.test(lines[i])) {
+        items.push(lines[i].replace(/^\d+\. /, ""));
+        i++;
+      }
+      tokens.push({ type: "orderedList", items, start });
       continue;
     }
 
@@ -250,6 +264,16 @@ export default function MarkdownRenderer({ content }: { content: string }) {
                   </li>
                 ))}
               </ul>
+            );
+          case "orderedList":
+            return (
+              <ol key={i} start={token.start} className="my-6 space-y-2 list-decimal pl-6 marker:text-primary marker:font-semibold">
+                {token.items.map((item, j) => (
+                  <li key={j} className="text-zinc-600 leading-[1.9] pl-1">
+                    {renderInline(item)}
+                  </li>
+                ))}
+              </ol>
             );
           case "blockquote":
             return (

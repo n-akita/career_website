@@ -68,7 +68,7 @@ const sections: ArticleSection[] = [
   {
     label: "制度を使い倒す",
     emoji: "🏛️",
-    slugs: ["kyouiku-kunren-kyufukin-guide", "reskilling-hojokin-school"],
+    slugs: ["kyouiku-kunren-kyufukin-guide", "kyouiku-kunren-kyuka-kyufukin", "reskilling-hojokin-school"],
   },
 ];
 

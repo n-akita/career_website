@@ -43,6 +43,7 @@ const sections: ArticleSection[] = [
     slugs: [
       "online-eikaiwa-hikaku",
       "eigo-coaching-hikaku",
+      "progrit-hyouban",
       "nativecamp-hyouban",
       "dmm-eikaiwa-hyouban",
       "rarejob-hyouban",

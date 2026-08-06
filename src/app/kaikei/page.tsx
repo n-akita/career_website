@@ -16,7 +16,8 @@ const sections: ArticleSection[] = [
   {
     label: "会計ソフトを選ぶ",
     emoji: "🧾",
-    slugs: ["freee-mf-hikaku", "freee-hyouban", "moneyforward-hyouban"],
+    slugs: ["freee-mf-hikaku",
+      "kaikei-soft-yasui", "freee-hyouban", "moneyforward-hyouban"],
   },
   {
     label: "制度に対応する",
