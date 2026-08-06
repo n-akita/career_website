@@ -33,6 +33,11 @@ const sections: ArticleSection[] = [
     slugs: ["mikeiken-engineer-tenshoku"],
   },
   {
+    label: "転職とお金の手続き",
+    emoji: "💴",
+    slugs: ["tenshoku-nisa", "tenshoku-kigyougata-dc"],
+  },
+  {
     label: "面接・選考を突破する",
     emoji: "🎯",
     slugs: ["job-change-count", "over-35-career-change", "high-salary-job-change"],
