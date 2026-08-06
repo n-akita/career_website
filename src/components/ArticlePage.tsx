@@ -8,9 +8,21 @@ import TableOfContents from "./TableOfContents";
 import { ArticleJsonLd, BreadcrumbJsonLd, FAQPageJsonLd } from "./JsonLd";
 import GenreSubNav from "./GenreSubNav";
 import ServiceCTA from "./ServiceCTA";
+import AdSlot from "./AdSlot";
 import { hasLiveAffiliate, SHOW_SERVICE_CTA } from "@/lib/affiliates";
 
 const BASE_URL = "https://nara-career.com";
+
+// 無料テンプレ(/present)への導線を出すジャンル。読者層が合うキャリア系のみ
+const LEAD_MAGNET_CATEGORIES = new Set([
+  "mindset",
+  "tenshoku",
+  "sidejob",
+  "story",
+  "taishoku",
+  "shitsugyo",
+  "coaching",
+]);
 
 const categoryImages: Record<string, string> = {
   mindset: "/images/hero-city.jpg",
@@ -228,6 +240,37 @@ export default function ArticlePage({ article }: { article: Article }) {
 
         {/* ジャンル別サービスCTA（affiliates.ts で一元管理） */}
         <ServiceCTA category={article.category} currentPath={articlePath(article)} />
+
+        {/* 記事下広告。ユニットID未設定のあいだは何も出ない */}
+        <AdSlot slot={process.env.NEXT_PUBLIC_ADSENSE_SLOT_ARTICLE} />
+
+        {/* キャリア系ジャンルのみ: 無料テンプレ配布(/present)への導線 */}
+        {LEAD_MAGNET_CATEGORIES.has(article.category) && (
+          <Link
+            href="/present"
+            className="my-10 flex items-center justify-between gap-4 rounded-2xl border border-primary/30 bg-muted p-6 hover:shadow-sm transition-all group"
+          >
+            <div>
+              <p className="text-xs font-semibold text-primary tracking-wider uppercase mb-1">
+                Free Template
+              </p>
+              <p className="font-bold text-sm md:text-base mb-1">
+                転職4回で書類を通し続けた職務経歴書テンプレート（無料）
+              </p>
+              <p className="text-xs text-zinc-500">
+                ベンチャー⇔大手の「翻訳」対応表つき。メールで受け取れます
+              </p>
+            </div>
+            <svg
+              className="w-4 h-4 text-zinc-300 group-hover:text-primary shrink-0 transition-colors"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </Link>
+        )}
 
         {/* ストーリー記事の導線：ノウハウ記事へ */}
         {isStory(article.category) && (
