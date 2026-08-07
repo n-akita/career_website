@@ -23,8 +23,16 @@ const ZONES = [
   { path: "toyosu", origin: "https://toyosu-nu.vercel.app" },
 ];
 
+// 中継のオン/オフ。2026-08-07、AdSense に「有用性の低いコンテンツ」と判定されて
+// off にした（イベント名と日付を並べた自動生成ページがドメイン405本中243本を占め、
+// ドメイン全体の評価を下げていた）。off の間も各サイトは *.vercel.app で生きている。
+// 審査に通ったら Vercel の環境変数に SHOW_LOCAL_ZONES=1 を入れて再デプロイすれば戻る。
+// src/app/robots.ts も同じ変数を見ているので、切り替えはこの1箇所で足りる。
+const SHOW_LOCAL_ZONES = process.env.SHOW_LOCAL_ZONES === "1";
+
 const nextConfig: NextConfig = {
   async rewrites() {
+    if (!SHOW_LOCAL_ZONES) return [];
     return ZONES.flatMap((zone) => [
       {
         source: `/${zone.path}`,
